@@ -86,6 +86,34 @@ const SalesPanel: React.FC<SalesPanelProps> = ({ data, totalForms }) => {
           </div>
         </div>
 
+        {/* Aclaración importante */}
+        <div className="mt-6 p-4 bg-blue-50 border-l-4 border-blue-500 rounded">
+          <div className="flex items-start gap-3">
+            <div className="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">
+              i
+            </div>
+            <div>
+              <h4 className="font-bold text-blue-900 mb-2">Aclaración Importante sobre Ventas</h4>
+              <p className="text-blue-800 text-sm mb-2">
+                Las ventas totales de AgendaPro (<strong>{formatCurrency(summary.totalSales)}</strong>) incluyen <strong>TODAS las fuentes</strong>:
+                recomendaciones boca a boca, redes sociales, clientes recurrentes, tráfico orgánico, etc.
+              </p>
+              <div className="bg-white rounded p-3 mt-3 border border-blue-200">
+                <p className="text-sm font-semibold text-blue-900 mb-1">Ventas Atribuibles a Google Ads:</p>
+                <p className="text-2xl font-bold text-primary">
+                  {data.salesFromGoogleAds ? formatCurrency(data.salesFromGoogleAds.estimatedRevenue) : '$0'}
+                </p>
+                <p className="text-xs text-blue-700 mt-1">
+                  Calculado como: {totalForms} formularios × {formatCurrency(summary.averageTicket)} ticket promedio
+                </p>
+                <p className="text-xs text-blue-700 mt-1">
+                  Esto representa el <strong>{data.salesFromGoogleAds ? formatPercentage(data.salesFromGoogleAds.percentageOfTotal, 1) : '0%'}</strong> de las ventas totales del mes
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Relación Marketing-Ventas */}
         <div className="mt-6 p-4 bg-white rounded-lg border border-primary-200">
           <div className="flex items-center gap-2 mb-3">

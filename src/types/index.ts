@@ -106,10 +106,18 @@ export interface ServiceSales {
   variation: number;
 }
 
+export interface AttributableSalesData {
+  forms: number;
+  estimatedRevenue: number;
+  conversionRate: number;
+  percentageOfTotal: number;
+}
+
 export interface AgendaProData {
   summary: SalesData;
   categorySales: CategorySales[];
   topServices: ServiceSales[];
+  salesFromGoogleAds?: AttributableSalesData;
 }
 
 // Dashboard KPI Types

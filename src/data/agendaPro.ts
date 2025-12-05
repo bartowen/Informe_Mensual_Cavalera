@@ -1,14 +1,23 @@
 import { AgendaProData } from '../types';
 
 // Datos de AgendaPro - Noviembre 2025
+// IMPORTANTE: Las ventas totales incluyen TODAS las fuentes (orgánico, recomendaciones, recurrentes, etc.)
+// NO todas las ventas son atribuibles a Google Ads
 export const agendaProData: AgendaProData = {
   summary: {
-    totalSales: 41839303,
-    totalTransactions: 339,
-    averageTicket: 123420,
+    totalSales: 41839303,        // Total de TODAS las fuentes
+    totalTransactions: 339,       // Total de transacciones del mes
+    averageTicket: 123420,        // FIJO - NO CALCULAR
     salesVariation: 22.7,
     transactionsVariation: 39.5,
     ticketVariation: -12.0,
+  },
+  // Ventas atribuibles a Google Ads
+  salesFromGoogleAds: {
+    forms: 84,                                        // Formularios de Google Ads
+    estimatedRevenue: 84 * 123420,                   // 84 × $123.420 = $10.367.280
+    conversionRate: (84 / 339) * 100,                // 24,8% de las transacciones
+    percentageOfTotal: ((84 * 123420) / 41839303) * 100,  // 24,8% de las ventas
   },
   categorySales: [
     {

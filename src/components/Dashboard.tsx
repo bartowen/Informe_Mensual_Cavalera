@@ -36,7 +36,7 @@ import {
 } from 'lucide-react';
 
 const Dashboard: React.FC = () => {
-  // Calcular métricas agregadas
+  // Calcular métricas agregadas con datos CORRECTOS de Noviembre 2025
   const metrics = useMemo(() => {
     const totalImpressions = campaignsData.reduce((sum, c) => sum + c.impressions, 0);
     const totalClicks = campaignsData.reduce((sum, c) => sum + c.clicks, 0);
@@ -49,7 +49,11 @@ const Dashboard: React.FC = () => {
     const averageCPA = totalCost / totalConversions;
     const costPerForm = totalCost / totalConversions;
 
-    const roi = calculateROI(agendaProData.summary.totalSales, totalCost);
+    // Ventas atribuibles a Google Ads (no las ventas totales)
+    const attributableSales = agendaProData.salesFromGoogleAds?.estimatedRevenue || 0;
+
+    // ROI basado en ventas ATRIBUIBLES a Google Ads
+    const roi = calculateROI(attributableSales, totalCost);
 
     return {
       totalImpressions,
@@ -61,6 +65,7 @@ const Dashboard: React.FC = () => {
       averageCPC,
       averageCPA,
       costPerForm,
+      attributableSales,
       roi,
     };
   }, []);
@@ -109,7 +114,7 @@ const Dashboard: React.FC = () => {
       {
         type: 'success',
         title: 'ROI Positivo Destacado',
-        description: `La inversión en Google Ads generó un ROI de ${formatPercentage(metrics.roi)}, con ventas totales de ${formatCurrency(agendaProData.summary.totalSales)} vs inversión de ${formatCurrency(metrics.totalCost)}.`,
+        description: `La inversión de ${formatCurrency(metrics.totalCost)} generó un ROI de ${formatPercentage(metrics.roi)}. Ventas atribuibles a Google Ads: ${formatCurrency(metrics.attributableSales)} (${metrics.totalConversions} formularios × ticket promedio).`,
         metric: `ROI: ${formatPercentage(metrics.roi)}`,
       },
       {
@@ -157,7 +162,7 @@ const Dashboard: React.FC = () => {
             <Target className="w-6 h-6 text-primary" />
             Métricas Principales
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <KPICard
               label="Presupuesto Invertido"
               value={formatCurrency(metrics.totalCost)}
@@ -168,7 +173,7 @@ const Dashboard: React.FC = () => {
               label="Formularios Enviados"
               value={metrics.totalConversions}
               highlighted={true}
-              context="Total de conversiones del mes"
+              context="Conversiones de Google Ads"
               icon={<FileText className="w-6 h-6" />}
             />
             <KPICard
@@ -178,14 +183,23 @@ const Dashboard: React.FC = () => {
               icon={<TrendingUp className="w-6 h-6" />}
             />
             <KPICard
-              label="Ventas Generadas"
+              label="Ventas de Google Ads"
+              value={formatCurrency(metrics.attributableSales)}
+              context={`${metrics.totalConversions} formularios × ${formatCurrency(agendaProData.summary.averageTicket)}`}
+              icon={<TrendingUp className="w-6 h-6" />}
+            />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+            <KPICard
+              label="Ventas Totales (AgendaPro)"
               value={formatCurrency(agendaProData.summary.totalSales)}
               variation={agendaProData.summary.salesVariation}
-              context="Datos de AgendaPro"
+              context="Todas las fuentes de venta"
               icon={<DollarSign className="w-6 h-6" />}
             />
             <KPICard
-              label="ROI"
+              label="ROI de Google Ads"
               value={`${metrics.roi.toFixed(0)}%`}
               context="Retorno sobre inversión publicitaria"
               icon={<TrendingUp className="w-6 h-6" />}
@@ -194,7 +208,7 @@ const Dashboard: React.FC = () => {
               label="Ticket Promedio"
               value={formatCurrency(agendaProData.summary.averageTicket)}
               variation={agendaProData.summary.ticketVariation}
-              context="Valor promedio por venta"
+              context="Valor promedio por venta (fijo)"
               icon={<DollarSign className="w-6 h-6" />}
             />
           </div>
