@@ -187,6 +187,7 @@ const Dashboard: React.FC = () => {
             <KPICard
               label="Presupuesto Invertido"
               value={formatCurrency(metrics.totalCost)}
+              explanation="Dinero gastado en Google Ads durante noviembre para mostrar tus anuncios"
               context={`De ${formatCurrency(metrics.totalBudget)} presupuestado`}
               icon={<DollarSign className="w-6 h-6" />}
               confirmed={true}
@@ -196,7 +197,8 @@ const Dashboard: React.FC = () => {
               label="Formularios Enviados"
               value={metrics.totalConversions}
               highlighted={true}
-              context="Conversiones form_submit de Google Ads"
+              explanation="Personas que llenaron el formulario de contacto gracias a Google Ads"
+              context="Potenciales clientes interesados"
               icon={<FileText className="w-6 h-6" />}
               confirmed={true}
               badge="Métrica Principal"
@@ -204,14 +206,17 @@ const Dashboard: React.FC = () => {
             <KPICard
               label="Costo por Formulario"
               value={formatCurrency(metrics.costPerForm)}
-              context="CPA promedio de las campañas"
+              explanation={`Cuánto costó conseguir cada formulario de contacto (${formatCurrency(metrics.totalCost)} ÷ ${metrics.totalConversions} formularios)`}
+              context="Inversión por lead generado"
               icon={<TrendingUp className="w-6 h-6" />}
               confirmed={true}
+              badge="Confirmado"
             />
             <KPICard
               label="Ingresos Estimados Google Ads"
               value={formatCurrency(metrics.attributableSales)}
-              context={`${metrics.totalConversions} formularios × ${formatCurrency(agendaProData.summary.averageTicket)}`}
+              explanation="Proyección de ingresos si todos los formularios se convierten en ventas al ticket promedio"
+              context={`${metrics.totalConversions} formularios × ${formatCurrency(agendaProData.summary.averageTicket)} ticket`}
               icon={<TrendingUp className="w-6 h-6" />}
               warning={true}
               badge="Estimación"
@@ -224,15 +229,17 @@ const Dashboard: React.FC = () => {
               label="Ventas Totales del Mes"
               value={formatCurrency(agendaProData.summary.totalSales)}
               variation={agendaProData.summary.salesVariation}
-              context="Todas las fuentes - Dato AgendaPro"
+              explanation="Ingresos totales de TODAS las fuentes en AgendaPro (orgánico, recomendaciones, Google Ads, Instagram, etc.)"
+              context={`${agendaProData.summary.totalTransactions} transacciones totales`}
               icon={<DollarSign className="w-6 h-6" />}
               confirmed={true}
-              badge="Confirmado"
+              badge="AgendaPro"
             />
             <KPICard
               label="ROI Estimado Google Ads"
               value={`${metrics.roi.toFixed(0)}%`}
-              context="Retorno estimado sobre inversión"
+              explanation={`Por cada $1 invertido en Google Ads, se estiman $${(metrics.roi / 100 + 1).toFixed(0)} en retorno`}
+              context="Basado en ventas atribuibles estimadas"
               icon={<TrendingUp className="w-6 h-6" />}
               warning={true}
               badge="Proyección"
@@ -242,10 +249,11 @@ const Dashboard: React.FC = () => {
               label="Ticket Promedio"
               value={formatCurrency(agendaProData.summary.averageTicket)}
               variation={agendaProData.summary.ticketVariation}
-              context="Valor promedio por venta - AgendaPro"
+              explanation="Valor promedio que paga cada cliente por servicio (dato histórico fijo de AgendaPro)"
+              context="Base para cálculo de ingresos estimados"
               icon={<DollarSign className="w-6 h-6" />}
               confirmed={true}
-              badge="Dato Histórico"
+              badge="Fijo"
             />
           </div>
         </section>
@@ -342,6 +350,133 @@ const Dashboard: React.FC = () => {
                     <strong>Dato confirmado:</strong> {metrics.totalConversions} formularios recibidos de Google Ads en noviembre
                   </span>
                 </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Explicación ROI vs ROAS */}
+        <section className="mb-8">
+          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-300 rounded-xl p-6 shadow-lg">
+            <h3 className="text-xl font-bold text-blue-900 mb-4 flex items-center gap-2">
+              <Info className="w-6 h-6 text-blue-600" />
+              💡 ¿Qué significa ROI y ROAS?
+            </h3>
+
+            <div className="grid md:grid-cols-2 gap-6">
+              {/* ROI */}
+              <div className="bg-white rounded-lg p-5 border-2 border-emerald-300">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                    ROI
+                  </div>
+                  <div>
+                    <div className="font-bold text-lg text-emerald-900">Return on Investment</div>
+                    <div className="text-sm text-emerald-700">Retorno sobre Inversión</div>
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <div className="bg-emerald-50 p-3 rounded">
+                    <div className="text-sm text-emerald-800 mb-2">
+                      <strong>ROI = {metrics.roi.toFixed(0)}%</strong> significa que recuperaste tu inversión y ganaste <strong>{(metrics.roi / 100).toFixed(0)} veces</strong> más.
+                    </div>
+                    <div className="text-xs text-emerald-700 font-mono bg-white p-2 rounded">
+                      Por cada $1 invertido → Retornan ${(metrics.roi / 100 + 1).toFixed(2)}
+                    </div>
+                  </div>
+
+                  <div>
+                    <div className="text-xs font-semibold text-emerald-900 mb-1">📐 Fórmula:</div>
+                    <div className="bg-emerald-100 p-2 rounded text-xs font-mono">
+                      ROI = ((Ingresos - Inversión) / Inversión) × 100
+                    </div>
+                  </div>
+
+                  <div>
+                    <div className="text-xs font-semibold text-emerald-900 mb-1">🧮 Ejemplo:</div>
+                    <div className="bg-white p-2 rounded text-xs space-y-1">
+                      <div>Ingresos estimados: {formatCurrency(metrics.attributableSales)}</div>
+                      <div>Inversión: {formatCurrency(metrics.totalCost)}</div>
+                      <div className="border-t border-emerald-200 pt-1 mt-1">
+                        ROI = (({formatCurrency(metrics.attributableSales)} - {formatCurrency(metrics.totalCost)}) / {formatCurrency(metrics.totalCost)}) × 100
+                      </div>
+                      <div className="font-bold text-emerald-700">
+                        = {metrics.roi.toFixed(0)}%
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* ROAS */}
+              <div className="bg-white rounded-lg p-5 border-2 border-purple-300">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                    ROAS
+                  </div>
+                  <div>
+                    <div className="font-bold text-lg text-purple-900">Return on Ad Spend</div>
+                    <div className="text-sm text-purple-700">Retorno sobre Gasto Publicitario</div>
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <div className="bg-purple-50 p-3 rounded">
+                    <div className="text-sm text-purple-800 mb-2">
+                      <strong>ROAS = {(metrics.attributableSales / metrics.totalCost).toFixed(1)}:1</strong> significa que por cada <strong>$1 invertido</strong>, generaste <strong>${(metrics.attributableSales / metrics.totalCost).toFixed(1)} en ingresos</strong>.
+                    </div>
+                    <div className="text-xs text-purple-700 font-mono bg-white p-2 rounded">
+                      $1 invertido → ${(metrics.attributableSales / metrics.totalCost).toFixed(2)} en ventas
+                    </div>
+                  </div>
+
+                  <div>
+                    <div className="text-xs font-semibold text-purple-900 mb-1">📐 Fórmula:</div>
+                    <div className="bg-purple-100 p-2 rounded text-xs font-mono">
+                      ROAS = Ingresos / Inversión
+                    </div>
+                  </div>
+
+                  <div>
+                    <div className="text-xs font-semibold text-purple-900 mb-1">🧮 Ejemplo:</div>
+                    <div className="bg-white p-2 rounded text-xs space-y-1">
+                      <div>Ingresos estimados: {formatCurrency(metrics.attributableSales)}</div>
+                      <div>Inversión: {formatCurrency(metrics.totalCost)}</div>
+                      <div className="border-t border-purple-200 pt-1 mt-1">
+                        ROAS = {formatCurrency(metrics.attributableSales)} / {formatCurrency(metrics.totalCost)}
+                      </div>
+                      <div className="font-bold text-purple-700">
+                        = {(metrics.attributableSales / metrics.totalCost).toFixed(1)} (o {(metrics.attributableSales / metrics.totalCost).toFixed(1)}:1)
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Resumen comparativo */}
+            <div className="mt-6 p-4 bg-gradient-to-r from-blue-100 to-indigo-100 rounded-lg border-2 border-blue-400">
+              <h4 className="font-bold text-blue-900 mb-3 flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5" />
+                📊 En Resumen
+              </h4>
+              <div className="grid md:grid-cols-2 gap-4 text-sm">
+                <div className="bg-white/80 p-3 rounded">
+                  <div className="font-semibold text-blue-900 mb-1">🎯 ROI muestra:</div>
+                  <div className="text-blue-800">
+                    El <strong>% de ganancia</strong> que obtuviste. Un ROI de {metrics.roi.toFixed(0)}% significa que ganaste {(metrics.roi / 100).toFixed(0)}x tu inversión inicial.
+                  </div>
+                </div>
+                <div className="bg-white/80 p-3 rounded">
+                  <div className="font-semibold text-blue-900 mb-1">💵 ROAS muestra:</div>
+                  <div className="text-blue-800">
+                    Cuántos <strong>pesos generas</strong> por cada peso invertido. Un ROAS de {(metrics.attributableSales / metrics.totalCost).toFixed(1)}:1 significa ${(metrics.attributableSales / metrics.totalCost).toFixed(1)} de ingreso por cada $1.
+                  </div>
+                </div>
+              </div>
+              <div className="mt-3 p-3 bg-white rounded text-xs text-blue-900">
+                <strong>💡 Ambos miden rentabilidad</strong>, solo se expresan diferente. ROI en porcentaje de ganancia, ROAS en múltiplo de ingreso.
               </div>
             </div>
           </div>

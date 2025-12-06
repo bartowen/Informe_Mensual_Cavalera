@@ -20,6 +20,7 @@ const KPICard: React.FC<KPICardProps> = ({
   value,
   variation,
   context,
+  explanation,
   icon,
   highlighted = false,
   warning = false,
@@ -84,6 +85,17 @@ const KPICard: React.FC<KPICardProps> = ({
           {isEstimated && '~'}{value}
         </p>
       </div>
+
+      {explanation && (
+        <div className="mt-3 p-2 bg-blue-50 rounded border border-blue-200">
+          <div className="flex items-start gap-2">
+            <HelpCircle className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
+            <p className="text-xs text-blue-900 leading-relaxed">
+              {explanation}
+            </p>
+          </div>
+        </div>
+      )}
 
       {variation !== undefined && (
         <div className="flex items-center gap-2 mt-3">
