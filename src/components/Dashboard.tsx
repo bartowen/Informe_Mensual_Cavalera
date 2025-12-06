@@ -33,6 +33,11 @@ import {
   TrendingUp,
   Target,
   Smartphone,
+  AlertTriangle,
+  Clock,
+  ArrowRight,
+  Info,
+  CheckCircle2,
 } from 'lucide-react';
 
 const Dashboard: React.FC = () => {
@@ -168,49 +173,161 @@ const Dashboard: React.FC = () => {
               value={formatCurrency(metrics.totalCost)}
               context={`De ${formatCurrency(metrics.totalBudget)} presupuestado`}
               icon={<DollarSign className="w-6 h-6" />}
+              confirmed={true}
+              badge="Confirmado"
             />
             <KPICard
               label="Formularios Enviados"
               value={metrics.totalConversions}
               highlighted={true}
-              context="Conversiones de Google Ads"
+              context="Conversiones form_submit de Google Ads"
               icon={<FileText className="w-6 h-6" />}
+              confirmed={true}
+              badge="Métrica Principal"
             />
             <KPICard
               label="Costo por Formulario"
               value={formatCurrency(metrics.costPerForm)}
               context="CPA promedio de las campañas"
               icon={<TrendingUp className="w-6 h-6" />}
+              confirmed={true}
             />
             <KPICard
-              label="Ventas de Google Ads"
+              label="Ingresos Estimados Google Ads"
               value={formatCurrency(metrics.attributableSales)}
               context={`${metrics.totalConversions} formularios × ${formatCurrency(agendaProData.summary.averageTicket)}`}
               icon={<TrendingUp className="w-6 h-6" />}
+              warning={true}
+              badge="Estimación"
+              isEstimated={true}
             />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
             <KPICard
-              label="Ventas Totales (AgendaPro)"
+              label="Ventas Totales del Mes"
               value={formatCurrency(agendaProData.summary.totalSales)}
               variation={agendaProData.summary.salesVariation}
-              context="Todas las fuentes de venta"
+              context="Todas las fuentes - Dato AgendaPro"
               icon={<DollarSign className="w-6 h-6" />}
+              confirmed={true}
+              badge="Confirmado"
             />
             <KPICard
-              label="ROI de Google Ads"
+              label="ROI Estimado Google Ads"
               value={`${metrics.roi.toFixed(0)}%`}
-              context="Retorno sobre inversión publicitaria"
+              context="Retorno estimado sobre inversión"
               icon={<TrendingUp className="w-6 h-6" />}
+              warning={true}
+              badge="Proyección"
+              isEstimated={true}
             />
             <KPICard
               label="Ticket Promedio"
               value={formatCurrency(agendaProData.summary.averageTicket)}
               variation={agendaProData.summary.ticketVariation}
-              context="Valor promedio por venta (fijo)"
+              context="Valor promedio por venta - AgendaPro"
               icon={<DollarSign className="w-6 h-6" />}
+              confirmed={true}
+              badge="Dato Histórico"
             />
+          </div>
+        </section>
+
+        {/* Disclaimer de Ingresos Estimados */}
+        <section className="mb-8">
+          <div className="bg-gradient-to-r from-amber-50 to-orange-50 border-l-4 border-amber-500 p-6 rounded-lg shadow-lg">
+            <div className="flex items-start gap-4">
+              <div className="flex-shrink-0">
+                <AlertTriangle className="w-8 h-8 text-amber-600" />
+              </div>
+              <div className="flex-1">
+                <h3 className="text-xl font-bold text-amber-900 mb-3 flex items-center gap-2">
+                  ⚠️ Importante: Sobre los Ingresos Estimados de Google Ads
+                </h3>
+
+                <div className="bg-white/60 rounded-lg p-4 mb-4">
+                  <p className="text-amber-900 font-semibold mb-2">
+                    Los ingresos estimados de <span className="text-2xl text-amber-700">{formatCurrency(metrics.attributableSales)}</span> son una <strong>proyección calculada</strong>, no un ingreso confirmado.
+                  </p>
+                  <p className="text-amber-800 text-sm">
+                    Calculado como: <span className="font-mono bg-amber-100 px-2 py-1 rounded">{metrics.totalConversions} formularios × {formatCurrency(agendaProData.summary.averageTicket)} ticket promedio = {formatCurrency(metrics.attributableSales)}</span>
+                  </p>
+                </div>
+
+                <div className="space-y-3">
+                  <div>
+                    <h4 className="font-bold text-amber-900 mb-2 flex items-center gap-2">
+                      <Clock className="w-4 h-4" />
+                      Proceso de Conversión (Formulario → Venta):
+                    </h4>
+                    <div className="flex flex-wrap items-center gap-2 text-sm">
+                      <span className="bg-amber-200 text-amber-900 px-3 py-1.5 rounded-full font-medium">
+                        1. Formulario
+                      </span>
+                      <ArrowRight className="w-4 h-4 text-amber-600" />
+                      <span className="bg-amber-200 text-amber-900 px-3 py-1.5 rounded-full font-medium">
+                        2. Email/WhatsApp
+                      </span>
+                      <ArrowRight className="w-4 h-4 text-amber-600" />
+                      <span className="bg-amber-200 text-amber-900 px-3 py-1.5 rounded-full font-medium">
+                        3. Consulta
+                      </span>
+                      <ArrowRight className="w-4 h-4 text-amber-600" />
+                      <span className="bg-amber-200 text-amber-900 px-3 py-1.5 rounded-full font-medium">
+                        4. Cotización
+                      </span>
+                      <ArrowRight className="w-4 h-4 text-amber-600" />
+                      <span className="bg-amber-200 text-amber-900 px-3 py-1.5 rounded-full font-medium">
+                        5. Agendamiento
+                      </span>
+                      <ArrowRight className="w-4 h-4 text-amber-600" />
+                      <span className="bg-emerald-300 text-emerald-900 px-3 py-1.5 rounded-full font-medium">
+                        6. Pago Final ✓
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="grid md:grid-cols-2 gap-4 mt-4">
+                    <div className="bg-white/60 rounded p-3">
+                      <h5 className="font-semibold text-amber-900 text-sm mb-2">📊 Supuestos de la Estimación:</h5>
+                      <ul className="text-amber-800 text-sm space-y-1">
+                        <li>• Ticket promedio: {formatCurrency(agendaProData.summary.averageTicket)} (histórico AgendaPro)</li>
+                        <li>• Tasa de conversión: No confirmada</li>
+                        <li>• Tiempo del proceso: Variable (días a semanas)</li>
+                      </ul>
+                    </div>
+
+                    <div className="bg-white/60 rounded p-3">
+                      <h5 className="font-semibold text-amber-900 text-sm mb-2">⚠️ Factores de Incertidumbre:</h5>
+                      <ul className="text-amber-800 text-sm space-y-1">
+                        <li>• Cliente puede desistir en cualquier etapa</li>
+                        <li>• No todos los formularios se convierten en venta</li>
+                        <li>• El valor final puede variar del ticket promedio</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded">
+                  <p className="text-blue-900 text-sm font-medium flex items-start gap-2">
+                    <Info className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                    <span>
+                      Para obtener el <strong>ROI real confirmado</strong>, se necesita hacer seguimiento de cuántos de los {metrics.totalConversions} formularios
+                      se convirtieron efectivamente en ventas confirmadas y sus montos reales. Esta cifra de {formatCurrency(metrics.attributableSales)}
+                      es una <strong>proyección para análisis estratégico</strong>, no un resultado garantizado.
+                    </span>
+                  </p>
+                </div>
+
+                <div className="mt-4 flex items-center gap-2 text-amber-800 text-sm">
+                  <CheckCircle2 className="w-4 h-4" />
+                  <span>
+                    <strong>Dato confirmado:</strong> {metrics.totalConversions} formularios recibidos de Google Ads en noviembre
+                  </span>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
