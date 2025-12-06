@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react';
-import Header from './Header';
 import KPICard from './KPICard';
 import TimeSeriesChart from './TimeSeriesChart';
 import LocationChart from './LocationChart';
@@ -156,12 +155,29 @@ const Dashboard: React.FC = () => {
   }, [metrics]);
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="max-w-[1600px] mx-auto px-4 py-6">
-        {/* Header */}
-        <Header />
+    <div>
+      {/* Period Header for Google Ads Tab */}
+      <div className="bg-white rounded-lg shadow-md p-6 mb-6 border-l-4 border-indigo-600">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-1">
+              📊 Google Ads - Noviembre 2025
+            </h2>
+            <p className="text-sm text-gray-600">
+              Campaña: Cavalera Search - Towen Ads · Período: 1-30 Noviembre 2025
+            </p>
+          </div>
+          <div className="text-right">
+            <div className="text-xs text-gray-500 mb-1">Datos confirmados</div>
+            <div className="flex items-center gap-2">
+              <CheckCircle2 className="w-5 h-5 text-emerald-500" />
+              <span className="font-semibold text-gray-900">84 formularios</span>
+            </div>
+          </div>
+        </div>
+      </div>
 
-        {/* KPIs Principales */}
+      {/* KPIs Principales */}
         <section className="mb-8">
           <h2 className="text-2xl font-bold text-textPrimary mb-4 flex items-center gap-2">
             <Target className="w-6 h-6 text-primary" />
@@ -419,12 +435,11 @@ const Dashboard: React.FC = () => {
           <InsightsPanel insights={insights} />
         </section>
 
-        {/* Footer */}
-        <footer className="mt-12 text-center text-sm text-textMuted pb-6">
-          <p>Dashboard generado para Cavalera Tattoo & Piercing Studio</p>
-          <p className="mt-1">Período: 1 - 30 de Noviembre 2025</p>
-        </footer>
-      </div>
+      {/* Footer */}
+      <footer className="mt-12 text-center text-sm text-textMuted pb-6">
+        <p>Dashboard generado para Cavalera Tattoo & Piercing Studio</p>
+        <p className="mt-1">Período: 1 - 30 de Noviembre 2025</p>
+      </footer>
     </div>
   );
 };

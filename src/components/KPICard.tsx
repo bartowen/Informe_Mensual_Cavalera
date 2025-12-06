@@ -1,11 +1,12 @@
 import React from 'react';
-import { TrendingUp, TrendingDown, Minus, AlertTriangle, CheckCircle } from 'lucide-react';
+import { TrendingUp, TrendingDown, Minus, AlertTriangle, CheckCircle, HelpCircle } from 'lucide-react';
 
 interface KPICardProps {
   label: string;
   value: string | number;
   variation?: number;
   context?: string;
+  explanation?: string;  // Explicación simple de qué significa
   icon?: React.ReactNode;
   highlighted?: boolean;
   warning?: boolean;
