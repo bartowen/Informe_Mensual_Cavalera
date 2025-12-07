@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import KPICard from './KPICard';
 import TimeSeriesChart from './TimeSeriesChart';
-import LocationChart from './LocationChart';
+import SimpleLocationCards from './SimpleLocationCards';
 import KeywordsTable from './KeywordsTable';
 import SimpleScheduleCharts from './SimpleScheduleCharts';
 import SalesPanel from './SalesPanel';
@@ -466,7 +466,7 @@ const Dashboard: React.FC = () => {
         <section className="mb-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2">
-              <LocationChart data={locationsData} />
+              <SimpleLocationCards data={locationsData} />
             </div>
             <div className="card">
               <div className="flex items-center gap-2 mb-4">
