@@ -77,54 +77,50 @@ const Dashboard: React.FC = () => {
     };
   }, []);
 
-  // Generar insights automáticos
+  // Generar insights automáticos - DATOS REALES
   const insights: Insight[] = useMemo(() => {
-    const bestDay = [...dayOfWeekData].sort((a, b) => b.conversions - a.conversions)[0];
-    const bestHourData = [...hourOfDayData].sort((a, b) => b.conversions - a.conversions)[0];
-
     const bestLocation = locationsData.sort((a, b) => b.conversions - a.conversions)[0];
-    const bestCampaign = campaignsData.sort((a, b) => b.conversions - a.conversions)[0];
     const bestDevice = deviceData.sort((a, b) => b.conversions - a.conversions)[0];
 
     return [
       {
         type: 'success',
-        title: 'ROI Positivo Destacado',
-        description: `La inversión de ${formatCurrency(metrics.totalCost)} generó un ROI de ${formatPercentage(metrics.roi)}. Ventas atribuibles a Google Ads: ${formatCurrency(metrics.attributableSales)} (${metrics.totalConversions} formularios × ticket promedio).`,
-        metric: `ROI: ${formatPercentage(metrics.roi)}`,
+        title: 'CTR Sobresaliente',
+        description: `El CTR de 11,77% supera ampliamente el promedio del sector (4-6%). Esto indica que los anuncios son muy relevantes para las búsquedas de los usuarios.`,
+        metric: `CTR: 11,77%`,
       },
       {
         type: 'success',
-        title: 'Mejor Día de la Semana',
-        description: `${bestDay.day} es el día con mejor rendimiento, generando ${bestDay.conversions} conversiones. Considera aumentar las pujas en este día.`,
-        metric: `${bestDay.day}: ${bestDay.conversions} conversiones`,
+        title: 'Conversión Excelente',
+        description: `Con 84 formularios de 1.093 clics, la tasa de conversión es 7,69%. Muy por encima del promedio (3-5%). La landing page es altamente efectiva.`,
+        metric: `Conversión: 7,69%`,
       },
       {
         type: 'info',
-        title: 'Mejor Horario para Anuncios',
-        description: `Las ${bestHourData.hour} hrs es el horario más efectivo con ${bestHourData.conversions} conversiones. Optimiza la programación en esta franja horaria.`,
-        metric: `${bestHourData.hour} hrs: ${bestHourData.conversions} conversiones`,
+        title: 'Optimiza por Horario',
+        description: `Los días con picos de conversión (10, 18 y 24 de Nov con 4 formularios) muestran patrones claros. Analiza si coinciden con horarios específicos del día.`,
+        metric: `💡 Tip: Revisa datos por hora`,
       },
       {
         type: 'success',
-        title: 'Comuna con Mayor ROI',
-        description: `${bestLocation.location} lidera en conversiones con ${bestLocation.conversions} formularios y un CPA de ${formatCurrency(bestLocation.cpa)}. Considera segmentar más presupuesto a esta zona.`,
-        metric: `${bestLocation.location}: ${bestLocation.conversions} conv.`,
+        title: 'Las Condes - Zona Estratégica',
+        description: `${bestLocation.conversions} de 84 formularios (79%) vienen de Las Condes con un CPA de solo ${formatCurrency(bestLocation.cpa)}. Considera segmentar más presupuesto a esta comuna.`,
+        metric: `Las Condes: ${bestLocation.conversions} conv. (79%)`,
       },
       {
         type: 'info',
-        title: 'Campaña Destacada',
-        description: `"${bestCampaign.campaignName}" es la campaña con mejor rendimiento, generando ${bestCampaign.conversions} conversiones con una tasa de conversión de ${formatPercentage(bestCampaign.conversionRate)}.`,
-        metric: `${bestCampaign.conversions} conversiones`,
+        title: 'Móvil Predominante',
+        description: `${bestDevice.conversions} de 84 conversiones (88%) vienen de móvil. Asegura que la experiencia móvil (velocidad, formularios) sea óptima.`,
+        metric: `Mobile: ${bestDevice.conversions} conv. (88%)`,
       },
       {
-        type: 'info',
-        title: 'Dispositivo Predominante',
-        description: `${bestDevice.device === 'Mobile' ? 'Móvil' : bestDevice.device === 'Desktop' ? 'Escritorio' : 'Tablet'} genera ${bestDevice.conversions} conversiones (${formatPercentage(bestDevice.conversionRate)} tasa de conversión). Asegura que la experiencia sea óptima en este dispositivo.`,
-        metric: `${bestDevice.device}: ${bestDevice.conversions} conv.`,
+        type: 'success',
+        title: 'Presupuesto Bien Utilizado',
+        description: `Gastaste ${formatCurrency(metrics.totalCost)} de ${formatCurrency(metrics.totalBudget)} (90,3%). Buen uso del presupuesto. Los ${formatCurrency(metrics.totalBudget - metrics.totalCost)} restantes podrían reasignarse a keywords top.`,
+        metric: `Uso: 90,3% del presupuesto`,
       },
     ];
-  }, [metrics]);
+  }, [metrics, locationsData, deviceData]);
 
   return (
     <div>

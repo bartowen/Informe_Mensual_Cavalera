@@ -116,7 +116,7 @@ const ResumenGeneralTab: React.FC = () => {
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 bg-white rounded p-1 shadow-sm">
                   <img
-                    src="/src/assets/logo_google_ads.png"
+                    src="/logo_google_ads.png"
                     alt="Google Ads"
                     className="w-full h-full object-contain"
                   />
@@ -158,7 +158,7 @@ const ResumenGeneralTab: React.FC = () => {
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 bg-white rounded p-1 shadow-sm">
                   <img
-                    src="/src/assets/logo_meta_.png"
+                    src="/logo_meta_.png"
                     alt="Meta Ads"
                     className="w-full h-full object-contain"
                   />
@@ -196,7 +196,7 @@ const ResumenGeneralTab: React.FC = () => {
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 bg-white rounded p-1 shadow-sm">
                   <img
-                    src="/src/assets/logo_ga4-removebg-preview.png"
+                    src="/logo_ga4-removebg-preview.png"
                     alt="GA4"
                     className="w-full h-full object-contain"
                   />

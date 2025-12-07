@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from './Tabs';
 import ResumenGeneralTab from './ResumenGeneralTab';
 import Dashboard from './Dashboard';
 import GA4Tab from './GA4Tab';
@@ -63,86 +62,168 @@ const MainDashboard: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header Superior con botón hamburguesa */}
-      <header className="relative overflow-hidden">
-        <div className="bg-gradient-to-r from-[#3bc6dc] via-[#2eb8cf] to-[#21a9c2] py-6 px-4">
-          <div className="max-w-7xl mx-auto">
-            <div className="flex items-center justify-between">
+      {/* Header Superior */}
+      <header className="bg-gradient-to-r from-[#3bc6dc] via-[#2eb8cf] to-[#21a9c2] py-4 px-4 sticky top-0 z-40 shadow-lg">
+        <div className="max-w-7xl mx-auto">
 
-              {/* Lado izquierdo: Logos */}
-              <div className="flex items-center gap-3">
-                <div className="bg-white rounded-lg p-2 shadow-lg">
-                  <img
-                    src="/cavalera_tatoo.png"
-                    alt="Cavalera Tattoo & Piercing"
-                    className="h-10 w-auto"
-                  />
-                </div>
-                <div className="bg-white rounded-lg p-2 shadow-lg hidden sm:block">
-                  <img
-                    src="/logo_towen_ads.png"
-                    alt="Towen Ads"
-                    className="h-10 w-auto"
-                  />
-                </div>
+          {/* Primera fila: Logos + Título + Hamburguesa/Acciones */}
+          <div className="flex items-center justify-between gap-3">
+
+            {/* Logos (siempre visibles) */}
+            <div className="flex items-center gap-2 flex-shrink-0">
+              <div className="bg-white rounded-lg p-1.5 shadow-md">
+                <img
+                  src="/cavalera_tatoo.png"
+                  alt="Cavalera"
+                  className="h-8 md:h-10 w-auto"
+                />
               </div>
-
-              {/* Centro: Título */}
-              <div className="flex-1 text-center px-4 hidden md:block">
-                <h1 className="text-2xl md:text-3xl font-bold text-white drop-shadow-lg">
-                  Reporte Mensual - Cavalera Tattoo & Piercing Studio
-                </h1>
-                <p className="text-cyan-50 mt-1 text-sm">
-                  Dashboard multi-canal de marketing digital · Noviembre 2025
-                </p>
-              </div>
-
-              {/* Título móvil */}
-              <div className="flex-1 text-center px-4 md:hidden">
-                <h1 className="text-lg font-bold text-white">
-                  Cavalera - Nov 2025
-                </h1>
-              </div>
-
-              {/* Botón hamburguesa (solo móvil) */}
-              <button
-                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="md:hidden bg-white/10 backdrop-blur-sm rounded-lg p-2 border border-white/20 hover:bg-white/20 transition-all"
-                aria-label="Menú"
-              >
-                {mobileMenuOpen ? (
-                  <X className="w-6 h-6 text-white" />
-                ) : (
-                  <Menu className="w-6 h-6 text-white" />
-                )}
-              </button>
-
-              {/* Acciones (derecha - desktop) */}
-              <div className="hidden md:flex items-center gap-3">
-                <div className="bg-white/10 backdrop-blur-sm rounded-lg px-4 py-2 border border-white/20 cursor-not-allowed">
-                  <div className="flex items-center gap-2 text-white">
-                    <Calendar className="w-4 h-4" />
-                    <span className="text-sm font-medium">Nov 2025</span>
-                  </div>
-                </div>
-                <button
-                  disabled
-                  className="bg-white/10 backdrop-blur-sm rounded-lg px-4 py-2 border border-white/20 cursor-not-allowed relative"
-                >
-                  <div className="flex items-center gap-2 text-white">
-                    <Bot className="w-5 h-5" />
-                    <span className="text-sm font-medium">Bartowen AI</span>
-                  </div>
-                  <span className="absolute -top-2 -right-2 bg-amber-500 text-white text-xs px-2 py-0.5 rounded-full font-bold shadow-lg">
-                    Pronto
-                  </span>
-                </button>
+              <div className="bg-white rounded-lg p-1.5 shadow-md">
+                <img
+                  src="/logo_towen_ads.png"
+                  alt="Towen Ads"
+                  className="h-8 md:h-10 w-auto"
+                />
               </div>
             </div>
+
+            {/* Título (responsive) */}
+            <div className="flex-1 text-center px-2">
+              {/* Desktop */}
+              <h1 className="hidden md:block text-2xl lg:text-3xl font-bold text-white">
+                Reporte Mensual - Cavalera Tattoo & Piercing Studio
+              </h1>
+              <p className="hidden md:block text-cyan-50 mt-1 text-sm">
+                Dashboard multi-canal de marketing digital · Noviembre 2025
+              </p>
+
+              {/* Mobile */}
+              <h1 className="md:hidden text-base font-bold text-white leading-tight">
+                Cavalera - Nov 2025
+              </h1>
+            </div>
+
+            {/* Botón Hamburguesa (solo móvil) */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden bg-white/10 backdrop-blur-sm rounded-lg p-2 border border-white/20 hover:bg-white/20 transition-all flex-shrink-0"
+              aria-label="Menú"
+            >
+              {mobileMenuOpen ? (
+                <X className="w-6 h-6 text-white" />
+              ) : (
+                <Menu className="w-6 h-6 text-white" />
+              )}
+            </button>
+
+            {/* Acciones Desktop */}
+            <div className="hidden md:flex items-center gap-3 flex-shrink-0">
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg px-4 py-2 border border-white/20">
+                <div className="flex items-center gap-2 text-white">
+                  <Calendar className="w-4 h-4" />
+                  <span className="text-sm font-medium">Nov 2025</span>
+                </div>
+              </div>
+              <button
+                disabled
+                className="bg-white/10 backdrop-blur-sm rounded-lg px-4 py-2 border border-white/20 cursor-not-allowed relative"
+              >
+                <div className="flex items-center gap-2 text-white">
+                  <Bot className="w-5 h-5" />
+                  <span className="text-sm font-medium">Bartowen AI</span>
+                </div>
+                <span className="absolute -top-2 -right-2 bg-orange-500 text-white text-xs px-2 py-0.5 rounded-full font-bold">
+                  Pronto
+                </span>
+              </button>
+            </div>
+          </div>
+
+          {/* Segunda fila MÓVIL: Calendario + Bartowen AI */}
+          <div className="md:hidden flex items-center gap-2 mt-3">
+            <div className="flex-1 bg-white/10 backdrop-blur-sm rounded-lg px-3 py-2 border border-white/20">
+              <div className="flex items-center gap-2 text-white justify-center">
+                <Calendar className="w-4 h-4" />
+                <span className="text-xs font-medium">Nov 2025</span>
+              </div>
+            </div>
+            <button
+              disabled
+              className="flex-1 bg-white/10 backdrop-blur-sm rounded-lg px-3 py-2 border border-white/20 cursor-not-allowed relative"
+            >
+              <div className="flex items-center gap-2 text-white justify-center">
+                <Bot className="w-4 h-4" />
+                <span className="text-xs font-medium">Bartowen AI</span>
+              </div>
+              <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-xs px-1.5 py-0.5 rounded-full font-bold text-[10px]">
+                Pronto
+              </span>
+            </button>
+          </div>
+
+        </div>
+      </header>
+
+      {/* Barra de Navegación Desktop */}
+      <div className="bg-white border-b shadow-sm sticky top-[88px] md:top-[96px] z-30 hidden md:block">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex items-center justify-between py-3 gap-2 overflow-x-auto">
+            {tabs.map((tab) => (
+              <button
+                key={tab.value}
+                onClick={() => setActiveTab(tab.value)}
+                className={`
+                  flex items-center gap-2 px-4 py-2.5 rounded-lg transition-all font-medium text-sm whitespace-nowrap
+                  ${activeTab === tab.value
+                    ? 'bg-gradient-to-r from-[#3bc6dc] to-[#21a9c2] text-white shadow-lg'
+                    : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
+                  }
+                `}
+              >
+                {/* Logo o Ícono */}
+                {tab.logo ? (
+                  <div className={`rounded p-1 ${activeTab === tab.value ? 'bg-white' : 'bg-white'}`}>
+                    <img
+                      src={tab.logo}
+                      alt={tab.label}
+                      className="h-5 w-5 object-contain"
+                    />
+                  </div>
+                ) : (
+                  <div className={activeTab === tab.value ? 'text-white' : 'text-[#3bc6dc]'}>
+                    {tab.icon}
+                  </div>
+                )}
+
+                {/* Texto */}
+                <span>{tab.label}</span>
+              </button>
+            ))}
           </div>
         </div>
-        <div className="h-1 bg-gradient-to-r from-[#3bc6dc] via-white to-[#3bc6dc]"></div>
-      </header>
+      </div>
+
+      {/* Indicador de pestaña activa MÓVIL */}
+      <div className="md:hidden bg-white border-b shadow-sm py-3 px-4 sticky top-[136px] z-30">
+        <div className="text-center">
+          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-[#3bc6dc] to-[#21a9c2] text-white px-4 py-2 rounded-lg">
+            {tabs.find(t => t.value === activeTab)?.logo ? (
+              <div className="bg-white rounded p-1">
+                <img
+                  src={tabs.find(t => t.value === activeTab)?.logo}
+                  alt={tabs.find(t => t.value === activeTab)?.label}
+                  className="h-5 w-5 object-contain"
+                />
+              </div>
+            ) : (
+              tabs.find(t => t.value === activeTab)?.icon
+            )}
+            <span className="font-semibold">
+              {tabs.find(t => t.value === activeTab)?.label}
+            </span>
+          </div>
+        </div>
+      </div>
 
       {/* Menú Mobile Overlay */}
       {mobileMenuOpen && (
@@ -250,65 +331,15 @@ const MainDashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* Navegación por Tabs (Desktop) */}
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <div className="bg-gray-50 px-6 py-4 border-b border-gray-200 hidden md:block">
-          <div className="max-w-7xl mx-auto">
-            <TabsList className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 h-auto bg-gray-100 p-2 rounded-xl">
-              {tabs.map((tab) => (
-                <TabsTrigger
-                  key={tab.value}
-                  value={tab.value}
-                  className="flex flex-col items-center gap-2 py-4 px-2 data-[state=active]:bg-gradient-to-br data-[state=active]:from-[#3bc6dc] data-[state=active]:to-[#21a9c2] data-[state=active]:text-white rounded-lg transition-all hover:bg-gray-200 data-[state=active]:hover:from-[#2eb8cf] data-[state=active]:hover:to-[#21a9c2]"
-                >
-                  {tab.logo ? (
-                    <div className="w-10 h-10 bg-white rounded-lg p-1.5 shadow-sm">
-                      <img
-                        src={tab.logo}
-                        alt={tab.label}
-                        className="w-full h-full object-contain"
-                      />
-                    </div>
-                  ) : (
-                    tab.icon
-                  )}
-                  <div className="text-center">
-                    <div className="font-semibold text-sm">{tab.label}</div>
-                    <div className="text-xs opacity-80">{tab.subtitle}</div>
-                  </div>
-                </TabsTrigger>
-              ))}
-            </TabsList>
-          </div>
-        </div>
-
-        {/* Contenido de cada pestaña */}
-        <div className="max-w-7xl mx-auto px-6 py-8">
-          <TabsContent value="resumen-general">
-            <ResumenGeneralTab />
-          </TabsContent>
-
-          <TabsContent value="google-ads">
-            <Dashboard />
-          </TabsContent>
-
-          <TabsContent value="ga4">
-            <GA4Tab />
-          </TabsContent>
-
-          <TabsContent value="meta-ads">
-            <MetaAdsTab />
-          </TabsContent>
-
-          <TabsContent value="diccionario">
-            <DiccionarioTab />
-          </TabsContent>
-
-          <TabsContent value="otros-avances">
-            <OtrosAvancesTab />
-          </TabsContent>
-        </div>
-      </Tabs>
+      {/* Contenido de las pestañas */}
+      <div className="max-w-7xl mx-auto px-4 md:px-6 py-8">
+        {activeTab === 'resumen-general' && <ResumenGeneralTab />}
+        {activeTab === 'google-ads' && <Dashboard />}
+        {activeTab === 'ga4' && <GA4Tab />}
+        {activeTab === 'meta-ads' && <MetaAdsTab />}
+        {activeTab === 'diccionario' && <DiccionarioTab />}
+        {activeTab === 'otros-avances' && <OtrosAvancesTab />}
+      </div>
     </div>
   );
 };
