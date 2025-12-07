@@ -84,6 +84,21 @@ export interface DeviceData {
   conversionRate: number;
 }
 
+export interface DayOfWeekData {
+  day: string;
+  dayShort: string;
+  conversions: number;
+  clicks: number;
+  cost: number;
+}
+
+export interface HourOfDayData {
+  hour: string;
+  conversions: number;
+  clicks: number;
+  cost: number;
+}
+
 // AgendaPro Data Types
 export interface SalesData {
   totalSales: number;

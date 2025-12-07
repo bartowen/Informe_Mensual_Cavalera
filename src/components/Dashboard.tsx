@@ -3,7 +3,7 @@ import KPICard from './KPICard';
 import TimeSeriesChart from './TimeSeriesChart';
 import LocationChart from './LocationChart';
 import KeywordsTable from './KeywordsTable';
-import ScheduleHeatmap from './ScheduleHeatmap';
+import SimpleScheduleCharts from './SimpleScheduleCharts';
 import SalesPanel from './SalesPanel';
 import CampaignsTable from './CampaignsTable';
 import InsightsPanel from './InsightsPanel';
@@ -16,8 +16,9 @@ import {
   keywordsData,
   searchTermsData,
   locationsData,
-  scheduleData,
   deviceData,
+  dayOfWeekData,
+  hourOfDayData,
 } from '../data/mockData';
 
 // Utils
@@ -76,43 +77,12 @@ const Dashboard: React.FC = () => {
 
   // Generar insights automáticos
   const insights: Insight[] = useMemo(() => {
-    const bestDay = scheduleData
-      .reduce((acc, curr) => {
-        const existing = acc.find(a => a.day === curr.dayOfWeek);
-        if (existing) {
-          existing.conversions += curr.conversions;
-        } else {
-          acc.push({ day: curr.dayOfWeek, conversions: curr.conversions });
-        }
-        return acc;
-      }, [] as { day: string; conversions: number }[])
-      .sort((a, b) => b.conversions - a.conversions)[0];
-
-    const bestHourData = scheduleData
-      .reduce((acc, curr) => {
-        const existing = acc.find(a => a.hour === curr.hour);
-        if (existing) {
-          existing.conversions += curr.conversions;
-        } else {
-          acc.push({ hour: curr.hour, conversions: curr.conversions });
-        }
-        return acc;
-      }, [] as { hour: number; conversions: number }[])
-      .sort((a, b) => b.conversions - a.conversions)[0];
+    const bestDay = [...dayOfWeekData].sort((a, b) => b.conversions - a.conversions)[0];
+    const bestHourData = [...hourOfDayData].sort((a, b) => b.conversions - a.conversions)[0];
 
     const bestLocation = locationsData.sort((a, b) => b.conversions - a.conversions)[0];
     const bestCampaign = campaignsData.sort((a, b) => b.conversions - a.conversions)[0];
     const bestDevice = deviceData.sort((a, b) => b.conversions - a.conversions)[0];
-
-    const dayNames: Record<string, string> = {
-      Monday: 'Lunes',
-      Tuesday: 'Martes',
-      Wednesday: 'Miércoles',
-      Thursday: 'Jueves',
-      Friday: 'Viernes',
-      Saturday: 'Sábado',
-      Sunday: 'Domingo',
-    };
 
     return [
       {
@@ -124,14 +94,14 @@ const Dashboard: React.FC = () => {
       {
         type: 'success',
         title: 'Mejor Día de la Semana',
-        description: `${dayNames[bestDay.day]} es el día con mejor rendimiento, generando ${bestDay.conversions} conversiones. Considera aumentar las pujas en este día.`,
-        metric: `${dayNames[bestDay.day]}: ${bestDay.conversions} conversiones`,
+        description: `${bestDay.day} es el día con mejor rendimiento, generando ${bestDay.conversions} conversiones. Considera aumentar las pujas en este día.`,
+        metric: `${bestDay.day}: ${bestDay.conversions} conversiones`,
       },
       {
         type: 'info',
         title: 'Mejor Horario para Anuncios',
-        description: `Las ${bestHourData.hour}:00 hrs es el horario más efectivo con ${bestHourData.conversions} conversiones. Optimiza la programación en esta franja horaria.`,
-        metric: `${bestHourData.hour}:00 hrs: ${bestHourData.conversions} conversiones`,
+        description: `Las ${bestHourData.hour} hrs es el horario más efectivo con ${bestHourData.conversions} conversiones. Optimiza la programación en esta franja horaria.`,
+        metric: `${bestHourData.hour} hrs: ${bestHourData.conversions} conversiones`,
       },
       {
         type: 'success',
@@ -555,9 +525,9 @@ const Dashboard: React.FC = () => {
           <KeywordsTable keywords={keywordsData} searchTerms={searchTermsData} />
         </section>
 
-        {/* Programación de Anuncios */}
+        {/* Programación de Anuncios - Simplificado */}
         <section className="mb-8">
-          <ScheduleHeatmap data={scheduleData} />
+          <SimpleScheduleCharts dayData={dayOfWeekData} hourData={hourOfDayData} />
         </section>
 
         {/* Panel de Ventas AgendaPro */}

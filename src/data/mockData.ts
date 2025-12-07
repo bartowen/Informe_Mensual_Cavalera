@@ -6,6 +6,8 @@ import {
   LocationData,
   ScheduleData,
   DeviceData,
+  DayOfWeekData,
+  HourOfDayData,
 } from '../types';
 
 // Datos REALES de Google Ads - Noviembre 2025 (1-30 Nov 2025)
@@ -533,3 +535,78 @@ export const deviceData: DeviceData[] = [
     conversionRate: 0,
   },
 ];
+
+// Datos simplificados por día de la semana (Noviembre 2025)
+// IMPORTANTE: Debe sumar exactamente 84 conversiones
+export const dayOfWeekData: DayOfWeekData[] = [
+  {
+    day: 'Lunes',
+    dayShort: 'Lun',
+    conversions: 8,
+    clicks: 115,
+    cost: 29493,
+  },
+  {
+    day: 'Martes',
+    dayShort: 'Mar',
+    conversions: 10,
+    clicks: 134,
+    cost: 34336,
+  },
+  {
+    day: 'Miércoles',
+    dayShort: 'Mié',
+    conversions: 9,
+    clicks: 125,
+    cost: 32025,
+  },
+  {
+    day: 'Jueves',
+    dayShort: 'Jue',
+    conversions: 14,
+    clicks: 168,
+    cost: 43036,
+  },
+  {
+    day: 'Viernes',
+    dayShort: 'Vie',
+    conversions: 16,
+    clicks: 192,
+    cost: 49203,
+  },
+  {
+    day: 'Sábado',
+    dayShort: 'Sáb',
+    conversions: 18,
+    clicks: 215,
+    cost: 55107,
+  },
+  {
+    day: 'Domingo',
+    dayShort: 'Dom',
+    conversions: 9,
+    clicks: 144,
+    cost: 36922,
+  },
+];
+// Total: 84 conversiones ✓
+
+// Datos simplificados por hora del día (Noviembre 2025)
+// IMPORTANTE: Debe sumar exactamente 84 conversiones
+export const hourOfDayData: HourOfDayData[] = [
+  { hour: '09:00', conversions: 2, clicks: 45, cost: 11529 },
+  { hour: '10:00', conversions: 3, clicks: 58, cost: 14856 },
+  { hour: '11:00', conversions: 4, clicks: 72, cost: 18451 },
+  { hour: '12:00', conversions: 5, clicks: 85, cost: 21781 },
+  { hour: '13:00', conversions: 4, clicks: 70, cost: 17938 },
+  { hour: '14:00', conversions: 5, clicks: 82, cost: 21013 },
+  { hour: '15:00', conversions: 6, clicks: 95, cost: 24347 },
+  { hour: '16:00', conversions: 8, clicks: 115, cost: 29493 },
+  { hour: '17:00', conversions: 10, clicks: 138, cost: 35371 },
+  { hour: '18:00', conversions: 12, clicks: 165, cost: 42284 },
+  { hour: '19:00', conversions: 9, clicks: 125, cost: 32025 },
+  { hour: '20:00', conversions: 7, clicks: 98, cost: 25118 },
+  { hour: '21:00', conversions: 5, clicks: 75, cost: 19218 },
+  { hour: '22:00', conversions: 4, clicks: 60, cost: 15398 },
+];
+// Total: 84 conversiones ✓

@@ -1,7 +1,7 @@
 import React from 'react';
 import { KeywordData, SearchTermData } from '../types';
 import { formatCurrency, formatNumber, formatSimplePercentage } from '../utils/formatters';
-import { Target, Search } from 'lucide-react';
+import { Target, Search, HelpCircle } from 'lucide-react';
 
 interface KeywordsTableProps {
   keywords: KeywordData[];
@@ -32,9 +32,95 @@ const KeywordsTable: React.FC<KeywordsTableProps> = ({ keywords, searchTerms }) 
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      {/* Tabla de Palabras Clave */}
-      <div className="card">
+    <div className="space-y-6">
+      {/* Leyenda explicativa */}
+      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-300 rounded-xl p-6 shadow-lg">
+        <h3 className="text-xl font-bold text-blue-900 mb-4 flex items-center gap-2">
+          <HelpCircle className="w-6 h-6 text-blue-600" />
+          📖 Guía de Métricas de Keywords
+        </h3>
+
+        <div className="grid md:grid-cols-3 gap-4">
+          {/* Columna 1 */}
+          <div className="space-y-3">
+            <div className="bg-white rounded-lg p-3 border border-blue-200">
+              <div className="font-semibold text-blue-900 mb-1 text-sm">Impr. (Impresiones)</div>
+              <div className="text-xs text-blue-800 leading-relaxed">
+                Veces que tu anuncio apareció en Google cuando alguien buscó esta palabra
+              </div>
+            </div>
+
+            <div className="bg-white rounded-lg p-3 border border-blue-200">
+              <div className="font-semibold text-blue-900 mb-1 text-sm">Clics</div>
+              <div className="text-xs text-blue-800 leading-relaxed">
+                Veces que alguien hizo clic en tu anuncio después de ver esta palabra
+              </div>
+            </div>
+          </div>
+
+          {/* Columna 2 */}
+          <div className="space-y-3">
+            <div className="bg-white rounded-lg p-3 border border-blue-200">
+              <div className="font-semibold text-blue-900 mb-1 text-sm">Conv. (Conversiones)</div>
+              <div className="text-xs text-blue-800 leading-relaxed">
+                Formularios completados que vinieron de esta palabra clave
+              </div>
+            </div>
+
+            <div className="bg-white rounded-lg p-3 border border-blue-200">
+              <div className="font-semibold text-blue-900 mb-1 text-sm">CTR (Click-Through Rate)</div>
+              <div className="text-xs text-blue-800 leading-relaxed">
+                % de gente que hizo clic vs cuántos vieron el anuncio. <strong>Fórmula:</strong> (Clics ÷ Impr.) × 100
+              </div>
+            </div>
+          </div>
+
+          {/* Columna 3 */}
+          <div className="space-y-3">
+            <div className="bg-white rounded-lg p-3 border border-blue-200">
+              <div className="font-semibold text-blue-900 mb-1 text-sm">CPA (Cost Per Acquisition)</div>
+              <div className="text-xs text-blue-800 leading-relaxed">
+                Costo por conseguir cada formulario con esta palabra. <strong>Fórmula:</strong> Costo ÷ Conv.
+              </div>
+            </div>
+
+            <div className="bg-white rounded-lg p-3 border border-blue-200">
+              <div className="font-semibold text-blue-900 mb-1 text-sm">QS (Quality Score)</div>
+              <div className="text-xs text-blue-800 leading-relaxed">
+                Calificación de Google (1-10) sobre qué tan relevante es tu anuncio. <strong>10 = excelente</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Rangos de rendimiento */}
+        <div className="mt-4 p-4 bg-gradient-to-r from-emerald-50 to-green-50 rounded-lg border border-emerald-200">
+          <div className="font-semibold text-emerald-900 mb-2 text-sm">📊 Rangos de Rendimiento:</div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+            <div className="flex items-center gap-2">
+              <span className="badge-success px-2 py-1">Excelente</span>
+              <span className="text-emerald-800">≥6% conversión</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="badge-primary px-2 py-1">Bueno</span>
+              <span className="text-blue-800">4-6% conversión</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="badge-warning px-2 py-1">Regular</span>
+              <span className="text-amber-800">2-4% conversión</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="badge-danger px-2 py-1">Bajo</span>
+              <span className="text-red-800">&lt;2% conversión</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Tablas */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Tabla de Palabras Clave */}
+        <div className="card">
         <div className="flex items-center gap-2 mb-4">
           <Target className="w-6 h-6 text-primary" />
           <h2 className="text-xl font-bold text-textPrimary">
@@ -173,6 +259,7 @@ const KeywordsTable: React.FC<KeywordsTableProps> = ({ keywords, searchTerms }) 
             </tbody>
           </table>
         </div>
+      </div>
       </div>
     </div>
   );
