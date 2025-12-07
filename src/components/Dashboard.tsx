@@ -4,7 +4,6 @@ import TimeSeriesChart from './TimeSeriesChart';
 import SimpleLocationCards from './SimpleLocationCards';
 import KeywordsTable from './KeywordsTable';
 import SimpleScheduleCharts from './SimpleScheduleCharts';
-import SalesPanel from './SalesPanel';
 import CampaignsTable from './CampaignsTable';
 import InsightsPanel from './InsightsPanel';
 
@@ -520,11 +519,6 @@ const Dashboard: React.FC = () => {
         {/* Programación de Anuncios - Simplificado */}
         <section className="mb-8">
           <SimpleScheduleCharts dayData={dayOfWeekData} hourData={hourOfDayData} />
-        </section>
-
-        {/* Panel de Ventas AgendaPro */}
-        <section className="mb-8">
-          <SalesPanel data={agendaProData} totalForms={metrics.totalConversions} />
         </section>
 
         {/* Insights y Recomendaciones */}

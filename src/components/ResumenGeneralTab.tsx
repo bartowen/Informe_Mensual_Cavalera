@@ -16,6 +16,8 @@ import {
   Leaf,
   Bot,
 } from 'lucide-react';
+import SalesPanel from './SalesPanel';
+import { agendaProData } from '../data/agendaPro';
 
 const ResumenGeneralTab: React.FC = () => {
   return (
@@ -371,7 +373,12 @@ const ResumenGeneralTab: React.FC = () => {
         </div>
       </div>
 
-      {/* Sección 5: Comparación Mensual (Próximamente) */}
+      {/* Sección 5: Integración AgendaPro (Ventas Reales) */}
+      <section>
+        <SalesPanel data={agendaProData} totalForms={84} />
+      </section>
+
+      {/* Sección 6: Comparación Mensual (Próximamente) */}
       <div className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl shadow p-6 border-2 border-dashed border-gray-300">
         <div className="text-center py-8">
           <Calendar className="w-12 h-12 text-gray-400 mx-auto mb-4" />

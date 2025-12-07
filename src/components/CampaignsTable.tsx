@@ -1,7 +1,7 @@
 import React from 'react';
 import { CampaignData } from '../types';
 import { formatCurrency, formatNumber, formatSimplePercentage } from '../utils/formatters';
-import { Megaphone, CheckCircle2, Play, Target } from 'lucide-react';
+import { Megaphone, CheckCircle2, Play } from 'lucide-react';
 
 interface CampaignsTableProps {
   campaigns: CampaignData[];
@@ -12,38 +12,6 @@ const CampaignsTable: React.FC<CampaignsTableProps> = ({ campaigns }) => {
   const totalBudget = campaigns.reduce((sum, c) => sum + c.budget, 0);
   const totalCost = campaigns.reduce((sum, c) => sum + c.cost, 0);
   const totalConversions = campaigns.reduce((sum, c) => sum + c.conversions, 0);
-
-  // Grupos de anuncios simulados (basados en las campañas reales)
-  const adGroups = [
-    {
-      name: "Tatuajes - Búsqueda Santiago",
-      budget: 150000,
-      spent: 133170,
-      conversions: 40,
-      status: "Activa"
-    },
-    {
-      name: "Piercing - Búsqueda Local",
-      budget: 100000,
-      spent: 75520,
-      conversions: 22,
-      status: "Pausada"
-    },
-    {
-      name: "Display - Remarketing",
-      budget: 60000,
-      spent: 51200,
-      conversions: 15,
-      status: "Pausada"
-    },
-    {
-      name: "Tatuajes Finos",
-      budget: 30000,
-      spent: 20032,
-      conversions: 7,
-      status: "Activa"
-    }
-  ];
 
   return (
     <div className="bg-white rounded-xl shadow p-6">
@@ -114,92 +82,14 @@ const CampaignsTable: React.FC<CampaignsTableProps> = ({ campaigns }) => {
             <div className="text-xs text-gray-500 mt-1">CPA: {formatCurrency(totalCost / totalConversions)}</div>
           </div>
         </div>
-
-        {/* Grupos de anuncios */}
-        <div className="border-t border-emerald-200 pt-6">
-          <h5 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
-            <Target className="w-5 h-5" />
-            Grupos de Anuncios
-          </h5>
-
-          <div className="space-y-3">
-            {adGroups.map((group, index) => (
-              <div
-                key={index}
-                className={`rounded-lg p-4 shadow-sm ${
-                  group.status === "Activa"
-                    ? 'bg-white border-l-4 border-emerald-500'
-                    : 'bg-gray-50 border-l-4 border-gray-400'
-                }`}
-              >
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
-                  <div className="flex-1">
-                    <div className={`font-semibold mb-1 ${
-                      group.status === "Activa" ? 'text-gray-900' : 'text-gray-600'
-                    }`}>
-                      {group.name}
-                    </div>
-                    <div className={`text-xs ${
-                      group.status === "Activa" ? 'text-gray-600' : 'text-gray-500'
-                    }`}>
-                      Gastado: {formatCurrency(group.spent)} de {formatCurrency(group.budget)}
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <div className="text-right">
-                      <div className={`text-2xl font-bold ${
-                        group.status === "Activa" ? 'text-[#3bc6dc]' : 'text-gray-400'
-                      }`}>
-                        {group.conversions}
-                      </div>
-                      <div className={`text-xs ${
-                        group.status === "Activa" ? 'text-gray-600' : 'text-gray-500'
-                      }`}>
-                        conversiones
-                      </div>
-                    </div>
-                    <div>
-                      <span className={`px-3 py-1 rounded-full text-xs font-bold ${
-                        group.status === "Activa"
-                          ? 'bg-emerald-200 text-emerald-900'
-                          : 'bg-gray-300 text-gray-700'
-                      }`}>
-                        {group.status}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Total */}
-          <div className="mt-4 pt-4 border-t border-gray-200 flex flex-col md:flex-row md:items-center justify-between gap-3">
-            <div className="font-bold text-gray-900">TOTAL (todos los grupos)</div>
-            <div className="flex flex-wrap items-center gap-6">
-              <div className="text-right">
-                <div className="text-sm text-gray-600">Presupuesto total</div>
-                <div className="text-xl font-bold">{formatCurrency(totalBudget)}</div>
-              </div>
-              <div className="text-right">
-                <div className="text-sm text-gray-600">Gastado total</div>
-                <div className="text-xl font-bold text-blue-600">{formatCurrency(totalCost)}</div>
-              </div>
-              <div className="text-right">
-                <div className="text-sm text-gray-600">Total conversiones</div>
-                <div className="text-3xl font-bold text-[#3bc6dc]">{totalConversions}</div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
 
       {/* Nota explicativa */}
       <div className="mt-4 p-4 bg-blue-50 rounded-lg">
         <p className="text-sm text-blue-900">
-          💡 <strong>Estado actual:</strong> La campaña "Cavalera Search" tiene 4 grupos de anuncios.
-          Actualmente 2 están activos (Tatuajes Santiago y Tatuajes Finos) generando los {totalConversions} formularios.
-          Los grupos "Piercing" y "Display" están pausados para optimización.
+          💡 <strong>Resumen:</strong> La campaña "Cavalera Search - Towen Ads" está activa y optimizada,
+          generando {totalConversions} formularios con un presupuesto de {formatCurrency(totalBudget)}
+          (invertido: {formatCurrency(totalCost)}). El CPA promedio es de {formatCurrency(totalCost / totalConversions)}.
         </p>
       </div>
     </div>
