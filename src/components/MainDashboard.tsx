@@ -4,8 +4,9 @@ import ResumenGeneralTab from './ResumenGeneralTab';
 import Dashboard from './Dashboard';
 import GA4Tab from './GA4Tab';
 import MetaAdsTab from './MetaAdsTab';
+import DiccionarioTab from './DiccionarioTab';
 import OtrosAvancesTab from './OtrosAvancesTab';
-import { BarChart3, Wrench, Calendar, ChevronDown, Bot } from 'lucide-react';
+import { BarChart3, Wrench, Calendar, ChevronDown, Bot, BookOpen } from 'lucide-react';
 
 const MainDashboard: React.FC = () => {
   return (
@@ -95,7 +96,7 @@ const MainDashboard: React.FC = () => {
       <Tabs defaultValue="resumen-general" className="w-full">
         <div className="bg-gray-50 px-6 py-4 border-b border-gray-200">
           <div className="max-w-7xl mx-auto">
-            <TabsList className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2 h-auto bg-gray-100 p-2 rounded-xl">
+            <TabsList className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 h-auto bg-gray-100 p-2 rounded-xl">
 
               {/* Tab 1: Resumen General */}
               <TabsTrigger
@@ -163,7 +164,19 @@ const MainDashboard: React.FC = () => {
                 </div>
               </TabsTrigger>
 
-              {/* Tab 5: Otros Avances */}
+              {/* Tab 5: Diccionario de Métricas */}
+              <TabsTrigger
+                value="diccionario"
+                className="flex flex-col items-center gap-2 py-4 px-2 data-[state=active]:bg-gradient-to-br data-[state=active]:from-[#3bc6dc] data-[state=active]:to-[#21a9c2] data-[state=active]:text-white rounded-lg transition-all hover:bg-gray-200 data-[state=active]:hover:from-[#2eb8cf] data-[state=active]:hover:to-[#21a9c2]"
+              >
+                <BookOpen className="w-6 h-6" />
+                <div className="text-center">
+                  <div className="font-semibold text-sm">Diccionario</div>
+                  <div className="text-xs opacity-80">Aprende las métricas</div>
+                </div>
+              </TabsTrigger>
+
+              {/* Tab 6: Otros Avances */}
               <TabsTrigger
                 value="otros-avances"
                 className="flex flex-col items-center gap-2 py-4 px-2 data-[state=active]:bg-gradient-to-br data-[state=active]:from-[#3bc6dc] data-[state=active]:to-[#21a9c2] data-[state=active]:text-white rounded-lg transition-all hover:bg-gray-200 data-[state=active]:hover:from-[#2eb8cf] data-[state=active]:hover:to-[#21a9c2]"
@@ -195,6 +208,10 @@ const MainDashboard: React.FC = () => {
 
           <TabsContent value="meta-ads">
             <MetaAdsTab />
+          </TabsContent>
+
+          <TabsContent value="diccionario">
+            <DiccionarioTab />
           </TabsContent>
 
           <TabsContent value="otros-avances">

@@ -30,41 +30,18 @@ const ResumenGeneralTab: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
 
-          {/* KPI 1: Inversión Total Marketing */}
-          <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-5 border-l-4 border-blue-500">
-            <div className="flex items-center justify-between mb-2">
-              <DollarSign className="w-8 h-8 text-blue-600" />
-              <span className="text-xs bg-blue-200 text-blue-800 px-2 py-1 rounded-full font-semibold">
-                Total
-              </span>
-            </div>
-            <div className="text-3xl font-bold text-blue-900">$279.922</div>
-            <div className="text-sm text-blue-700 mt-1">Inversión en Marketing</div>
-            <div className="text-xs text-blue-600 mt-2">
-              Google Ads: $279.922 • Meta: $0 • GA4: Gratis
-            </div>
-          </div>
-
-          {/* KPI 2: Leads Totales */}
-          <div className="bg-gradient-to-br from-[#3bc6dc]/10 to-[#3bc6dc]/20 rounded-lg p-5 border-l-4 border-[#3bc6dc]">
-            <div className="flex items-center justify-between mb-2">
-              <Users className="w-8 h-8 text-[#3bc6dc]" />
-              <span className="text-xs bg-[#3bc6dc]/20 text-[#21a9c2] px-2 py-1 rounded-full font-semibold">
-                Confirmado
-              </span>
-            </div>
-            <div className="text-3xl font-bold text-gray-900">84</div>
-            <div className="text-sm text-gray-700 mt-1">Formularios Recibidos</div>
-            <div className="text-xs text-gray-600 mt-2">
-              Google: 84 • Meta: 0 • Orgánico: 29
-            </div>
-          </div>
-
-          {/* KPI 3: Ventas Totales AgendaPro */}
+          {/* KPI 1: Ventas Totales AgendaPro */}
           <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-lg p-5 border-l-4 border-emerald-500">
             <div className="flex items-center justify-between mb-2">
               <ShoppingCart className="w-8 h-8 text-emerald-600" />
-              <ArrowUp className="w-5 h-5 text-emerald-600" />
+              <div className="flex items-center gap-2">
+                <img
+                  src="/src/assets/logo_agenda_pro.png"
+                  alt="AgendaPro"
+                  className="h-5 w-auto"
+                />
+                <ArrowUp className="w-5 h-5 text-emerald-600" />
+              </div>
             </div>
             <div className="text-3xl font-bold text-emerald-900">$41.839.303</div>
             <div className="text-sm text-emerald-700 mt-1">Ventas Totales del Mes</div>
@@ -74,18 +51,48 @@ const ResumenGeneralTab: React.FC = () => {
             </div>
           </div>
 
+          {/* KPI 2: Inversión en Marketing */}
+          <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-5 border-l-4 border-blue-500">
+            <div className="flex items-center justify-between mb-2">
+              <DollarSign className="w-8 h-8 text-blue-600" />
+              <span className="text-xs bg-blue-200 text-blue-800 px-2 py-1 rounded-full font-semibold">
+                Confirmado
+              </span>
+            </div>
+            <div className="text-3xl font-bold text-blue-900">$279.922</div>
+            <div className="text-sm text-blue-700 mt-1">Inversión en Marketing</div>
+            <div className="text-xs text-blue-600 mt-2">
+              Google Ads: $279.922 • Meta: $0
+            </div>
+          </div>
+
+          {/* KPI 3: Formularios Enviados - MUY DESTACADO */}
+          <div className="bg-gradient-to-br from-[#3bc6dc]/10 to-[#3bc6dc]/20 rounded-lg p-5 border-l-4 border-[#3bc6dc] ring-2 ring-[#3bc6dc] ring-offset-2">
+            <div className="flex items-center justify-between mb-2">
+              <Users className="w-8 h-8 text-[#3bc6dc]" />
+              <span className="text-xs bg-[#3bc6dc] text-white px-2 py-1 rounded-full font-semibold">
+                ⭐ Principal
+              </span>
+            </div>
+            <div className="text-4xl font-bold text-[#3bc6dc]">84</div>
+            <div className="text-sm font-semibold text-gray-900 mt-1">Formularios Enviados</div>
+            <div className="text-xs text-gray-600 mt-2">
+              Potenciales clientes del mes
+            </div>
+          </div>
+
           {/* KPI 4: ROI Estimado */}
           <div className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-lg p-5 border-l-4 border-amber-500">
             <div className="flex items-center justify-between mb-2">
               <Target className="w-8 h-8 text-amber-600" />
               <span className="text-xs bg-amber-200 text-amber-800 px-2 py-1 rounded-full font-semibold">
-                Estimado
+                Proyección
               </span>
             </div>
             <div className="text-3xl font-bold text-amber-900">~3.603%</div>
-            <div className="text-sm text-amber-700 mt-1">ROI Proyectado</div>
+            <div className="text-sm text-amber-700 mt-1">ROI Estimado</div>
             <div className="text-xs text-amber-600 mt-2">
-              Por cada $1 → $37 en ingresos estimados
+              Por cada $1 → $37 retorno
             </div>
           </div>
 
@@ -317,11 +324,16 @@ const ResumenGeneralTab: React.FC = () => {
               <CheckCircle2 className="w-5 h-5 text-emerald-600" />
               <span className="font-bold text-sm">Tracking de Formularios</span>
             </div>
-            <p className="text-xs text-gray-700">
+            <p className="text-xs text-gray-700 mb-2">
               Sistema implementado para identificar origen de cada lead (Google, Instagram, Orgánico, etc.)
             </p>
-            <div className="mt-2 text-xs font-semibold text-emerald-700">
-              ✓ Completado - Activo
+            <div className="mt-2 space-y-1">
+              <div className="text-xs font-semibold text-emerald-700">
+                ✓ Completado
+              </div>
+              <div className="text-xs text-emerald-600">
+                Periodo de testeo finalizado
+              </div>
             </div>
           </div>
 
@@ -330,11 +342,16 @@ const ResumenGeneralTab: React.FC = () => {
               <Clock className="w-5 h-5 text-amber-600" />
               <span className="font-bold text-sm">Integración AgendaPro</span>
             </div>
-            <p className="text-xs text-gray-700">
+            <p className="text-xs text-gray-700 mb-2">
               API en desarrollo para cruzar formularios con ventas reales y calcular ROI confirmado
             </p>
-            <div className="mt-2 text-xs font-semibold text-amber-700">
-              ⏳ 70% Completado
+            <div className="mt-2 space-y-1">
+              <div className="text-xs font-semibold text-amber-700">
+                ⏳ En proceso
+              </div>
+              <div className="text-xs text-amber-600">
+                Evaluando mejor alternativa con Joel (desarrollador)
+              </div>
             </div>
           </div>
 
