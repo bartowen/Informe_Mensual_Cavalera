@@ -23,7 +23,7 @@ const MainDashboard: React.FC = () => {
                 {/* Logo Cavalera */}
                 <div className="bg-white rounded-lg p-3 shadow-lg">
                   <img
-                    src="/src/assets/cavalera_tatoo.png"
+                    src="/cavalera_tatoo.png"
                     alt="Cavalera Tattoo & Piercing"
                     className="h-12 w-auto"
                   />
@@ -35,7 +35,7 @@ const MainDashboard: React.FC = () => {
                 {/* Logo Towen Ads */}
                 <div className="bg-white rounded-lg p-3 shadow-lg">
                   <img
-                    src="/src/assets/logo_towen_ads.png"
+                    src="/logo_towen_ads.png"
                     alt="Towen Ads"
                     className="h-12 w-auto"
                   />
@@ -117,7 +117,7 @@ const MainDashboard: React.FC = () => {
               >
                 <div className="w-10 h-10 bg-white rounded-lg p-1.5 shadow-sm">
                   <img
-                    src="/src/assets/logo_google_ads.png"
+                    src="/logo_google_ads.png"
                     alt="Google Ads"
                     className="w-full h-full object-contain"
                   />
@@ -135,7 +135,7 @@ const MainDashboard: React.FC = () => {
               >
                 <div className="w-10 h-10 bg-white rounded-lg p-1.5 shadow-sm">
                   <img
-                    src="/src/assets/logo_ga4-removebg-preview.png"
+                    src="/logo_ga4-removebg-preview.png"
                     alt="Google Analytics 4"
                     className="w-full h-full object-contain"
                   />
@@ -153,7 +153,7 @@ const MainDashboard: React.FC = () => {
               >
                 <div className="w-10 h-10 bg-white rounded-lg p-1.5 shadow-sm">
                   <img
-                    src="/src/assets/logo_meta_.png"
+                    src="/logo_meta_.png"
                     alt="Meta Ads"
                     className="w-full h-full object-contain"
                   />

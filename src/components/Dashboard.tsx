@@ -38,6 +38,9 @@ import {
   ArrowRight,
   Info,
   CheckCircle2,
+  ShoppingCart,
+  Receipt,
+  Calculator,
 } from 'lucide-react';
 
 const Dashboard: React.FC = () => {
@@ -154,6 +157,71 @@ const Dashboard: React.FC = () => {
             Métricas Principales
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {/* 1. Ventas Totales del Mes */}
+            <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-xl shadow-lg p-6 border-l-4 border-emerald-500">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2">
+                  <div className="bg-white rounded p-1.5">
+                    <img src="/logo_agenda_pro.png" alt="AgendaPro" className="h-6 w-auto" />
+                  </div>
+                  <ShoppingCart className="w-6 h-6 text-emerald-600" />
+                </div>
+                <span className="bg-emerald-200 text-emerald-800 text-xs px-2 py-1 rounded-full font-semibold">
+                  AgendaPro
+                </span>
+              </div>
+              <div className="text-4xl font-bold text-emerald-900 mb-2">
+                {formatCurrency(agendaProData.summary.totalSales)}
+              </div>
+              <div className="text-sm font-medium text-emerald-700 mb-1">
+                Ventas Totales del Mes
+              </div>
+              <div className="text-xs text-emerald-600 mb-3">
+                Ingresos totales de todas las fuentes
+              </div>
+              <div className="flex items-center gap-1 text-sm">
+                <TrendingUp className="w-4 h-4 text-emerald-600" />
+                <span className="font-semibold text-emerald-600">{agendaProData.summary.salesVariation}</span>
+                <span className="text-emerald-600 text-xs">vs mes anterior</span>
+              </div>
+              <div className="mt-2 text-xs text-emerald-600">
+                {agendaProData.summary.totalTransactions} transacciones totales
+              </div>
+            </div>
+
+            {/* 2. Ticket Promedio */}
+            <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl shadow-lg p-6 border-l-4 border-purple-500">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2">
+                  <div className="bg-white rounded p-1.5">
+                    <img src="/logo_agenda_pro.png" alt="AgendaPro" className="h-6 w-auto" />
+                  </div>
+                  <Receipt className="w-6 h-6 text-purple-600" />
+                </div>
+                <span className="bg-purple-200 text-purple-800 text-xs px-2 py-1 rounded-full font-semibold">
+                  Fijo
+                </span>
+              </div>
+              <div className="text-4xl font-bold text-purple-900 mb-2">
+                {formatCurrency(agendaProData.summary.averageTicket)}
+              </div>
+              <div className="text-sm font-medium text-purple-700 mb-1">
+                Ticket Promedio
+              </div>
+              <div className="text-xs text-purple-600 mb-3">
+                Valor promedio por transacción
+              </div>
+              <div className="flex items-center gap-1 text-sm">
+                <TrendingUp className="w-4 h-4 text-purple-600" />
+                <span className="font-semibold text-purple-600">{agendaProData.summary.ticketVariation}</span>
+                <span className="text-purple-600 text-xs">vs mes anterior</span>
+              </div>
+              <div className="mt-2 text-xs text-purple-600">
+                Base para cálculo de ingresos estimados
+              </div>
+            </div>
+
+            {/* 3. Presupuesto Invertido */}
             <KPICard
               label="Presupuesto Invertido"
               value={formatCurrency(metrics.totalCost)}
@@ -163,6 +231,8 @@ const Dashboard: React.FC = () => {
               confirmed={true}
               badge="Confirmado"
             />
+
+            {/* 4. Formularios Enviados (DESTACADO) */}
             <KPICard
               label="Formularios Enviados"
               value={metrics.totalConversions}
@@ -173,280 +243,202 @@ const Dashboard: React.FC = () => {
               confirmed={true}
               badge="Métrica Principal"
             />
-            <KPICard
-              label="Costo por Formulario"
-              value={formatCurrency(metrics.costPerForm)}
-              explanation={`Cuánto costó conseguir cada formulario de contacto (${formatCurrency(metrics.totalCost)} ÷ ${metrics.totalConversions} formularios)`}
-              context="Inversión por lead generado"
-              icon={<TrendingUp className="w-6 h-6" />}
-              confirmed={true}
-              badge="Confirmado"
-            />
-            <KPICard
-              label="Ingresos Estimados Google Ads"
-              value={formatCurrency(metrics.attributableSales)}
-              explanation="Proyección de ingresos si todos los formularios se convierten en ventas al ticket promedio"
-              context={`${metrics.totalConversions} formularios × ${formatCurrency(agendaProData.summary.averageTicket)} ticket`}
-              icon={<TrendingUp className="w-6 h-6" />}
-              warning={true}
-              badge="Estimación"
-              isEstimated={true}
-            />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-            <KPICard
-              label="Ventas Totales del Mes"
-              value={formatCurrency(agendaProData.summary.totalSales)}
-              variation={agendaProData.summary.salesVariation}
-              explanation="Ingresos totales de TODAS las fuentes en AgendaPro (orgánico, recomendaciones, Google Ads, Instagram, etc.)"
-              context={`${agendaProData.summary.totalTransactions} transacciones totales`}
-              icon={<DollarSign className="w-6 h-6" />}
-              confirmed={true}
-              badge="AgendaPro"
-            />
-            <KPICard
-              label="ROI Estimado Google Ads"
-              value={`${metrics.roi.toFixed(0)}%`}
-              explanation={`Por cada $1 invertido en Google Ads, se estiman $${(metrics.roi / 100 + 1).toFixed(0)} en retorno`}
-              context="Basado en ventas atribuibles estimadas"
-              icon={<TrendingUp className="w-6 h-6" />}
-              warning={true}
-              badge="Proyección"
-              isEstimated={true}
-            />
-            <KPICard
-              label="Ticket Promedio"
-              value={formatCurrency(agendaProData.summary.averageTicket)}
-              variation={agendaProData.summary.ticketVariation}
-              explanation="Valor promedio que paga cada cliente por servicio (dato histórico fijo de AgendaPro)"
-              context="Base para cálculo de ingresos estimados"
-              icon={<DollarSign className="w-6 h-6" />}
-              confirmed={true}
-              badge="Fijo"
-            />
+            {/* 5. Costo por Formulario */}
+            <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-indigo-500">
+              <div className="flex items-center justify-between mb-3">
+                <Calculator className="w-6 h-6 text-indigo-600" />
+                <span className="bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded-full font-semibold">
+                  Confirmado
+                </span>
+              </div>
+              <div className="text-4xl font-bold text-indigo-900 mb-2">
+                {formatCurrency(metrics.costPerForm)}
+              </div>
+              <div className="text-sm font-medium text-gray-600 mb-1">
+                Costo por Formulario
+              </div>
+              <div className="text-xs text-gray-500 mb-2">
+                CPA promedio por conversión
+              </div>
+              <div className="text-xs text-indigo-600 font-mono bg-indigo-50 px-2 py-1 rounded">
+                {formatCurrency(metrics.totalCost)} ÷ {metrics.totalConversions}
+              </div>
+              <div className="mt-2 text-xs text-gray-500">
+                Inversión por lead generado
+              </div>
+            </div>
+
+            {/* 6. ROI Estimado */}
+            <div className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-xl shadow-lg p-6 border-l-4 border-amber-500">
+              <div className="flex items-center justify-between mb-3">
+                <Target className="w-6 h-6 text-amber-600" />
+                <span className="bg-amber-200 text-amber-800 text-xs px-2 py-1 rounded-full font-semibold">
+                  Proyección
+                </span>
+              </div>
+              <div className="text-4xl font-bold text-amber-900 mb-2">
+                ~{metrics.roi.toFixed(0)}%
+              </div>
+              <div className="text-sm font-medium text-amber-700 mb-1">
+                ROI Estimado Google Ads
+              </div>
+              <div className="text-xs text-amber-600 mb-2">
+                Retorno sobre inversión estimado
+              </div>
+              <div className="text-xs text-amber-700 bg-amber-100 px-2 py-1 rounded">
+                Por cada $1 → ~${(metrics.roi / 100 + 1).toFixed(0)} retorno
+              </div>
+              <div className="mt-2 text-xs text-amber-600 flex items-center gap-1">
+                <Info className="w-3 h-3" />
+                Ver explicación en Diccionario
+              </div>
+            </div>
+
+            {/* 7. Ingresos Estimados */}
+            <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl shadow-lg p-6 border-l-4 border-orange-500">
+              <div className="flex items-center justify-between mb-3">
+                <TrendingUp className="w-6 h-6 text-orange-600" />
+                <span className="bg-orange-200 text-orange-800 text-xs px-2 py-1 rounded-full font-semibold">
+                  Estimación
+                </span>
+              </div>
+              <div className="text-4xl font-bold text-orange-900 mb-2">
+                ~{formatCurrency(metrics.attributableSales)}
+              </div>
+              <div className="text-sm font-medium text-orange-700 mb-1">
+                Ingresos Estimados Google Ads
+              </div>
+              <div className="text-xs text-orange-600 mb-2">
+                Ingresos proyectados de Google Ads
+              </div>
+              <div className="text-xs text-orange-700 font-mono bg-orange-100 px-2 py-1 rounded">
+                {metrics.totalConversions} × {formatCurrency(agendaProData.summary.averageTicket)}
+              </div>
+              <div className="mt-2 text-xs text-orange-600">
+                Representa el ~24,8% de ventas totales
+              </div>
+              <div className="mt-1 text-xs text-orange-600 flex items-center gap-1">
+                <Info className="w-3 h-3" />
+                Sujeto a confirmación - Ver sección AgendaPro
+              </div>
+            </div>
           </div>
         </section>
 
-        {/* Disclaimer de Ingresos Estimados */}
+        {/* Disclaimer de Ingresos Estimados - RESPONSIVE */}
         <section className="mb-8">
-          <div className="bg-gradient-to-r from-amber-50 to-orange-50 border-l-4 border-amber-500 p-6 rounded-lg shadow-lg">
-            <div className="flex items-start gap-4">
+          <div className="bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-amber-400 rounded-xl p-4 md:p-6 shadow-lg">
+            <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
+              {/* Ícono */}
               <div className="flex-shrink-0">
-                <AlertTriangle className="w-8 h-8 text-amber-600" />
+                <AlertTriangle className="w-6 h-6 sm:w-8 sm:h-8 text-amber-600" />
               </div>
-              <div className="flex-1">
-                <h3 className="text-xl font-bold text-amber-900 mb-3 flex items-center gap-2">
+
+              {/* Contenido */}
+              <div className="flex-1 w-full">
+                <h3 className="text-lg sm:text-xl font-bold text-amber-900 mb-3">
                   ⚠️ Importante: Sobre los Ingresos Estimados de Google Ads
                 </h3>
 
-                <div className="bg-white/60 rounded-lg p-4 mb-4">
-                  <p className="text-amber-900 font-semibold mb-2">
-                    Los ingresos estimados de <span className="text-2xl text-amber-700">{formatCurrency(metrics.attributableSales)}</span> son una <strong>proyección calculada</strong>, no un ingreso confirmado.
+                {/* Explicación principal */}
+                <div className="bg-white rounded-lg p-3 sm:p-4 mb-4">
+                  <p className="text-sm text-amber-900 mb-3">
+                    Los <strong>{formatCurrency(metrics.attributableSales)}</strong> son una <strong>ESTIMACIÓN</strong>,
+                    no ingresos confirmados. Se calculan como:
                   </p>
-                  <p className="text-amber-800 text-sm">
-                    Calculado como: <span className="font-mono bg-amber-100 px-2 py-1 rounded">{metrics.totalConversions} formularios × {formatCurrency(agendaProData.summary.averageTicket)} ticket promedio = {formatCurrency(metrics.attributableSales)}</span>
-                  </p>
+
+                  <div className="bg-amber-50 rounded p-2 sm:p-3 text-sm sm:text-base">
+                    <code className="font-mono break-all">{metrics.totalConversions} formularios × {formatCurrency(agendaProData.summary.averageTicket)} ticket promedio = {formatCurrency(metrics.attributableSales)}</code>
+                  </div>
                 </div>
 
-                <div className="space-y-3">
-                  <div>
-                    <h4 className="font-bold text-amber-900 mb-2 flex items-center gap-2">
-                      <Clock className="w-4 h-4" />
-                      Proceso de Conversión (Formulario → Venta):
-                    </h4>
-                    <div className="flex flex-wrap items-center gap-2 text-sm">
-                      <span className="bg-amber-200 text-amber-900 px-3 py-1.5 rounded-full font-medium">
-                        1. Formulario
+                {/* Proceso de conversión */}
+                <div className="mb-4">
+                  <h4 className="font-semibold text-amber-900 mb-2 text-sm sm:text-base flex items-center gap-2">
+                    <Clock className="w-4 h-4" />
+                    🔄 Proceso Real:
+                  </h4>
+
+                  {/* Versión móvil - Vertical */}
+                  <div className="flex flex-col gap-2 sm:hidden">
+                    <div className="flex items-center gap-2">
+                      <span className="bg-indigo-100 text-indigo-900 px-2 py-1 rounded text-xs font-medium">
+                        1️⃣ Formulario
                       </span>
-                      <ArrowRight className="w-4 h-4 text-amber-600" />
-                      <span className="bg-amber-200 text-amber-900 px-3 py-1.5 rounded-full font-medium">
-                        2. Email/WhatsApp
+                    </div>
+                    <div className="ml-4 text-amber-600">↓</div>
+                    <div className="flex items-center gap-2">
+                      <span className="bg-indigo-100 text-indigo-900 px-2 py-1 rounded text-xs font-medium">
+                        2️⃣ Email/WhatsApp
                       </span>
-                      <ArrowRight className="w-4 h-4 text-amber-600" />
-                      <span className="bg-amber-200 text-amber-900 px-3 py-1.5 rounded-full font-medium">
-                        3. Consulta
+                    </div>
+                    <div className="ml-4 text-amber-600">↓</div>
+                    <div className="flex items-center gap-2">
+                      <span className="bg-purple-100 text-purple-900 px-2 py-1 rounded text-xs font-medium">
+                        3️⃣ Consulta
                       </span>
-                      <ArrowRight className="w-4 h-4 text-amber-600" />
-                      <span className="bg-amber-200 text-amber-900 px-3 py-1.5 rounded-full font-medium">
-                        4. Cotización
+                    </div>
+                    <div className="ml-4 text-amber-600">↓</div>
+                    <div className="flex items-center gap-2">
+                      <span className="bg-purple-100 text-purple-900 px-2 py-1 rounded text-xs font-medium">
+                        4️⃣ Cotización
                       </span>
-                      <ArrowRight className="w-4 h-4 text-amber-600" />
-                      <span className="bg-amber-200 text-amber-900 px-3 py-1.5 rounded-full font-medium">
-                        5. Agendamiento
+                    </div>
+                    <div className="ml-4 text-amber-600">↓</div>
+                    <div className="flex items-center gap-2">
+                      <span className="bg-purple-100 text-purple-900 px-2 py-1 rounded text-xs font-medium">
+                        5️⃣ Agendamiento
                       </span>
-                      <ArrowRight className="w-4 h-4 text-amber-600" />
-                      <span className="bg-emerald-300 text-emerald-900 px-3 py-1.5 rounded-full font-medium">
-                        6. Pago Final ✓
+                    </div>
+                    <div className="ml-4 text-amber-600">↓</div>
+                    <div className="flex items-center gap-2">
+                      <span className="bg-emerald-200 text-emerald-900 px-2 py-1 rounded text-xs font-bold">
+                        6️⃣ Pago Final ✓
                       </span>
                     </div>
                   </div>
 
-                  <div className="grid md:grid-cols-2 gap-4 mt-4">
-                    <div className="bg-white/60 rounded p-3">
-                      <h5 className="font-semibold text-amber-900 text-sm mb-2">📊 Supuestos de la Estimación:</h5>
-                      <ul className="text-amber-800 text-sm space-y-1">
-                        <li>• Ticket promedio: {formatCurrency(agendaProData.summary.averageTicket)} (histórico AgendaPro)</li>
-                        <li>• Tasa de conversión: No confirmada</li>
-                        <li>• Tiempo del proceso: Variable (días a semanas)</li>
-                      </ul>
-                    </div>
-
-                    <div className="bg-white/60 rounded p-3">
-                      <h5 className="font-semibold text-amber-900 text-sm mb-2">⚠️ Factores de Incertidumbre:</h5>
-                      <ul className="text-amber-800 text-sm space-y-1">
-                        <li>• Cliente puede desistir en cualquier etapa</li>
-                        <li>• No todos los formularios se convierten en venta</li>
-                        <li>• El valor final puede variar del ticket promedio</li>
-                      </ul>
-                    </div>
+                  {/* Versión desktop - Horizontal */}
+                  <div className="hidden sm:flex items-center gap-2 flex-wrap">
+                    <span className="bg-indigo-100 text-indigo-900 px-3 py-2 rounded-lg text-xs font-medium">
+                      1️⃣ Formulario
+                    </span>
+                    <ArrowRight className="w-4 h-4 text-amber-600" />
+                    <span className="bg-indigo-100 text-indigo-900 px-3 py-2 rounded-lg text-xs font-medium">
+                      2️⃣ Email/WhatsApp
+                    </span>
+                    <ArrowRight className="w-4 h-4 text-amber-600" />
+                    <span className="bg-purple-100 text-purple-900 px-3 py-2 rounded-lg text-xs font-medium">
+                      3️⃣ Consulta
+                    </span>
+                    <ArrowRight className="w-4 h-4 text-amber-600" />
+                    <span className="bg-purple-100 text-purple-900 px-3 py-2 rounded-lg text-xs font-medium">
+                      4️⃣ Cotización
+                    </span>
+                    <ArrowRight className="w-4 h-4 text-amber-600" />
+                    <span className="bg-purple-100 text-purple-900 px-3 py-2 rounded-lg text-xs font-medium">
+                      5️⃣ Agendamiento
+                    </span>
+                    <ArrowRight className="w-4 h-4 text-amber-600" />
+                    <span className="bg-emerald-200 text-emerald-900 px-3 py-2 rounded-lg text-xs font-bold">
+                      6️⃣ Pago Final ✓
+                    </span>
                   </div>
                 </div>
 
-                <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded">
-                  <p className="text-blue-900 text-sm font-medium flex items-start gap-2">
-                    <Info className="w-4 h-4 mt-0.5 flex-shrink-0" />
-                    <span>
-                      Para obtener el <strong>ROI real confirmado</strong>, se necesita hacer seguimiento de cuántos de los {metrics.totalConversions} formularios
-                      se convirtieron efectivamente en ventas confirmadas y sus montos reales. Esta cifra de {formatCurrency(metrics.attributableSales)}
-                      es una <strong>proyección para análisis estratégico</strong>, no un resultado garantizado.
+                {/* Nota final */}
+                <div className="bg-white border-l-4 border-amber-500 rounded p-3 sm:p-4">
+                  <p className="text-xs sm:text-sm text-amber-900">
+                    <strong>⚠️ Importante:</strong> El cliente puede desistir en cualquier etapa.
+                    Por eso usamos "estimación" y no "confirmado".
+                    <span className="block mt-1 text-amber-700">
+                      📊 Ver sección "Integración AgendaPro" para entender la trazabilidad futura.
                     </span>
                   </p>
                 </div>
-
-                <div className="mt-4 flex items-center gap-2 text-amber-800 text-sm">
-                  <CheckCircle2 className="w-4 h-4" />
-                  <span>
-                    <strong>Dato confirmado:</strong> {metrics.totalConversions} formularios recibidos de Google Ads en noviembre
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Explicación ROI vs ROAS */}
-        <section className="mb-8">
-          <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-300 rounded-xl p-6 shadow-lg">
-            <h3 className="text-xl font-bold text-blue-900 mb-4 flex items-center gap-2">
-              <Info className="w-6 h-6 text-blue-600" />
-              💡 ¿Qué significa ROI y ROAS?
-            </h3>
-
-            <div className="grid md:grid-cols-2 gap-6">
-              {/* ROI */}
-              <div className="bg-white rounded-lg p-5 border-2 border-emerald-300">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
-                    ROI
-                  </div>
-                  <div>
-                    <div className="font-bold text-lg text-emerald-900">Return on Investment</div>
-                    <div className="text-sm text-emerald-700">Retorno sobre Inversión</div>
-                  </div>
-                </div>
-
-                <div className="space-y-3">
-                  <div className="bg-emerald-50 p-3 rounded">
-                    <div className="text-sm text-emerald-800 mb-2">
-                      <strong>ROI = {metrics.roi.toFixed(0)}%</strong> significa que recuperaste tu inversión y ganaste <strong>{(metrics.roi / 100).toFixed(0)} veces</strong> más.
-                    </div>
-                    <div className="text-xs text-emerald-700 font-mono bg-white p-2 rounded">
-                      Por cada $1 invertido → Retornan ${(metrics.roi / 100 + 1).toFixed(2)}
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="text-xs font-semibold text-emerald-900 mb-1">📐 Fórmula:</div>
-                    <div className="bg-emerald-100 p-2 rounded text-xs font-mono">
-                      ROI = ((Ingresos - Inversión) / Inversión) × 100
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="text-xs font-semibold text-emerald-900 mb-1">🧮 Ejemplo:</div>
-                    <div className="bg-white p-2 rounded text-xs space-y-1">
-                      <div>Ingresos estimados: {formatCurrency(metrics.attributableSales)}</div>
-                      <div>Inversión: {formatCurrency(metrics.totalCost)}</div>
-                      <div className="border-t border-emerald-200 pt-1 mt-1">
-                        ROI = (({formatCurrency(metrics.attributableSales)} - {formatCurrency(metrics.totalCost)}) / {formatCurrency(metrics.totalCost)}) × 100
-                      </div>
-                      <div className="font-bold text-emerald-700">
-                        = {metrics.roi.toFixed(0)}%
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* ROAS */}
-              <div className="bg-white rounded-lg p-5 border-2 border-purple-300">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
-                    ROAS
-                  </div>
-                  <div>
-                    <div className="font-bold text-lg text-purple-900">Return on Ad Spend</div>
-                    <div className="text-sm text-purple-700">Retorno sobre Gasto Publicitario</div>
-                  </div>
-                </div>
-
-                <div className="space-y-3">
-                  <div className="bg-purple-50 p-3 rounded">
-                    <div className="text-sm text-purple-800 mb-2">
-                      <strong>ROAS = {(metrics.attributableSales / metrics.totalCost).toFixed(1)}:1</strong> significa que por cada <strong>$1 invertido</strong>, generaste <strong>${(metrics.attributableSales / metrics.totalCost).toFixed(1)} en ingresos</strong>.
-                    </div>
-                    <div className="text-xs text-purple-700 font-mono bg-white p-2 rounded">
-                      $1 invertido → ${(metrics.attributableSales / metrics.totalCost).toFixed(2)} en ventas
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="text-xs font-semibold text-purple-900 mb-1">📐 Fórmula:</div>
-                    <div className="bg-purple-100 p-2 rounded text-xs font-mono">
-                      ROAS = Ingresos / Inversión
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="text-xs font-semibold text-purple-900 mb-1">🧮 Ejemplo:</div>
-                    <div className="bg-white p-2 rounded text-xs space-y-1">
-                      <div>Ingresos estimados: {formatCurrency(metrics.attributableSales)}</div>
-                      <div>Inversión: {formatCurrency(metrics.totalCost)}</div>
-                      <div className="border-t border-purple-200 pt-1 mt-1">
-                        ROAS = {formatCurrency(metrics.attributableSales)} / {formatCurrency(metrics.totalCost)}
-                      </div>
-                      <div className="font-bold text-purple-700">
-                        = {(metrics.attributableSales / metrics.totalCost).toFixed(1)} (o {(metrics.attributableSales / metrics.totalCost).toFixed(1)}:1)
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Resumen comparativo */}
-            <div className="mt-6 p-4 bg-gradient-to-r from-blue-100 to-indigo-100 rounded-lg border-2 border-blue-400">
-              <h4 className="font-bold text-blue-900 mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5" />
-                📊 En Resumen
-              </h4>
-              <div className="grid md:grid-cols-2 gap-4 text-sm">
-                <div className="bg-white/80 p-3 rounded">
-                  <div className="font-semibold text-blue-900 mb-1">🎯 ROI muestra:</div>
-                  <div className="text-blue-800">
-                    El <strong>% de ganancia</strong> que obtuviste. Un ROI de {metrics.roi.toFixed(0)}% significa que ganaste {(metrics.roi / 100).toFixed(0)}x tu inversión inicial.
-                  </div>
-                </div>
-                <div className="bg-white/80 p-3 rounded">
-                  <div className="font-semibold text-blue-900 mb-1">💵 ROAS muestra:</div>
-                  <div className="text-blue-800">
-                    Cuántos <strong>pesos generas</strong> por cada peso invertido. Un ROAS de {(metrics.attributableSales / metrics.totalCost).toFixed(1)}:1 significa ${(metrics.attributableSales / metrics.totalCost).toFixed(1)} de ingreso por cada $1.
-                  </div>
-                </div>
-              </div>
-              <div className="mt-3 p-3 bg-white rounded text-xs text-blue-900">
-                <strong>💡 Ambos miden rentabilidad</strong>, solo se expresan diferente. ROI en porcentaje de ganancia, ROAS en múltiplo de ingreso.
               </div>
             </div>
           </div>

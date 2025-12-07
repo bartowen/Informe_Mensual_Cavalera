@@ -36,7 +36,7 @@ const ResumenGeneralTab: React.FC = () => {
               <ShoppingCart className="w-8 h-8 text-emerald-600" />
               <div className="flex items-center gap-2">
                 <img
-                  src="/src/assets/logo_agenda_pro.png"
+                  src="/logo_agenda_pro.png"
                   alt="AgendaPro"
                   className="h-5 w-auto"
                 />

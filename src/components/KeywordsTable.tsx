@@ -261,6 +261,25 @@ const KeywordsTable: React.FC<KeywordsTableProps> = ({ keywords, searchTerms }) 
         </div>
       </div>
       </div>
+
+      {/* Nota explicativa sobre atribución múltiple */}
+      <div className="mt-4 p-4 bg-blue-50 border-l-4 border-blue-500 rounded-lg">
+        <div className="flex items-start gap-2">
+          <HelpCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+          <div className="text-sm text-blue-900">
+            <strong>¿Por qué las sumas no dan exactamente 84?</strong>
+            <p className="mt-1">
+              Un usuario puede hacer clic en varios anuncios (diferentes keywords/términos)
+              antes de completar el formulario. Google Ads atribuye la conversión a
+              cada keyword/término que contribuyó en el journey del usuario. Por eso la suma puede ser
+              mayor a 84, pero ninguna keyword individual tiene más de 20 conversiones.
+            </p>
+            <p className="mt-2 text-blue-800 font-medium">
+              💡 Esto es normal y se llama "atribución múltiple". Muestra todo el camino que siguió el usuario antes de convertir.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
