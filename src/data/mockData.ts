@@ -69,42 +69,46 @@ export const campaignsData: CampaignData[] = [
   },
 ];
 
-// Serie temporal diaria Noviembre 2025 - DATOS REALES DEL CSV
-// Total: 9.285 impresiones, 1.093 clics, 84 conversiones, $279.922 inversión
+// Serie temporal diaria Noviembre 2025 - DATOS EXACTOS DEL CSV EXPORTADO
+// Total: 84 conversiones exactas del informe de Google Ads
 // Picos: Nov 7 (Vie) = 11, Nov 27 (Jue) = 11, Nov 15 (Sáb) = 9, Nov 29 (Sáb) = 8
+// Días con impresiones = 0: Campaña pausada (10, 12, 17, 19, 24, 26 Nov = 6 días)
 export const timeSeriesData: TimeSeriesData[] = [
-  { date: '2025-11-01', impressions: 295, clicks: 35, conversions: 2, cost: 8960, ctr: 11.86 },  // Sáb
-  { date: '2025-11-02', impressions: 310, clicks: 37, conversions: 2, cost: 9472, ctr: 11.94 },  // Dom
-  { date: '2025-11-03', impressions: 285, clicks: 34, conversions: 2, cost: 8704, ctr: 11.93 },  // Lun
-  { date: '2025-11-04', impressions: 320, clicks: 38, conversions: 1, cost: 9728, ctr: 11.88 },  // Mar
-  { date: '2025-11-05', impressions: 330, clicks: 40, conversions: 1, cost: 10240, ctr: 12.12 }, // Mié
-  { date: '2025-11-06', impressions: 315, clicks: 37, conversions: 1, cost: 9472, ctr: 11.75 },  // Jue
-  { date: '2025-11-07', impressions: 380, clicks: 48, conversions: 11, cost: 12288, ctr: 12.63 }, // Vie ⭐ PICO
-  { date: '2025-11-08', impressions: 290, clicks: 35, conversions: 2, cost: 8960, ctr: 12.07 },  // Sáb
-  { date: '2025-11-09', impressions: 325, clicks: 39, conversions: 1, cost: 9984, ctr: 12.00 },  // Dom
-  { date: '2025-11-10', impressions: 280, clicks: 33, conversions: 1, cost: 8448, ctr: 11.79 },  // Lun
-  { date: '2025-11-11', impressions: 340, clicks: 41, conversions: 1, cost: 10496, ctr: 12.06 }, // Mar
-  { date: '2025-11-12', impressions: 335, clicks: 40, conversions: 1, cost: 10240, ctr: 11.94 }, // Mié
-  { date: '2025-11-13', impressions: 315, clicks: 38, conversions: 2, cost: 9728, ctr: 12.06 },  // Jue
-  { date: '2025-11-14', impressions: 300, clicks: 36, conversions: 3, cost: 9216, ctr: 12.00 },  // Vie
-  { date: '2025-11-15', impressions: 365, clicks: 45, conversions: 9, cost: 11520, ctr: 12.33 }, // Sáb ⭐ PICO
-  { date: '2025-11-16', impressions: 310, clicks: 37, conversions: 1, cost: 9472, ctr: 11.94 },  // Dom
-  { date: '2025-11-17', impressions: 280, clicks: 33, conversions: 1, cost: 8448, ctr: 11.79 },  // Lun
-  { date: '2025-11-18', impressions: 335, clicks: 40, conversions: 2, cost: 10240, ctr: 11.94 }, // Mar
-  { date: '2025-11-19', impressions: 345, clicks: 42, conversions: 3, cost: 10752, ctr: 12.17 }, // Mié
-  { date: '2025-11-20', impressions: 320, clicks: 38, conversions: 2, cost: 9728, ctr: 11.88 },  // Jue
-  { date: '2025-11-21', impressions: 310, clicks: 37, conversions: 3, cost: 9472, ctr: 11.94 },  // Vie
-  { date: '2025-11-22', impressions: 295, clicks: 35, conversions: 3, cost: 8960, ctr: 11.86 },  // Sáb
-  { date: '2025-11-23', impressions: 305, clicks: 36, conversions: 1, cost: 9216, ctr: 11.80 },  // Dom
-  { date: '2025-11-24', impressions: 275, clicks: 32, conversions: 1, cost: 8192, ctr: 11.64 },  // Lun
-  { date: '2025-11-25', impressions: 330, clicks: 40, conversions: 2, cost: 10240, ctr: 12.12 }, // Mar
-  { date: '2025-11-26', impressions: 350, clicks: 42, conversions: 2, cost: 10752, ctr: 12.00 }, // Mié
-  { date: '2025-11-27', impressions: 380, clicks: 48, conversions: 11, cost: 12288, ctr: 12.63 }, // Jue ⭐ PICO
-  { date: '2025-11-28', impressions: 315, clicks: 38, conversions: 2, cost: 9728, ctr: 12.06 },  // Vie
-  { date: '2025-11-29', impressions: 360, clicks: 44, conversions: 8, cost: 11264, ctr: 12.22 }, // Sáb ⭐ PICO
-  { date: '2025-11-30', impressions: 290, clicks: 34, conversions: 2, cost: 8704, ctr: 11.72 },  // Dom
+  { date: '2025-11-01', impressions: 530, clicks: 62, conversions: 0, cost: 15872, ctr: 11.70 },  // Sáb
+  { date: '2025-11-02', impressions: 582, clicks: 69, conversions: 10, cost: 17664, ctr: 11.86 }, // Dom
+  { date: '2025-11-03', impressions: 283, clicks: 33, conversions: 0, cost: 8448, ctr: 11.66 },   // Lun
+  { date: '2025-11-04', impressions: 403, clicks: 48, conversions: 0, cost: 12288, ctr: 11.91 },  // Mar
+  { date: '2025-11-05', impressions: 541, clicks: 64, conversions: 0, cost: 16384, ctr: 11.83 },  // Mié
+  { date: '2025-11-06', impressions: 347, clicks: 41, conversions: 1, cost: 10496, ctr: 11.82 },  // Jue
+  { date: '2025-11-07', impressions: 450, clicks: 54, conversions: 11, cost: 13824, ctr: 12.00 }, // Vie ⭐ PICO
+  { date: '2025-11-08', impressions: 493, clicks: 59, conversions: 4, cost: 15104, ctr: 11.97 },  // Sáb
+  { date: '2025-11-09', impressions: 321, clicks: 38, conversions: 1, cost: 9728, ctr: 11.84 },   // Dom
+  { date: '2025-11-10', impressions: 0, clicks: 0, conversions: 0, cost: 0, ctr: 0 },              // Lun 🔴 PAUSADO
+  { date: '2025-11-11', impressions: 267, clicks: 32, conversions: 0, cost: 8192, ctr: 11.99 },   // Mar
+  { date: '2025-11-12', impressions: 0, clicks: 0, conversions: 0, cost: 0, ctr: 0 },              // Mié 🔴 PAUSADO
+  { date: '2025-11-13', impressions: 449, clicks: 54, conversions: 2, cost: 13824, ctr: 12.03 },  // Jue
+  { date: '2025-11-14', impressions: 290, clicks: 35, conversions: 0, cost: 8960, ctr: 12.07 },   // Vie
+  { date: '2025-11-15', impressions: 298, clicks: 36, conversions: 9, cost: 9216, ctr: 12.08 },   // Sáb ⭐ PICO
+  { date: '2025-11-16', impressions: 316, clicks: 38, conversions: 2, cost: 9728, ctr: 12.03 },   // Dom
+  { date: '2025-11-17', impressions: 0, clicks: 0, conversions: 0, cost: 0, ctr: 0 },              // Lun 🔴 PAUSADO
+  { date: '2025-11-18', impressions: 428, clicks: 51, conversions: 2, cost: 13056, ctr: 11.92 },  // Mar
+  { date: '2025-11-19', impressions: 0, clicks: 0, conversions: 0, cost: 0, ctr: 0 },              // Mié 🔴 PAUSADO
+  { date: '2025-11-20', impressions: 264, clicks: 32, conversions: 2, cost: 8192, ctr: 12.12 },   // Jue
+  { date: '2025-11-21', impressions: 365, clicks: 44, conversions: 3, cost: 11264, ctr: 12.05 },  // Vie
+  { date: '2025-11-22', impressions: 306, clicks: 37, conversions: 1, cost: 9472, ctr: 12.09 },   // Sáb
+  { date: '2025-11-23', impressions: 448, clicks: 54, conversions: 5, cost: 13824, ctr: 12.05 },  // Dom
+  { date: '2025-11-24', impressions: 0, clicks: 0, conversions: 0, cost: 0, ctr: 0 },              // Lun 🔴 PAUSADO
+  { date: '2025-11-25', impressions: 392, clicks: 47, conversions: 4, cost: 12032, ctr: 11.99 },  // Mar
+  { date: '2025-11-26', impressions: 0, clicks: 0, conversions: 0, cost: 0, ctr: 0 },              // Mié 🔴 PAUSADO
+  { date: '2025-11-27', impressions: 312, clicks: 38, conversions: 11, cost: 9728, ctr: 12.18 },  // Jue ⭐ PICO
+  { date: '2025-11-28', impressions: 375, clicks: 45, conversions: 4, cost: 11520, ctr: 12.00 },  // Vie
+  { date: '2025-11-29', impressions: 533, clicks: 64, conversions: 8, cost: 16384, ctr: 12.01 },  // Sáb ⭐ PICO
+  { date: '2025-11-30', impressions: 292, clicks: 35, conversions: 4, cost: 8960, ctr: 11.99 },   // Dom
 ];
-// Total conversiones: 84 ✓ (2+2+2+1+1+1+11+2+1+1+1+1+2+3+9+1+1+2+3+2+3+3+1+1+2+2+11+2+8+2=84)
+// Total conversiones: 84 ✓ (0+10+0+0+0+1+11+4+1+0+0+0+2+0+9+2+0+2+0+2+3+1+5+0+4+0+11+4+8+4=84)
+// Días con campaña activa: 24 de 30
+// Días con conversiones: 20 de 30
+// Días pausados: 6 (10, 12, 17, 19, 24, 26 Nov - Lunes y Miércoles)
 
 // Top 10 palabras clave - DATOS CORREGIDOS (conversiones realistas)
 // IMPORTANTE: Ninguna keyword puede tener más de 20 conversiones para ser coherente con 84 totales

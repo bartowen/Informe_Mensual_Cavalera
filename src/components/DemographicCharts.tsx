@@ -11,11 +11,6 @@ export default function DemographicCharts({ sexData, ageData }: DemographicChart
   // Calcular totales
   const totalConversions = sexData.reduce((sum, item) => sum + item.conversiones, 0);
 
-  // Encontrar datos destacados
-  const topSex = [...sexData].sort((a, b) => b.conversiones - a.conversiones)[0];
-  const topAge = [...ageData].sort((a, b) => b.conversiones - a.conversiones)[0];
-  const bestCPAAge = [...ageData].filter(item => item.conversiones > 0).sort((a, b) => a.cpa - b.cpa)[0];
-
   return (
     <div className="bg-white rounded-xl shadow-lg p-6">
       <h3 className="text-xl font-bold mb-2 flex items-center gap-2">
@@ -137,41 +132,66 @@ export default function DemographicCharts({ sexData, ageData }: DemographicChart
       </div>
 
       {/* Insights demográficos */}
-      <div className="bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg p-4 border border-blue-200">
-        <h4 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
-          <span className="text-lg">💡</span>
-          Insights Demográficos
-        </h4>
-        <ul className="space-y-2 text-sm text-gray-700">
-          <li className="flex items-start gap-2">
-            <span className="text-[#3bc6dc] font-bold mt-0.5">•</span>
-            <span>
-              <strong>Sexo predominante:</strong> {topSex.sexo} con {topSex.conversiones} conversiones (
-              {((topSex.conversiones / totalConversions) * 100).toFixed(1)}% del total)
-            </span>
-          </li>
-          <li className="flex items-start gap-2">
-            <span className="text-[#3bc6dc] font-bold mt-0.5">•</span>
-            <span>
-              <strong>Rango de edad líder:</strong> {topAge.edad} años con {topAge.conversiones} conversiones (
-              {((topAge.conversiones / totalConversions) * 100).toFixed(1)}% del total)
-            </span>
-          </li>
-          <li className="flex items-start gap-2">
-            <span className="text-[#3bc6dc] font-bold mt-0.5">•</span>
-            <span>
-              <strong>Mejor CPA por edad:</strong> El rango {bestCPAAge.edad} años tiene el CPA más bajo con $
-              {bestCPAAge.cpa.toLocaleString('es-CL')} ({bestCPAAge.conversiones} conversiones)
-            </span>
-          </li>
-          <li className="flex items-start gap-2">
-            <span className="text-[#3bc6dc] font-bold mt-0.5">•</span>
-            <span>
-              <strong>Recomendación:</strong> Considera crear anuncios específicos para el público {topAge.edad} años,
-              ya que representan el mayor volumen de conversiones
-            </span>
-          </li>
-        </ul>
+      <div className="space-y-4">
+        {/* Insight Sexo */}
+        <div className="bg-gradient-to-r from-indigo-50 to-blue-50 rounded-lg p-4 border border-indigo-200">
+          <p className="text-sm text-indigo-900">
+            💡 <strong>Insight:</strong> Distribución equilibrada entre géneros (Hombres 38%, Mujeres 32%).
+            El 30% sin identificar sugiere oportunidad de mejorar tracking con formularios más completos.
+          </p>
+        </div>
+
+        {/* Insight Edad - MEJORADO */}
+        <div className="bg-purple-50 rounded-lg p-4 border-l-4 border-purple-500">
+          <p className="text-sm font-bold text-purple-900 mb-3">
+            🎯 Segmentos Identificados (69% del total):
+          </p>
+          <ul className="text-xs text-purple-900 space-y-2 ml-2">
+            <li className="flex items-start gap-2">
+              <span className="text-purple-600 font-bold text-base">⭐</span>
+              <span>
+                <strong>25-34 años: Segmento estrella</strong> con 21 conversiones (36% de identificados).
+                Este grupo es tu público principal. CPA competitivo de $3.886.
+              </span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-purple-600 font-bold text-base">📈</span>
+              <span>
+                <strong>18-24 años: Segundo mejor</strong> con 12 conversiones (21% de identificados).
+                CPA más bajo ($2.638). Gran oportunidad de crecimiento.
+              </span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-purple-600 font-bold text-base">🎓</span>
+              <span>
+                <strong>45-54 años: Segmento maduro</strong> con 11 conversiones (19% de identificados).
+                CTR excelente del 14,26%. Alto poder adquisitivo potencial.
+              </span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-purple-600 font-bold text-base">💎</span>
+              <span>
+                <strong>+65 años: CPA mínimo</strong> con solo $317. Aunque son 7 conversiones,
+                representa la mejor eficiencia de costo por edad.
+              </span>
+            </li>
+          </ul>
+
+          <div className="mt-3 pt-3 border-t border-purple-200">
+            <p className="text-xs text-purple-800">
+              <strong>💡 Recomendación estratégica:</strong> Crea campañas específicas para
+              25-34 años (tu público core) con mensajes sobre diseños personalizados y tendencias.
+              Para 18-24, enfoca en diseños pequeños, primeros tatuajes y precios accesibles.
+            </p>
+          </div>
+
+          <div className="mt-2 p-2 bg-purple-100 rounded">
+            <p className="text-xs text-purple-700">
+              ℹ️ <em>Nota: 31% de conversiones tienen edad "Desconocida". Esto es normal en
+              Google Ads y no afecta el rendimiento de la campaña.</em>
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
