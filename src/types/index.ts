@@ -99,6 +99,20 @@ export interface HourOfDayData {
   cost: number;
 }
 
+export interface DemographicBySex {
+  sexo: string;
+  conversiones: number;
+  cpa: number;
+  ctr: number;
+}
+
+export interface DemographicByAge {
+  edad: string;
+  conversiones: number;
+  cpa: number;
+  ctr: number;
+}
+
 // AgendaPro Data Types
 export interface SalesData {
   totalSales: number;

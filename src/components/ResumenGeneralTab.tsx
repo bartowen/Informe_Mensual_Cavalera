@@ -17,9 +17,14 @@ import {
   Bot,
 } from 'lucide-react';
 import SalesPanel from './SalesPanel';
+import QuickNavigation from './QuickNavigation';
 import { agendaProData } from '../data/agendaPro';
 
-const ResumenGeneralTab: React.FC = () => {
+interface ResumenGeneralTabProps {
+  onNavigate: (tab: string) => void;
+}
+
+const ResumenGeneralTab: React.FC<ResumenGeneralTabProps> = ({ onNavigate }) => {
   return (
     <div className="space-y-6 p-6">
 
@@ -394,6 +399,9 @@ const ResumenGeneralTab: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Navegación Rápida */}
+      <QuickNavigation currentTab="resumen-general" onNavigate={onNavigate} />
 
     </div>
   );

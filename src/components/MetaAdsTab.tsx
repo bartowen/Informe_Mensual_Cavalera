@@ -1,7 +1,12 @@
 import React from 'react';
 import { Facebook, Instagram, Download, FileText, Users, Target, Image } from 'lucide-react';
+import QuickNavigation from './QuickNavigation';
 
-const MetaAdsTab: React.FC = () => {
+interface MetaAdsTabProps {
+  onNavigate: (tab: string) => void;
+}
+
+const MetaAdsTab: React.FC<MetaAdsTabProps> = ({ onNavigate }) => {
   return (
     <div className="text-center py-16 bg-gray-50 rounded-lg">
       <div className="flex items-center justify-center gap-3 mb-4">
@@ -90,6 +95,11 @@ const MetaAdsTab: React.FC = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Navegación Rápida */}
+      <div className="mt-8">
+        <QuickNavigation currentTab="meta-ads" onNavigate={onNavigate} />
       </div>
     </div>
   );

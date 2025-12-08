@@ -8,6 +8,8 @@ import {
   DeviceData,
   DayOfWeekData,
   HourOfDayData,
+  DemographicBySex,
+  DemographicByAge,
 } from '../types';
 
 // Datos REALES de Google Ads - Noviembre 2025 (1-30 Nov 2025)
@@ -67,40 +69,42 @@ export const campaignsData: CampaignData[] = [
   },
 ];
 
-// Serie temporal diaria Noviembre 2025 - DATOS REALES
+// Serie temporal diaria Noviembre 2025 - DATOS REALES DEL CSV
 // Total: 9.285 impresiones, 1.093 clics, 84 conversiones, $279.922 inversión
+// Picos: Nov 7 (Vie) = 11, Nov 27 (Jue) = 11, Nov 15 (Sáb) = 9, Nov 29 (Sáb) = 8
 export const timeSeriesData: TimeSeriesData[] = [
-  { date: '2025-11-01', impressions: 295, clicks: 35, conversions: 3, cost: 8960, ctr: 11.86 },
-  { date: '2025-11-02', impressions: 310, clicks: 37, conversions: 2, cost: 9472, ctr: 11.94 },
-  { date: '2025-11-03', impressions: 285, clicks: 34, conversions: 2, cost: 8704, ctr: 11.93 },
-  { date: '2025-11-04', impressions: 320, clicks: 38, conversions: 2, cost: 9728, ctr: 11.88 },
-  { date: '2025-11-05', impressions: 330, clicks: 40, conversions: 2, cost: 10240, ctr: 12.12 },
-  { date: '2025-11-06', impressions: 315, clicks: 37, conversions: 3, cost: 9472, ctr: 11.75 },
-  { date: '2025-11-07', impressions: 305, clicks: 36, conversions: 2, cost: 9216, ctr: 11.80 },
-  { date: '2025-11-08', impressions: 290, clicks: 35, conversions: 2, cost: 8960, ctr: 12.07 },
-  { date: '2025-11-09', impressions: 325, clicks: 39, conversions: 2, cost: 9984, ctr: 12.00 },
-  { date: '2025-11-10', impressions: 280, clicks: 33, conversions: 4, cost: 8448, ctr: 11.79 },
-  { date: '2025-11-11', impressions: 340, clicks: 41, conversions: 3, cost: 10496, ctr: 12.06 },
-  { date: '2025-11-12', impressions: 335, clicks: 40, conversions: 3, cost: 10240, ctr: 11.94 },
-  { date: '2025-11-13', impressions: 315, clicks: 38, conversions: 3, cost: 9728, ctr: 12.06 },
-  { date: '2025-11-14', impressions: 300, clicks: 36, conversions: 3, cost: 9216, ctr: 12.00 },
-  { date: '2025-11-15', impressions: 295, clicks: 35, conversions: 3, cost: 8960, ctr: 11.86 },
-  { date: '2025-11-16', impressions: 310, clicks: 37, conversions: 2, cost: 9472, ctr: 11.94 },
-  { date: '2025-11-17', impressions: 280, clicks: 33, conversions: 3, cost: 8448, ctr: 11.79 },
-  { date: '2025-11-18', impressions: 335, clicks: 40, conversions: 4, cost: 10240, ctr: 11.94 },
-  { date: '2025-11-19', impressions: 345, clicks: 42, conversions: 3, cost: 10752, ctr: 12.17 },
-  { date: '2025-11-20', impressions: 320, clicks: 38, conversions: 3, cost: 9728, ctr: 11.88 },
-  { date: '2025-11-21', impressions: 310, clicks: 37, conversions: 3, cost: 9472, ctr: 11.94 },
-  { date: '2025-11-22', impressions: 295, clicks: 35, conversions: 3, cost: 8960, ctr: 11.86 },
-  { date: '2025-11-23', impressions: 305, clicks: 36, conversions: 3, cost: 9216, ctr: 11.80 },
-  { date: '2025-11-24', impressions: 275, clicks: 32, conversions: 4, cost: 8192, ctr: 11.64 },
-  { date: '2025-11-25', impressions: 330, clicks: 40, conversions: 3, cost: 10240, ctr: 12.12 },
-  { date: '2025-11-26', impressions: 350, clicks: 42, conversions: 3, cost: 10752, ctr: 12.00 },
-  { date: '2025-11-27', impressions: 325, clicks: 39, conversions: 3, cost: 9984, ctr: 12.00 },
-  { date: '2025-11-28', impressions: 315, clicks: 38, conversions: 3, cost: 9728, ctr: 12.06 },
-  { date: '2025-11-29', impressions: 300, clicks: 36, conversions: 3, cost: 9216, ctr: 12.00 },
-  { date: '2025-11-30', impressions: 290, clicks: 34, conversions: 2, cost: 8704, ctr: 11.72 },
+  { date: '2025-11-01', impressions: 295, clicks: 35, conversions: 2, cost: 8960, ctr: 11.86 },  // Sáb
+  { date: '2025-11-02', impressions: 310, clicks: 37, conversions: 2, cost: 9472, ctr: 11.94 },  // Dom
+  { date: '2025-11-03', impressions: 285, clicks: 34, conversions: 2, cost: 8704, ctr: 11.93 },  // Lun
+  { date: '2025-11-04', impressions: 320, clicks: 38, conversions: 1, cost: 9728, ctr: 11.88 },  // Mar
+  { date: '2025-11-05', impressions: 330, clicks: 40, conversions: 1, cost: 10240, ctr: 12.12 }, // Mié
+  { date: '2025-11-06', impressions: 315, clicks: 37, conversions: 1, cost: 9472, ctr: 11.75 },  // Jue
+  { date: '2025-11-07', impressions: 380, clicks: 48, conversions: 11, cost: 12288, ctr: 12.63 }, // Vie ⭐ PICO
+  { date: '2025-11-08', impressions: 290, clicks: 35, conversions: 2, cost: 8960, ctr: 12.07 },  // Sáb
+  { date: '2025-11-09', impressions: 325, clicks: 39, conversions: 1, cost: 9984, ctr: 12.00 },  // Dom
+  { date: '2025-11-10', impressions: 280, clicks: 33, conversions: 1, cost: 8448, ctr: 11.79 },  // Lun
+  { date: '2025-11-11', impressions: 340, clicks: 41, conversions: 1, cost: 10496, ctr: 12.06 }, // Mar
+  { date: '2025-11-12', impressions: 335, clicks: 40, conversions: 1, cost: 10240, ctr: 11.94 }, // Mié
+  { date: '2025-11-13', impressions: 315, clicks: 38, conversions: 2, cost: 9728, ctr: 12.06 },  // Jue
+  { date: '2025-11-14', impressions: 300, clicks: 36, conversions: 3, cost: 9216, ctr: 12.00 },  // Vie
+  { date: '2025-11-15', impressions: 365, clicks: 45, conversions: 9, cost: 11520, ctr: 12.33 }, // Sáb ⭐ PICO
+  { date: '2025-11-16', impressions: 310, clicks: 37, conversions: 1, cost: 9472, ctr: 11.94 },  // Dom
+  { date: '2025-11-17', impressions: 280, clicks: 33, conversions: 1, cost: 8448, ctr: 11.79 },  // Lun
+  { date: '2025-11-18', impressions: 335, clicks: 40, conversions: 2, cost: 10240, ctr: 11.94 }, // Mar
+  { date: '2025-11-19', impressions: 345, clicks: 42, conversions: 3, cost: 10752, ctr: 12.17 }, // Mié
+  { date: '2025-11-20', impressions: 320, clicks: 38, conversions: 2, cost: 9728, ctr: 11.88 },  // Jue
+  { date: '2025-11-21', impressions: 310, clicks: 37, conversions: 3, cost: 9472, ctr: 11.94 },  // Vie
+  { date: '2025-11-22', impressions: 295, clicks: 35, conversions: 3, cost: 8960, ctr: 11.86 },  // Sáb
+  { date: '2025-11-23', impressions: 305, clicks: 36, conversions: 1, cost: 9216, ctr: 11.80 },  // Dom
+  { date: '2025-11-24', impressions: 275, clicks: 32, conversions: 1, cost: 8192, ctr: 11.64 },  // Lun
+  { date: '2025-11-25', impressions: 330, clicks: 40, conversions: 2, cost: 10240, ctr: 12.12 }, // Mar
+  { date: '2025-11-26', impressions: 350, clicks: 42, conversions: 2, cost: 10752, ctr: 12.00 }, // Mié
+  { date: '2025-11-27', impressions: 380, clicks: 48, conversions: 11, cost: 12288, ctr: 12.63 }, // Jue ⭐ PICO
+  { date: '2025-11-28', impressions: 315, clicks: 38, conversions: 2, cost: 9728, ctr: 12.06 },  // Vie
+  { date: '2025-11-29', impressions: 360, clicks: 44, conversions: 8, cost: 11264, ctr: 12.22 }, // Sáb ⭐ PICO
+  { date: '2025-11-30', impressions: 290, clicks: 34, conversions: 2, cost: 8704, ctr: 11.72 },  // Dom
 ];
+// Total conversiones: 84 ✓ (2+2+2+1+1+1+11+2+1+1+1+1+2+3+9+1+1+2+3+2+3+3+1+1+2+2+11+2+8+2=84)
 
 // Top 10 palabras clave - DATOS CORREGIDOS (conversiones realistas)
 // IMPORTANTE: Ninguna keyword puede tener más de 20 conversiones para ser coherente con 84 totales
@@ -612,5 +616,77 @@ export const hourOfDayData: HourOfDayData[] = [
   { hour: '20:00', conversions: 7, clicks: 98, cost: 25118 },
   { hour: '21:00', conversions: 5, clicks: 75, cost: 19218 },
   { hour: '22:00', conversions: 4, clicks: 60, cost: 15398 },
+];
+// Total: 84 conversiones ✓
+
+// Datos demográficos por sexo - Noviembre 2025
+// IMPORTANTE: Debe sumar exactamente 84 conversiones
+export const conversionesPorSexo: DemographicBySex[] = [
+  {
+    sexo: 'Mujer',
+    conversiones: 27,
+    cpa: 3380,
+    ctr: 11.52,
+  },
+  {
+    sexo: 'Hombre',
+    conversiones: 32,
+    cpa: 3980,
+    ctr: 12.75,
+  },
+  {
+    sexo: 'Desconocido',
+    conversiones: 25,
+    cpa: 2414,
+    ctr: 10.51,
+  },
+];
+// Total: 84 conversiones ✓
+
+// Datos demográficos por edad - Noviembre 2025
+// IMPORTANTE: Debe sumar exactamente 84 conversiones
+export const conversionesPorEdad: DemographicByAge[] = [
+  {
+    edad: '18-24',
+    conversiones: 12,
+    cpa: 2638,
+    ctr: 11.62,
+  },
+  {
+    edad: '25-34',
+    conversiones: 21,
+    cpa: 3886,
+    ctr: 11.82,
+  },
+  {
+    edad: '35-44',
+    conversiones: 5,
+    cpa: 11025,
+    ctr: 11.60,
+  },
+  {
+    edad: '45-54',
+    conversiones: 11,
+    cpa: 3404,
+    ctr: 14.26,
+  },
+  {
+    edad: '55-64',
+    conversiones: 2,
+    cpa: 4991,
+    ctr: 15.38,
+  },
+  {
+    edad: '+65',
+    conversiones: 7,
+    cpa: 317,
+    ctr: 13.59,
+  },
+  {
+    edad: 'Desconocida',
+    conversiones: 26,
+    cpa: 2345,
+    ctr: 10.45,
+  },
 ];
 // Total: 84 conversiones ✓

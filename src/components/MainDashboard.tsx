@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ResumenGeneralTab from './ResumenGeneralTab';
 import Dashboard from './Dashboard';
 import GA4Tab from './GA4Tab';
@@ -13,12 +13,39 @@ import {
   BookOpen,
   Menu,
   X,
-  CheckCircle2
+  CheckCircle2,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
 
 const MainDashboard: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('resumen-general');
+  const [showNavbar, setShowNavbar] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  // Auto-hide navbar en scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY < 50) {
+        // Siempre mostrar navbar si estamos cerca del top
+        setShowNavbar(true);
+      } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        // Scrolling hacia abajo y pasamos el umbral -> ocultar
+        setShowNavbar(false);
+      } else if (currentScrollY < lastScrollY) {
+        // Scrolling hacia arriba -> mostrar
+        setShowNavbar(true);
+      }
+
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
 
   // Definición de tabs
   const tabs = [
@@ -165,7 +192,11 @@ const MainDashboard: React.FC = () => {
       </header>
 
       {/* Barra de Navegación Desktop */}
-      <div className="bg-white border-b shadow-sm sticky top-[88px] md:top-[96px] z-30 hidden md:block">
+      <div
+        className={`bg-white border-b shadow-sm sticky top-[88px] md:top-[96px] z-30 hidden md:block transition-transform duration-300 ease-in-out ${
+          showNavbar ? 'translate-y-0' : '-translate-y-full'
+        }`}
+      >
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center justify-between py-3 gap-2 overflow-x-auto">
             {tabs.map((tab) => (
@@ -331,12 +362,65 @@ const MainDashboard: React.FC = () => {
         </div>
       </div>
 
+      {/* Navegación Móvil con Flechas (solo móvil) */}
+      <div className="md:hidden sticky top-[136px] z-20 bg-white border-b border-gray-200 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+          {/* Flecha Izquierda */}
+          <button
+            onClick={() => {
+              const currentIndex = tabs.findIndex(t => t.value === activeTab);
+              if (currentIndex > 0) {
+                setActiveTab(tabs[currentIndex - 1].value);
+                window.scrollTo(0, 0);
+              }
+            }}
+            disabled={tabs.findIndex(t => t.value === activeTab) === 0}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
+              tabs.findIndex(t => t.value === activeTab) === 0
+                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                : 'bg-[#3bc6dc] text-white hover:bg-[#21a9c2] shadow-md'
+            }`}
+          >
+            <ChevronLeft className="w-5 h-5" />
+            <span className="text-sm font-medium">Anterior</span>
+          </button>
+
+          {/* Contador de Tabs */}
+          <div className="text-center">
+            <div className="text-xs text-gray-500 mb-1">Sección</div>
+            <div className="text-lg font-bold text-[#3bc6dc]">
+              {tabs.findIndex(t => t.value === activeTab) + 1} / {tabs.length}
+            </div>
+          </div>
+
+          {/* Flecha Derecha */}
+          <button
+            onClick={() => {
+              const currentIndex = tabs.findIndex(t => t.value === activeTab);
+              if (currentIndex < tabs.length - 1) {
+                setActiveTab(tabs[currentIndex + 1].value);
+                window.scrollTo(0, 0);
+              }
+            }}
+            disabled={tabs.findIndex(t => t.value === activeTab) === tabs.length - 1}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
+              tabs.findIndex(t => t.value === activeTab) === tabs.length - 1
+                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                : 'bg-[#3bc6dc] text-white hover:bg-[#21a9c2] shadow-md'
+            }`}
+          >
+            <span className="text-sm font-medium">Siguiente</span>
+            <ChevronRight className="w-5 h-5" />
+          </button>
+        </div>
+      </div>
+
       {/* Contenido de las pestañas */}
       <div className="max-w-7xl mx-auto px-4 md:px-6 py-8">
-        {activeTab === 'resumen-general' && <ResumenGeneralTab />}
-        {activeTab === 'google-ads' && <Dashboard />}
-        {activeTab === 'ga4' && <GA4Tab />}
-        {activeTab === 'meta-ads' && <MetaAdsTab />}
+        {activeTab === 'resumen-general' && <ResumenGeneralTab onNavigate={(tab) => { setActiveTab(tab); window.scrollTo(0, 0); }} />}
+        {activeTab === 'google-ads' && <Dashboard onNavigate={(tab) => { setActiveTab(tab); window.scrollTo(0, 0); }} />}
+        {activeTab === 'ga4' && <GA4Tab onNavigate={(tab) => { setActiveTab(tab); window.scrollTo(0, 0); }} />}
+        {activeTab === 'meta-ads' && <MetaAdsTab onNavigate={(tab) => { setActiveTab(tab); window.scrollTo(0, 0); }} />}
         {activeTab === 'diccionario' && <DiccionarioTab />}
         {activeTab === 'otros-avances' && <OtrosAvancesTab />}
       </div>

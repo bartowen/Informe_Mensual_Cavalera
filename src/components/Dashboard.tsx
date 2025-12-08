@@ -6,6 +6,8 @@ import KeywordsTable from './KeywordsTable';
 import SimpleScheduleCharts from './SimpleScheduleCharts';
 import CampaignsTable from './CampaignsTable';
 import InsightsPanel from './InsightsPanel';
+import DemographicCharts from './DemographicCharts';
+import QuickNavigation from './QuickNavigation';
 
 // Data imports
 import { agendaProData } from '../data/agendaPro';
@@ -18,6 +20,8 @@ import {
   deviceData,
   dayOfWeekData,
   hourOfDayData,
+  conversionesPorSexo,
+  conversionesPorEdad,
 } from '../data/mockData';
 
 // Utils
@@ -42,7 +46,11 @@ import {
   Calculator,
 } from 'lucide-react';
 
-const Dashboard: React.FC = () => {
+interface DashboardProps {
+  onNavigate: (tab: string) => void;
+}
+
+const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
   // Calcular métricas agregadas con datos CORRECTOS de Noviembre 2025
   const metrics = useMemo(() => {
     const totalImpressions = campaignsData.reduce((sum, c) => sum + c.impressions, 0);
@@ -449,6 +457,11 @@ const Dashboard: React.FC = () => {
           <CampaignsTable campaigns={campaignsData} />
         </section>
 
+        {/* Análisis Demográfico */}
+        <section className="mb-8">
+          <DemographicCharts sexData={conversionesPorSexo} ageData={conversionesPorEdad} />
+        </section>
+
         {/* Ubicación y Dispositivos */}
         <section className="mb-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -520,6 +533,11 @@ const Dashboard: React.FC = () => {
         {/* Insights y Recomendaciones */}
         <section className="mb-8">
           <InsightsPanel insights={insights} />
+        </section>
+
+        {/* Navegación Rápida */}
+        <section className="mb-8">
+          <QuickNavigation currentTab="google-ads" onNavigate={onNavigate} />
         </section>
 
       {/* Footer */}

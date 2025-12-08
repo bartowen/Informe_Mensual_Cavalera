@@ -1,7 +1,12 @@
 import React from 'react';
 import { BarChart3, Download, FileText, Users, MousePointer, TrendingUp } from 'lucide-react';
+import QuickNavigation from './QuickNavigation';
 
-const GA4Tab: React.FC = () => {
+interface GA4TabProps {
+  onNavigate: (tab: string) => void;
+}
+
+const GA4Tab: React.FC<GA4TabProps> = ({ onNavigate }) => {
   return (
     <div className="text-center py-16 bg-gray-50 rounded-lg">
       <BarChart3 className="w-16 h-16 text-gray-400 mx-auto mb-4" />
@@ -86,6 +91,11 @@ const GA4Tab: React.FC = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Navegación Rápida */}
+      <div className="mt-8">
+        <QuickNavigation currentTab="ga4" onNavigate={onNavigate} />
       </div>
     </div>
   );
