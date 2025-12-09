@@ -13,18 +13,17 @@ const OtrosAvancesTab: React.FC = () => {
       </div>
 
       {/* NUEVO: Tracking de Formularios - Card Principal */}
-      <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl shadow-lg p-6 border-2 border-green-200">
-        <div className="flex items-start gap-4">
-          <div className="bg-green-500 rounded-full p-3 flex-shrink-0">
-            <CheckCircle className="w-8 h-8 text-white" />
+      <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl shadow-lg p-4 md:p-6 border-2 border-green-200">
+        <div className="flex items-start gap-3 md:gap-4 mb-4 md:mb-6">
+          <div className="bg-green-500 rounded-full p-2 md:p-3 flex-shrink-0">
+            <CheckCircle className="w-6 h-6 md:w-8 md:h-8 text-white" />
           </div>
-          <div className="flex-1">
-            <h3 className="text-xl font-bold text-gray-900 mb-2 flex items-center gap-2">
+          <div className="flex-1 min-w-0">
+            <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-1 md:mb-2">
               ✅ Tracking de Formularios
             </h3>
-            <p className="text-sm text-gray-700 mb-4">
+            <p className="text-xs md:text-sm text-gray-700 mb-4">
               Sistema implementado para identificar origen de cada lead
-              (Google, Instagram, Orgánico, etc.)
             </p>
 
             <div className="flex items-center gap-2 mb-3">
@@ -41,104 +40,127 @@ const OtrosAvancesTab: React.FC = () => {
             </p>
 
             {/* Resultados del periodo de prueba - DATOS REALES AGENDAPRO */}
-            <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div className="mt-4 md:mt-6 grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
               <div className="bg-white rounded-lg p-3 border border-green-200">
                 <div className="text-xs text-gray-600 mb-1">Total Solicitudes</div>
-                <div className="text-2xl font-bold text-green-600">91</div>
-                <div className="text-xs text-gray-500">22 Nov - 9 Dic</div>
+                <div className="text-xl md:text-2xl font-bold text-green-600">91</div>
+                <div className="text-xs text-gray-500 mt-1">22 Nov - 9 Dic</div>
               </div>
 
               <div className="bg-white rounded-lg p-3 border border-blue-200">
                 <div className="text-xs text-gray-600 mb-1">Agendados</div>
-                <div className="text-2xl font-bold text-blue-600">0</div>
-                <div className="text-xs text-gray-500">En seguimiento</div>
+                <div className="text-xl md:text-2xl font-bold text-blue-600">0</div>
+                <div className="text-xs text-gray-500 mt-1">En seguimiento</div>
               </div>
 
               <div className="bg-white rounded-lg p-3 border border-purple-200">
-                <div className="text-xs text-gray-600 mb-1">Conversión</div>
-                <div className="text-2xl font-bold text-purple-600">0,0%</div>
-                <div className="text-xs text-gray-500">Solicitud → Agendado</div>
+                <div className="text-xs text-gray-600 mb-1">Fuentes</div>
+                <div className="text-xl md:text-2xl font-bold text-purple-600">4+</div>
+                <div className="text-xs text-gray-500 mt-1">Identificadas</div>
               </div>
 
               <div className="bg-white rounded-lg p-3 border border-orange-200">
-                <div className="text-xs text-gray-600 mb-1">Fuentes</div>
-                <div className="text-2xl font-bold text-orange-600">4+</div>
-                <div className="text-xs text-gray-500">Identificadas</div>
+                <div className="text-xs text-gray-600 mb-1">Conversión</div>
+                <div className="text-xl md:text-2xl font-bold text-orange-600">0,0%</div>
+                <div className="text-xs text-gray-500 mt-1">Solicitud → Agendado</div>
               </div>
             </div>
 
             {/* Desglose de fuentes - DATOS REALES AGENDAPRO */}
-            <div className="mt-4">
-              <h4 className="text-sm font-semibold text-gray-900 mb-3">
+            <div className="mt-4 md:mt-6">
+              <h4 className="text-sm md:text-base font-semibold text-gray-900 mb-3">
                 📈 Distribución por Fuente (22 Nov - 9 Dic):
               </h4>
-              <div className="space-y-2">
+              <div className="space-y-2 md:space-y-3">
                 {/* Orgánico */}
                 <div className="flex items-center gap-2">
-                  <div className="w-28 text-sm text-gray-700">Orgánico</div>
-                  <div className="flex-1 bg-gray-200 rounded-full h-6 overflow-hidden">
+                  <div className="w-20 md:w-28 text-xs md:text-sm text-gray-700 font-medium flex-shrink-0">
+                    Orgánico
+                  </div>
+                  <div className="flex-1 bg-gray-200 rounded-full h-5 md:h-6 overflow-hidden min-w-0">
                     <div
                       className="bg-gradient-to-r from-green-500 to-emerald-500 h-full flex items-center justify-end px-2"
-                      style={{ width: '37.36%' }}
+                      style={{ width: '37%' }}
                     >
-                      <span className="text-xs font-semibold text-white">34 (37%)</span>
+                      <span className="text-xs font-semibold text-white whitespace-nowrap">
+                        34 (37%)
+                      </span>
                     </div>
                   </div>
-                  <div className="text-xs text-gray-600 w-16 text-right">0 agend.</div>
+                  <div className="text-xs text-gray-600 w-16 md:w-20 text-right flex-shrink-0">
+                    0 agend.
+                  </div>
                 </div>
 
                 {/* Instagram */}
                 <div className="flex items-center gap-2">
-                  <div className="w-28 text-sm text-gray-700">Instagram</div>
-                  <div className="flex-1 bg-gray-200 rounded-full h-6 overflow-hidden">
+                  <div className="w-20 md:w-28 text-xs md:text-sm text-gray-700 font-medium flex-shrink-0">
+                    Instagram
+                  </div>
+                  <div className="flex-1 bg-gray-200 rounded-full h-5 md:h-6 overflow-hidden min-w-0">
                     <div
                       className="bg-gradient-to-r from-purple-500 to-pink-500 h-full flex items-center justify-end px-2"
-                      style={{ width: '32.97%' }}
+                      style={{ width: '33%' }}
                     >
-                      <span className="text-xs font-semibold text-white">30 (33%)</span>
+                      <span className="text-xs font-semibold text-white whitespace-nowrap">
+                        30 (33%)
+                      </span>
                     </div>
                   </div>
-                  <div className="text-xs text-gray-600 w-16 text-right">0 agend.</div>
+                  <div className="text-xs text-gray-600 w-16 md:w-20 text-right flex-shrink-0">
+                    0 agend.
+                  </div>
                 </div>
 
                 {/* Google */}
                 <div className="flex items-center gap-2">
-                  <div className="w-28 text-sm text-gray-700">Google</div>
-                  <div className="flex-1 bg-gray-200 rounded-full h-6 overflow-hidden">
+                  <div className="w-20 md:w-28 text-xs md:text-sm text-gray-700 font-medium flex-shrink-0">
+                    Google
+                  </div>
+                  <div className="flex-1 bg-gray-200 rounded-full h-5 md:h-6 overflow-hidden min-w-0">
                     <div
                       className="bg-gradient-to-r from-blue-500 to-indigo-500 h-full flex items-center justify-end px-2"
-                      style={{ width: '23.08%' }}
+                      style={{ width: '23%' }}
                     >
-                      <span className="text-xs font-semibold text-white">21 (23%)</span>
+                      <span className="text-xs font-semibold text-white whitespace-nowrap">
+                        21 (23%)
+                      </span>
                     </div>
                   </div>
-                  <div className="text-xs text-gray-600 w-16 text-right">0 agend.</div>
+                  <div className="text-xs text-gray-600 w-16 md:w-20 text-right flex-shrink-0">
+                    0 agend.
+                  </div>
                 </div>
 
                 {/* Meta */}
                 <div className="flex items-center gap-2">
-                  <div className="w-28 text-sm text-gray-700">Meta</div>
-                  <div className="flex-1 bg-gray-200 rounded-full h-6 overflow-hidden">
+                  <div className="w-20 md:w-28 text-xs md:text-sm text-gray-700 font-medium flex-shrink-0">
+                    Meta
+                  </div>
+                  <div className="flex-1 bg-gray-200 rounded-full h-5 md:h-6 overflow-hidden min-w-0">
                     <div
                       className="bg-gradient-to-r from-indigo-500 to-purple-500 h-full flex items-center justify-end px-2"
-                      style={{ width: '6.59%' }}
+                      style={{ width: '7%' }}
                     >
-                      <span className="text-xs font-semibold text-white">6 (7%)</span>
+                      <span className="text-xs font-semibold text-white whitespace-nowrap">
+                        6 (7%)
+                      </span>
                     </div>
                   </div>
-                  <div className="text-xs text-gray-600 w-16 text-right">0 agend.</div>
+                  <div className="text-xs text-gray-600 w-16 md:w-20 text-right flex-shrink-0">
+                    0 agend.
+                  </div>
                 </div>
               </div>
             </div>
 
             {/* Nota importante - ACTUALIZADA */}
-            <div className="mt-4 p-3 bg-blue-50 rounded-lg border-l-4 border-blue-500">
-              <p className="text-xs text-blue-900">
-                <strong>💡 Análisis del período de prueba:</strong> Se recibieron 91 solicitudes
-                de contacto entre el 22 de Nov y 9 de Dic. El origen principal es
-                <strong> Orgánico (37%)</strong>, seguido por <strong>Instagram (33%)</strong> y
-                <strong> Google (23%)</strong>. Actualmente los agendamientos se confirman por otros
-                canales (WhatsApp, llamadas), por lo que aparecen como 0 en el sistema automático.
+            <div className="mt-4 md:mt-6 p-3 md:p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500">
+              <p className="text-xs md:text-sm text-blue-800">
+                <strong>💡 Análisis del período de prueba:</strong> Se recibieron <strong>91 solicitudes de contacto</strong> entre el 22 de Nov y 9 de Dic.
+                El origen principal es <strong>Orgánico (37%)</strong>, seguido por
+                <strong> Instagram (33%)</strong> y <strong>Google (23%)</strong>.
+                Los agendamientos se confirman por WhatsApp y llamadas telefónicas.
               </p>
             </div>
           </div>

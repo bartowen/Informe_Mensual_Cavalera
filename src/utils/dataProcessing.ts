@@ -142,6 +142,7 @@ export function parseSearchTermsCSV(csvText: string): SearchTermData[] {
 
     data.push({
       searchTerm: values[0],
+      triggeredKeyword: values[0], // Default to same as searchTerm
       impressions,
       clicks,
       conversions,

@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react';
-import KPICard from './KPICard';
 import TimeSeriesChart from './TimeSeriesChart';
 import SimpleLocationCards from './SimpleLocationCards';
 import KeywordsTable from './KeywordsTable';
@@ -25,14 +24,13 @@ import {
 } from '../data/mockData';
 
 // Utils
-import { formatCurrency, formatPercentage } from '../utils/formatters';
+import { formatCurrency, formatPercentage, formatNumber } from '../utils/formatters';
 import { calculateROI } from '../utils/calculations';
 import { Insight } from '../types';
 
 // Icons
 import {
   DollarSign,
-  FileText,
   TrendingUp,
   Target,
   Smartphone,
@@ -41,13 +39,15 @@ import {
   ArrowRight,
   Info,
   CheckCircle2,
-  ShoppingCart,
-  Receipt,
   Calculator,
   Zap,
   TrendingDown,
   ArrowUp,
   ArrowDown,
+  Send,
+  Eye,
+  MousePointerClick,
+  CreditCard,
 } from 'lucide-react';
 
 interface DashboardProps {
@@ -163,93 +163,126 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
             <Target className="w-6 h-6 text-primary" />
             Métricas Principales
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
-            {/* 1. Ventas Totales del Mes */}
-            <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-xl shadow-lg p-4 md:p-6 border-l-4 border-emerald-500">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+
+            {/* FORMULARIOS - Card Hero Expandida */}
+            <div className="col-span-2 md:col-span-1 md:row-span-2 bg-gradient-to-br from-[#3bc6dc] to-[#21a9c2] rounded-xl p-5 md:p-6 text-white shadow-xl">
+
+              {/* Header */}
               <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  <div className="bg-white rounded p-1.5">
-                    <img src="/logo_agenda_pro.png" alt="AgendaPro" className="h-6 w-auto" />
-                  </div>
-                  <ShoppingCart className="w-6 h-6 text-emerald-600" />
+                <div className="text-sm font-medium opacity-90">Formularios</div>
+                <div className="bg-white/20 rounded-full p-2">
+                  <Send className="w-5 h-5 md:w-6 md:h-6" />
                 </div>
-                <span className="bg-emerald-200 text-emerald-800 text-xs px-2 py-1 rounded-full font-semibold">
-                  AgendaPro
-                </span>
               </div>
-              <div className="text-4xl font-bold text-emerald-900 mb-2">
-                {formatCurrency(agendaProData.summary.totalSales)}
+
+              {/* Número principal */}
+              <div className="text-5xl md:text-6xl font-bold mb-2">84</div>
+
+              {/* CPA */}
+              <div className="text-sm opacity-90 mb-4">
+                CPA: {formatCurrency(metrics.costPerForm)}
               </div>
-              <div className="text-sm font-medium text-emerald-700 mb-1">
-                Ventas Totales del Mes
+
+              {/* Divider */}
+              <div className="border-t border-white/20 pt-3 mb-3">
+
+                {/* Mini estadísticas */}
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between text-xs md:text-sm">
+                    <span className="opacity-80">Tasa conversión</span>
+                    <span className="font-semibold">{formatPercentage(metrics.totalConversions / metrics.totalClicks * 100, 2)}</span>
+                  </div>
+                  <div className="flex items-center justify-between text-xs md:text-sm">
+                    <span className="opacity-80">De {formatNumber(metrics.totalClicks)} clics</span>
+                    <span className="font-semibold">84 forms</span>
+                  </div>
+                  <div className="flex items-center justify-between text-xs md:text-sm">
+                    <span className="opacity-80">Origen principal</span>
+                    <span className="font-semibold">Las Condes</span>
+                  </div>
+                </div>
+
               </div>
-              <div className="text-xs text-emerald-600 mb-3">
-                Ingresos totales de todas las fuentes
+
+              {/* Badge de tendencia */}
+              <div className="flex items-center gap-2 text-xs md:text-sm bg-white/10 rounded-lg px-3 py-2">
+                <TrendingUp className="w-4 h-4" />
+                <span>Excelente rendimiento</span>
               </div>
-              <div className="flex items-center gap-1 text-sm">
-                <TrendingUp className="w-4 h-4 text-emerald-600" />
-                <span className="font-semibold text-emerald-600">{agendaProData.summary.salesVariation}</span>
-                <span className="text-emerald-600 text-xs">vs mes anterior</span>
+
+              {/* Mini insight */}
+              <div className="mt-3 pt-3 border-t border-white/20">
+                <p className="text-xs opacity-90">
+                  <strong>7,69%</strong> de tasa de conversión supera el promedio del sector (3-5%)
+                </p>
               </div>
-              <div className="mt-2 text-xs text-emerald-600">
-                {agendaProData.summary.totalTransactions} transacciones totales
+
+            </div>
+
+            {/* Presupuesto - Normal */}
+            <div className="bg-white rounded-lg p-4 border border-gray-200">
+              <div className="flex items-center justify-between mb-2">
+                <div className="text-xs text-gray-600">Presupuesto</div>
+                <DollarSign className="w-4 h-4 text-gray-400" />
+              </div>
+              <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">{formatCurrency(metrics.totalBudget)}</div>
+              <div className="text-xs text-gray-500">Mensual</div>
+            </div>
+
+            {/* Gastado - Normal */}
+            <div className="bg-white rounded-lg p-4 border border-blue-200">
+              <div className="flex items-center justify-between mb-2">
+                <div className="text-xs text-gray-600">Gastado</div>
+                <CreditCard className="w-4 h-4 text-blue-400" />
+              </div>
+              <div className="text-2xl md:text-3xl font-bold text-blue-600 mb-1">{formatCurrency(metrics.totalCost)}</div>
+              <div className="text-xs text-blue-600 font-medium">{formatPercentage((metrics.totalCost / metrics.totalBudget) * 100, 1)} usado</div>
+            </div>
+
+            {/* Impresiones - Normal */}
+            <div className="bg-white rounded-lg p-4 border border-gray-200">
+              <div className="flex items-center justify-between mb-2">
+                <div className="text-xs text-gray-600">Impresiones</div>
+                <Eye className="w-4 h-4 text-gray-400" />
+              </div>
+              <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">{formatNumber(metrics.totalImpressions)}</div>
+              <div className="text-xs text-gray-500">Alcance total</div>
+            </div>
+
+            {/* Clics - Normal */}
+            <div className="bg-white rounded-lg p-4 border border-gray-200">
+              <div className="flex items-center justify-between mb-2">
+                <div className="text-xs text-gray-600">Clics</div>
+                <MousePointerClick className="w-4 h-4 text-gray-400" />
+              </div>
+              <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">{formatNumber(metrics.totalClicks)}</div>
+              <div className="text-xs text-gray-500">Interacciones</div>
+            </div>
+
+            {/* CTR - Expandido horizontal */}
+            <div className="col-span-2 bg-gradient-to-r from-emerald-50 to-green-50 rounded-lg p-4 border-2 border-emerald-200">
+              <div className="flex items-center justify-between">
+
+                <div>
+                  <div className="text-xs text-emerald-700 mb-1 font-medium">CTR</div>
+                  <div className="text-3xl md:text-4xl font-bold text-emerald-600">{formatPercentage(metrics.averageCTR, 1)}</div>
+                </div>
+
+                <div className="hidden md:block h-12 w-px bg-emerald-200 mx-4"></div>
+
+                <div className="text-right">
+                  <div className="text-xs text-emerald-700 mb-1">vs Promedio sector</div>
+                  <div className="text-lg md:text-xl font-semibold text-emerald-900">2-3x mejor</div>
+                </div>
+
+                <div className="bg-emerald-500 rounded-full p-2 ml-2">
+                  <TrendingUp className="w-5 h-5 md:w-6 md:h-6 text-white" />
+                </div>
+
               </div>
             </div>
 
-            {/* 2. Ticket Promedio */}
-            <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl shadow-lg p-4 md:p-6 border-l-4 border-purple-500">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  <div className="bg-white rounded p-1.5">
-                    <img src="/logo_agenda_pro.png" alt="AgendaPro" className="h-6 w-auto" />
-                  </div>
-                  <Receipt className="w-6 h-6 text-purple-600" />
-                </div>
-                <span className="bg-purple-200 text-purple-800 text-xs px-2 py-1 rounded-full font-semibold">
-                  Fijo
-                </span>
-              </div>
-              <div className="text-4xl font-bold text-purple-900 mb-2">
-                {formatCurrency(agendaProData.summary.averageTicket)}
-              </div>
-              <div className="text-sm font-medium text-purple-700 mb-1">
-                Ticket Promedio
-              </div>
-              <div className="text-xs text-purple-600 mb-3">
-                Valor promedio por transacción
-              </div>
-              <div className="flex items-center gap-1 text-sm">
-                <TrendingUp className="w-4 h-4 text-purple-600" />
-                <span className="font-semibold text-purple-600">{agendaProData.summary.ticketVariation}</span>
-                <span className="text-purple-600 text-xs">vs mes anterior</span>
-              </div>
-              <div className="mt-2 text-xs text-purple-600">
-                Base para cálculo de ingresos estimados
-              </div>
-            </div>
-
-            {/* 3. Presupuesto Invertido */}
-            <KPICard
-              label="Presupuesto Invertido"
-              value={formatCurrency(metrics.totalCost)}
-              explanation="Dinero gastado en Google Ads durante noviembre para mostrar tus anuncios"
-              context={`De ${formatCurrency(metrics.totalBudget)} presupuestado`}
-              icon={<DollarSign className="w-6 h-6" />}
-              confirmed={true}
-              badge="Confirmado"
-            />
-
-            {/* 4. Formularios Enviados (DESTACADO) */}
-            <KPICard
-              label="Formularios Enviados"
-              value={metrics.totalConversions}
-              highlighted={true}
-              explanation="Personas que llenaron el formulario de contacto gracias a Google Ads"
-              context="Potenciales clientes interesados"
-              icon={<FileText className="w-6 h-6" />}
-              confirmed={true}
-              badge="Métrica Principal"
-            />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 mt-4">

@@ -231,90 +231,100 @@ export const keywordsData: KeywordData[] = [
 export const searchTermsData: SearchTermData[] = [
   {
     searchTerm: 'tatuajes en santiago centro',
+    triggeredKeyword: 'tatuajes santiago',
     impressions: 892,
     clicks: 71,
-    conversions: 9,   // Ajustado (antes 19)
+    conversions: 9,
     cost: 18176,
     ctr: 8.0,
     conversionRate: 12.7,
   },
   {
     searchTerm: 'mejor estudio tatuajes santiago',
+    triggeredKeyword: 'tatuajes santiago',
     impressions: 734,
     clicks: 58,
-    conversions: 8,   // Ajustado (antes 18)
+    conversions: 8,
     cost: 14848,
     ctr: 7.9,
     conversionRate: 13.8,
   },
   {
     searchTerm: 'estudio de tatuajes providencia',
+    triggeredKeyword: 'tatuajes providencia',
     impressions: 678,
     clicks: 54,
-    conversions: 7,   // Ajustado (antes 16)
+    conversions: 7,
     cost: 13824,
     ctr: 8.0,
     conversionRate: 13.0,
   },
   {
     searchTerm: 'tatuajes pequeños precio',
+    triggeredKeyword: 'tatuajes pequeños',
     impressions: 623,
     clicks: 49,
-    conversions: 6,   // Ajustado (antes 14)
+    conversions: 6,
     cost: 12544,
     ctr: 7.9,
     conversionRate: 12.2,
   },
   {
     searchTerm: 'piercing oreja santiago',
+    triggeredKeyword: 'piercing santiago',
     impressions: 564,
     clicks: 45,
-    conversions: 5,   // Ajustado (antes 12)
+    conversions: 5,
     cost: 11520,
     ctr: 8.0,
     conversionRate: 11.1,
   },
   {
     searchTerm: 'tatuajes blackwork',
+    triggeredKeyword: 'tatuajes blackwork',
     impressions: 512,
     clicks: 41,
-    conversions: 5,   // Ajustado (antes 12)
+    conversions: 5,
     cost: 10496,
     ctr: 8.0,
     conversionRate: 12.2,
   },
   {
     searchTerm: 'tatuajes realistas santiago',
+    triggeredKeyword: 'tatuajes realistas',
     impressions: 492,
     clicks: 39,
-    conversions: 4,   // Ajustado (antes 11)
+    conversions: 4,
     cost: 9984,
     ctr: 7.9,
     conversionRate: 10.3,
   },
   {
     searchTerm: 'estudio piercing providencia',
+    triggeredKeyword: 'piercing providencia',
     impressions: 389,
     clicks: 31,
-    conversions: 4,   // Ajustado (antes 10)
+    conversions: 4,
     cost: 7936,
     ctr: 8.0,
     conversionRate: 12.9,
   },
   {
     searchTerm: 'piercing nariz santiago',
+    triggeredKeyword: 'piercing nariz',
     impressions: 456,
     clicks: 36,
-    conversions: 3,   // Ajustado (antes 9)
+    conversions: 3,
     cost: 9216,
     ctr: 7.9,
     conversionRate: 8.3,
   },
   {
     searchTerm: 'piercing industrial',
+    triggeredKeyword: 'piercing industrial',
     impressions: 345,
     clicks: 28,
-    conversions: 3,   // Ajustado (antes 7)
+    conversions: 3,
     cost: 7168,
     ctr: 8.1,
     conversionRate: 10.7,

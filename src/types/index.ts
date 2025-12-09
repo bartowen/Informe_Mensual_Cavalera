@@ -35,6 +35,7 @@ export interface AdData {
 
 export interface SearchTermData {
   searchTerm: string;
+  triggeredKeyword: string;
   impressions: number;
   clicks: number;
   conversions: number;
