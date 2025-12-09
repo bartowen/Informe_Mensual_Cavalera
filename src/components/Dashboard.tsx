@@ -44,7 +44,10 @@ import {
   ShoppingCart,
   Receipt,
   Calculator,
-  PauseCircle,
+  Zap,
+  TrendingDown,
+  ArrowUp,
+  ArrowDown,
 } from 'lucide-react';
 
 interface DashboardProps {
@@ -134,7 +137,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
   return (
     <div>
       {/* Period Header for Google Ads Tab */}
-      <div className="bg-white rounded-lg shadow-md p-6 mb-6 border-l-4 border-indigo-600">
+      <div className="bg-white rounded-lg shadow-md p-4 md:p-6 mb-4 md:mb-6 border-l-4 border-indigo-600">
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-2xl font-bold text-gray-900 mb-1">
@@ -160,9 +163,9 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
             <Target className="w-6 h-6 text-primary" />
             Métricas Principales
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
             {/* 1. Ventas Totales del Mes */}
-            <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-xl shadow-lg p-6 border-l-4 border-emerald-500">
+            <div className="bg-gradient-to-br from-emerald-50 to-emerald-100 rounded-xl shadow-lg p-4 md:p-6 border-l-4 border-emerald-500">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
                   <div className="bg-white rounded p-1.5">
@@ -194,7 +197,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
             </div>
 
             {/* 2. Ticket Promedio */}
-            <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl shadow-lg p-6 border-l-4 border-purple-500">
+            <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl shadow-lg p-4 md:p-6 border-l-4 border-purple-500">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center gap-2">
                   <div className="bg-white rounded p-1.5">
@@ -249,9 +252,9 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
             />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 mt-4">
             {/* 5. Costo por Formulario */}
-            <div className="bg-white rounded-xl shadow-lg p-6 border-l-4 border-indigo-500">
+            <div className="bg-white rounded-xl shadow-lg p-4 md:p-6 border-l-4 border-indigo-500">
               <div className="flex items-center justify-between mb-3">
                 <Calculator className="w-6 h-6 text-indigo-600" />
                 <span className="bg-indigo-100 text-indigo-800 text-xs px-2 py-1 rounded-full font-semibold">
@@ -276,7 +279,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
             </div>
 
             {/* 6. ROI Estimado */}
-            <div className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-xl shadow-lg p-6 border-l-4 border-amber-500">
+            <div className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-xl shadow-lg p-4 md:p-6 border-l-4 border-amber-500">
               <div className="flex items-center justify-between mb-3">
                 <Target className="w-6 h-6 text-amber-600" />
                 <span className="bg-amber-200 text-amber-800 text-xs px-2 py-1 rounded-full font-semibold">
@@ -302,7 +305,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
             </div>
 
             {/* 7. Ingresos Estimados */}
-            <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl shadow-lg p-6 border-l-4 border-orange-500">
+            <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl shadow-lg p-4 md:p-6 border-l-4 border-orange-500">
               <div className="flex items-center justify-between mb-3">
                 <TrendingUp className="w-6 h-6 text-orange-600" />
                 <span className="bg-orange-200 text-orange-800 text-xs px-2 py-1 rounded-full font-semibold">
@@ -458,118 +461,256 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
           <CampaignsTable campaigns={campaignsData} />
         </section>
 
-        {/* NUEVO: Optimización de Presupuesto (reemplaza "Campaña Pausada") */}
+        {/* Programación de Anuncios - Por Día y Por Hora */}
         <section className="mb-8">
-          <div className="bg-white rounded-xl shadow-lg p-6">
-            <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-              <TrendingUp className="w-6 h-6 text-emerald-600" />
-              💰 Optimización de Presupuesto: Pausas Estratégicas
-            </h3>
+          <SimpleScheduleCharts dayData={dayOfWeekData} hourData={hourOfDayData} />
+        </section>
 
-            <p className="text-sm text-gray-700 mb-4">
-              Basándonos en el análisis de rendimiento diario, implementamos <strong>pausas estratégicas</strong> en
-              los días de menor conversión para maximizar el ROI.
-            </p>
-
-            {/* Análisis de días */}
-            <div className="grid md:grid-cols-2 gap-4 mb-6">
-              {/* Días buenos */}
-              <div className="bg-gradient-to-br from-emerald-50 to-green-50 rounded-lg p-5 border-2 border-emerald-300">
-                <h4 className="font-bold text-emerald-900 mb-3 flex items-center gap-2">
-                  <CheckCircle2 className="w-5 h-5 text-emerald-600" />
-                  ✅ Días de Alto Rendimiento
+        {/* NUEVO: Optimización de Presupuesto CON DATOS REALES DEL CSV */}
+        <section className="mb-8">
+          <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg p-4 border-l-4 border-amber-500">
+            <div className="flex items-start gap-3">
+              <Zap className="w-6 h-6 text-amber-600 flex-shrink-0 mt-0.5" />
+              <div className="flex-1">
+                <h4 className="font-bold text-amber-900 mb-2 flex items-center gap-2">
+                  💰 Optimización de Presupuesto: Pausas Estratégicas
                 </h4>
-                <div className="space-y-3">
-                  <div className="bg-white rounded p-3 border border-emerald-200">
-                    <div className="text-xs text-emerald-700 mb-1">Jueves - Domingo</div>
-                    <div className="text-2xl font-bold text-emerald-600">Activos</div>
-                    <div className="text-xs text-emerald-600 mt-1">
-                      Mayor intención de compra, más conversiones
-                    </div>
-                  </div>
-                  <div className="text-xs text-emerald-800 bg-emerald-100 rounded p-2">
-                    <strong>📊 Estrategia:</strong> Aumentar pujas en estos días para maximizar visibilidad
+
+                <p className="text-sm text-amber-900 mb-3">
+                  Se analizó el <strong>rendimiento por día y hora</strong> durante Noviembre
+                  (<strong>84 formularios totales</strong>) para identificar los momentos con
+                  mejor y peor conversión, y optimizar la distribución del presupuesto mediante
+                  <strong> ajustes de puja estratégicos</strong>.
+                </p>
+
+                {/* Tabla de Ajustes de Puja SIMPLIFICADA */}
+                <div className="bg-white rounded-lg overflow-hidden border border-amber-200 mb-4">
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-sm">
+                      <thead className="bg-amber-100 border-b-2 border-amber-300">
+                        <tr>
+                          <th className="px-4 py-3 text-left font-semibold text-amber-900">
+                            Día y Horario
+                          </th>
+                          <th className="px-4 py-3 text-center font-semibold text-amber-900">
+                            Ajuste de Puja
+                          </th>
+                          <th className="px-4 py-3 text-left font-semibold text-amber-900">
+                            Estrategia
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {/* Mejores horarios - Aumentos de puja */}
+                        <tr className="border-b hover:bg-green-50 bg-green-50/50">
+                          <td className="px-4 py-3 text-gray-900">
+                            <span className="font-medium">Viernes 8PM-12AM</span>
+                          </td>
+                          <td className="px-4 py-3 text-center">
+                            <span className="inline-flex items-center gap-1 bg-emerald-100 text-emerald-800 px-3 py-1.5 rounded-full text-sm font-bold">
+                              <TrendingUp className="w-4 h-4" />
+                              +50%
+                            </span>
+                          </td>
+                          <td className="px-4 py-3">
+                            <span className="inline-flex items-center gap-1 text-sm text-emerald-700 font-semibold">
+                              🔥 Horario Prime
+                            </span>
+                          </td>
+                        </tr>
+
+                        <tr className="border-b hover:bg-green-50 bg-green-50/50">
+                          <td className="px-4 py-3 text-gray-900">
+                            <span className="font-medium">Sábado 12AM-3AM</span>
+                          </td>
+                          <td className="px-4 py-3 text-center">
+                            <span className="inline-flex items-center gap-1 bg-emerald-100 text-emerald-800 px-3 py-1.5 rounded-full text-sm font-bold">
+                              <TrendingUp className="w-4 h-4" />
+                              +40%
+                            </span>
+                          </td>
+                          <td className="px-4 py-3">
+                            <span className="inline-flex items-center gap-1 text-sm text-emerald-700 font-semibold">
+                              🔥 Peak Madrugada
+                            </span>
+                          </td>
+                        </tr>
+
+                        <tr className="border-b hover:bg-green-50 bg-green-50/50">
+                          <td className="px-4 py-3 text-gray-900">
+                            <span className="font-medium">Domingo 12AM-3AM</span>
+                          </td>
+                          <td className="px-4 py-3 text-center">
+                            <span className="inline-flex items-center gap-1 bg-emerald-100 text-emerald-800 px-3 py-1.5 rounded-full text-sm font-bold">
+                              <TrendingUp className="w-4 h-4" />
+                              +35%
+                            </span>
+                          </td>
+                          <td className="px-4 py-3">
+                            <span className="inline-flex items-center gap-1 text-sm text-emerald-700 font-semibold">
+                              ⭐ Excelente
+                            </span>
+                          </td>
+                        </tr>
+
+                        <tr className="border-b hover:bg-green-50">
+                          <td className="px-4 py-3 text-gray-900">
+                            <span className="font-medium">Viernes 11AM-4PM</span>
+                          </td>
+                          <td className="px-4 py-3 text-center">
+                            <span className="inline-flex items-center gap-1 bg-blue-100 text-blue-800 px-3 py-1.5 rounded-full text-sm font-bold">
+                              <ArrowUp className="w-4 h-4" />
+                              +25%
+                            </span>
+                          </td>
+                          <td className="px-4 py-3">
+                            <span className="inline-flex items-center gap-1 text-sm text-blue-700 font-semibold">
+                              ✅ Bueno
+                            </span>
+                          </td>
+                        </tr>
+
+                        {/* Horarios con reducción de puja */}
+                        <tr className="border-b hover:bg-red-50 bg-red-50/50">
+                          <td className="px-4 py-3 text-gray-900">
+                            <span className="font-medium">Martes 12AM-1AM</span>
+                          </td>
+                          <td className="px-4 py-3 text-center">
+                            <span className="inline-flex items-center gap-1 bg-red-100 text-red-800 px-3 py-1.5 rounded-full text-sm font-bold">
+                              <TrendingDown className="w-4 h-4" />
+                              -50%
+                            </span>
+                          </td>
+                          <td className="px-4 py-3">
+                            <span className="inline-flex items-center gap-1 text-sm text-red-700 font-semibold">
+                              ❌ Muy bajo
+                            </span>
+                          </td>
+                        </tr>
+
+                        <tr className="border-b hover:bg-red-50 bg-red-50/50">
+                          <td className="px-4 py-3 text-gray-900">
+                            <span className="font-medium">Martes 6AM-12AM</span>
+                          </td>
+                          <td className="px-4 py-3 text-center">
+                            <span className="inline-flex items-center gap-1 bg-orange-100 text-orange-800 px-3 py-1.5 rounded-full text-sm font-bold">
+                              <ArrowDown className="w-4 h-4" />
+                              -25%
+                            </span>
+                          </td>
+                          <td className="px-4 py-3">
+                            <span className="inline-flex items-center gap-1 text-sm text-orange-700 font-semibold">
+                              ⚠️ Reducido
+                            </span>
+                          </td>
+                        </tr>
+
+                        <tr className="border-b hover:bg-red-50 bg-red-50/50">
+                          <td className="px-4 py-3 text-gray-900">
+                            <span className="font-medium">Jueves 6AM-12AM</span>
+                          </td>
+                          <td className="px-4 py-3 text-center">
+                            <span className="inline-flex items-center gap-1 bg-orange-100 text-orange-800 px-3 py-1.5 rounded-full text-sm font-bold">
+                              <ArrowDown className="w-4 h-4" />
+                              -20%
+                            </span>
+                          </td>
+                          <td className="px-4 py-3">
+                            <span className="inline-flex items-center gap-1 text-sm text-orange-700 font-semibold">
+                              ⚠️ Reducido
+                            </span>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                 </div>
-              </div>
 
-              {/* Días malos */}
-              <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-lg p-5 border-2 border-amber-300">
-                <h4 className="font-bold text-amber-900 mb-3 flex items-center gap-2">
-                  <PauseCircle className="w-5 h-5 text-amber-600" />
-                  ⏸️ Días de Bajo Rendimiento
-                </h4>
-                <div className="space-y-3">
-                  <div className="bg-white rounded p-3 border border-amber-200">
-                    <div className="text-xs text-amber-700 mb-1">Lunes - Miércoles</div>
-                    <div className="text-2xl font-bold text-amber-600">Pausados</div>
-                    <div className="text-xs text-amber-600 mt-1">
-                      Menor intención de compra, ROI reducido
-                    </div>
+                {/* Insights del análisis */}
+                <div className="grid md:grid-cols-2 gap-3 mb-3">
+                  <div className="bg-emerald-50 rounded-lg p-3 border-l-4 border-emerald-500">
+                    <h5 className="font-semibold text-emerald-900 mb-1 text-sm flex items-center gap-2">
+                      <TrendingUp className="w-4 h-4" />
+                      🔥 Horarios Peak (Aumentos de puja)
+                    </h5>
+                    <ul className="text-xs text-emerald-900 space-y-1 ml-4">
+                      <li>• <strong>Viernes noche (8PM-12AM):</strong> +50% puja</li>
+                      <li>• <strong>Sábado madrugada (12AM-3AM):</strong> +40% puja</li>
+                      <li>• <strong>Domingo madrugada (12AM-3AM):</strong> +35% puja</li>
+                      <li>• <strong>Viernes día (11AM-4PM):</strong> +25% puja</li>
+                    </ul>
                   </div>
-                  <div className="text-xs text-amber-800 bg-amber-100 rounded p-2">
-                    <strong>💡 Decisión:</strong> Pausar campaña para conservar presupuesto y evitar gasto ineficiente
+
+                  <div className="bg-red-50 rounded-lg p-3 border-l-4 border-red-500">
+                    <h5 className="font-semibold text-red-900 mb-1 text-sm flex items-center gap-2">
+                      <TrendingDown className="w-4 h-4" />
+                      ⚠️ Horarios Bajos (Reducciones de puja)
+                    </h5>
+                    <ul className="text-xs text-red-900 space-y-1 ml-4">
+                      <li>• <strong>Martes madrugada (12AM-1AM):</strong> -50% puja</li>
+                      <li>• <strong>Martes día (6AM-12AM):</strong> -25% puja</li>
+                      <li>• <strong>Jueves día (6AM-12AM):</strong> -20% puja</li>
+                    </ul>
                   </div>
                 </div>
-              </div>
-            </div>
 
-            {/* Días sin impresiones */}
-            <div className="bg-blue-50 rounded-lg p-4 border-l-4 border-blue-500 mb-4">
-              <h4 className="font-bold text-blue-900 mb-2 text-sm">
-                📅 Días con Impresiones = 0 en Noviembre:
-              </h4>
-              <div className="flex flex-wrap gap-2">
-                <span className="bg-blue-200 text-blue-900 px-3 py-1 rounded-full text-xs font-semibold">
-                  Lun 10
-                </span>
-                <span className="bg-blue-200 text-blue-900 px-3 py-1 rounded-full text-xs font-semibold">
-                  Mié 12
-                </span>
-                <span className="bg-blue-200 text-blue-900 px-3 py-1 rounded-full text-xs font-semibold">
-                  Dom 17
-                </span>
-                <span className="bg-blue-200 text-blue-900 px-3 py-1 rounded-full text-xs font-semibold">
-                  Mié 19
-                </span>
-                <span className="bg-blue-200 text-blue-900 px-3 py-1 rounded-full text-xs font-semibold">
-                  Lun 24
-                </span>
-                <span className="bg-blue-200 text-blue-900 px-3 py-1 rounded-full text-xs font-semibold">
-                  Mié 26
-                </span>
-              </div>
-              <p className="text-xs text-blue-800 mt-2">
-                <strong>Total:</strong> 6 días sin actividad (campaña pausada estratégicamente)
-              </p>
-            </div>
+                {/* Estrategia implementada */}
+                <div className="bg-gradient-to-r from-blue-100 to-cyan-100 rounded-lg p-4 border-2 border-blue-300">
+                  <h5 className="font-semibold text-blue-900 mb-2 text-sm flex items-center gap-2">
+                    <Target className="w-5 h-5" />
+                    🎯 Estrategia de Pujas por Día y Hora:
+                  </h5>
+                  <div className="grid md:grid-cols-3 gap-2 text-xs">
+                    <div className="bg-white rounded p-2 border border-blue-200">
+                      <div className="font-bold text-emerald-700 mb-1">🔥 Horarios Prime</div>
+                      <div className="text-gray-800">
+                        Viernes noche + Sábado/Domingo madrugada
+                      </div>
+                      <div className="text-emerald-600 font-semibold mt-1">
+                        Pujas: +35% a +50%
+                      </div>
+                    </div>
 
-            {/* Resultados de la estrategia */}
-            <div className="grid grid-cols-3 gap-3 mb-4">
-              <div className="bg-white rounded-lg p-3 border-2 border-emerald-200 text-center">
-                <div className="text-xs text-gray-600 mb-1">Presupuesto Ahorrado</div>
-                <div className="text-2xl font-bold text-emerald-600">~$60k</div>
-                <div className="text-xs text-emerald-600 mt-1">En días de bajo ROI</div>
-              </div>
-              <div className="bg-white rounded-lg p-3 border-2 border-blue-200 text-center">
-                <div className="text-xs text-gray-600 mb-1">Días Activos</div>
-                <div className="text-2xl font-bold text-blue-600">24/30</div>
-                <div className="text-xs text-blue-600 mt-1">80% del mes</div>
-              </div>
-              <div className="bg-white rounded-lg p-3 border-2 border-purple-200 text-center">
-                <div className="text-xs text-gray-600 mb-1">ROI Mejorado</div>
-                <div className="text-2xl font-bold text-purple-600">+15%</div>
-                <div className="text-xs text-purple-600 mt-1">Vs campaña 24/7</div>
-              </div>
-            </div>
+                    <div className="bg-white rounded p-2 border border-blue-200">
+                      <div className="font-bold text-blue-700 mb-1">✅ Horarios Buenos</div>
+                      <div className="text-gray-800">
+                        Viernes día + Sábado/Domingo día
+                      </div>
+                      <div className="text-blue-600 font-semibold mt-1">
+                        Pujas: +10% a +25%
+                      </div>
+                    </div>
 
-            {/* Insight final */}
-            <div className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-lg p-4 border-l-4 border-indigo-500">
-              <p className="text-sm text-indigo-900">
-                <strong>🎯 Conclusión:</strong> Pausar la campaña en días de bajo rendimiento (principalmente Lun-Mié)
-                permite concentrar el presupuesto en días con mayor intención de compra (Jue-Dom), mejorando el CPA
-                promedio y maximizando las conversiones con el mismo presupuesto mensual.
-              </p>
+                    <div className="bg-white rounded p-2 border border-blue-200">
+                      <div className="font-bold text-orange-700 mb-1">⚠️ Horarios Reducidos</div>
+                      <div className="text-gray-800">
+                        Martes y Jueves (todo el día)
+                      </div>
+                      <div className="text-orange-600 font-semibold mt-1">
+                        Pujas: -20% a -50%
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Resultado esperado */}
+                <div className="mt-3 flex items-start gap-2 p-3 bg-green-50 rounded-lg border border-green-200">
+                  <CheckCircle2 className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm font-semibold text-green-900 mb-1">
+                      ✅ Resultado de la Optimización:
+                    </p>
+                    <p className="text-sm text-green-800">
+                      El presupuesto se concentra automáticamente en los momentos de mayor
+                      conversión (Viernes noche, fines de semana) mediante ajustes de puja.
+                      Los horarios de bajo rendimiento (Martes, Jueves madrugada) tienen pujas
+                      reducidas para minimizar gasto ineficiente. Esto maximiza ROI sin cambiar
+                      el presupuesto total mensual.
+                    </p>
+                  </div>
+                </div>
+
+              </div>
             </div>
           </div>
         </section>
@@ -581,7 +722,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
 
         {/* Ubicación y Dispositivos */}
         <section className="mb-8">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
             <div className="lg:col-span-2">
               <SimpleLocationCards data={locationsData} />
             </div>
@@ -640,11 +781,6 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
         {/* Keywords y Términos de Búsqueda */}
         <section className="mb-8">
           <KeywordsTable keywords={keywordsData} searchTerms={searchTermsData} />
-        </section>
-
-        {/* Programación de Anuncios - Simplificado */}
-        <section className="mb-8">
-          <SimpleScheduleCharts dayData={dayOfWeekData} hourData={hourOfDayData} />
         </section>
 
         {/* Insights y Recomendaciones */}

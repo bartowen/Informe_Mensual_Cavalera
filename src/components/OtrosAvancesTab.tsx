@@ -40,112 +40,105 @@ const OtrosAvancesTab: React.FC = () => {
               <span className="text-xs">22 Nov - 9 Dic 2025: Sistema validado y funcionando correctamente</span>
             </p>
 
-            {/* Resultados del periodo de prueba */}
+            {/* Resultados del periodo de prueba - DATOS REALES AGENDAPRO */}
             <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-3">
               <div className="bg-white rounded-lg p-3 border border-green-200">
-                <div className="text-xs text-gray-600 mb-1">Formularios</div>
-                <div className="text-2xl font-bold text-green-600">278</div>
-                <div className="text-xs text-gray-500">Total rastreados</div>
+                <div className="text-xs text-gray-600 mb-1">Total Solicitudes</div>
+                <div className="text-2xl font-bold text-green-600">91</div>
+                <div className="text-xs text-gray-500">22 Nov - 9 Dic</div>
               </div>
 
               <div className="bg-white rounded-lg p-3 border border-blue-200">
-                <div className="text-xs text-gray-600 mb-1">Fuentes</div>
-                <div className="text-2xl font-bold text-blue-600">8+</div>
-                <div className="text-xs text-gray-500">Identificadas</div>
+                <div className="text-xs text-gray-600 mb-1">Agendados</div>
+                <div className="text-2xl font-bold text-blue-600">0</div>
+                <div className="text-xs text-gray-500">En seguimiento</div>
               </div>
 
               <div className="bg-white rounded-lg p-3 border border-purple-200">
-                <div className="text-xs text-gray-600 mb-1">Precisión</div>
-                <div className="text-2xl font-bold text-purple-600">87%</div>
-                <div className="text-xs text-gray-500">Fuentes conocidas</div>
+                <div className="text-xs text-gray-600 mb-1">Conversión</div>
+                <div className="text-2xl font-bold text-purple-600">0,0%</div>
+                <div className="text-xs text-gray-500">Solicitud → Agendado</div>
               </div>
 
               <div className="bg-white rounded-lg p-3 border border-orange-200">
-                <div className="text-xs text-gray-600 mb-1">Google Ads</div>
-                <div className="text-2xl font-bold text-orange-600">35</div>
-                <div className="text-xs text-gray-500">Conversiones CPC</div>
+                <div className="text-xs text-gray-600 mb-1">Fuentes</div>
+                <div className="text-2xl font-bold text-orange-600">4+</div>
+                <div className="text-xs text-gray-500">Identificadas</div>
               </div>
             </div>
 
-            {/* Desglose de fuentes */}
+            {/* Desglose de fuentes - DATOS REALES AGENDAPRO */}
             <div className="mt-4">
               <h4 className="text-sm font-semibold text-gray-900 mb-3">
                 📈 Distribución por Fuente (22 Nov - 9 Dic):
               </h4>
               <div className="space-y-2">
-                {/* Instagram */}
+                {/* Orgánico */}
                 <div className="flex items-center gap-2">
-                  <div className="w-32 text-sm text-gray-700">Instagram</div>
-                  <div className="flex-1 bg-gray-200 rounded-full h-6 overflow-hidden">
-                    <div
-                      className="bg-gradient-to-r from-purple-500 to-pink-500 h-full flex items-center justify-end px-2"
-                      style={{ width: '31.29%' }}
-                    >
-                      <span className="text-xs font-semibold text-white">87 (31%)</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Google Organic */}
-                <div className="flex items-center gap-2">
-                  <div className="w-32 text-sm text-gray-700">Google Orgánico</div>
+                  <div className="w-28 text-sm text-gray-700">Orgánico</div>
                   <div className="flex-1 bg-gray-200 rounded-full h-6 overflow-hidden">
                     <div
                       className="bg-gradient-to-r from-green-500 to-emerald-500 h-full flex items-center justify-end px-2"
-                      style={{ width: '28.42%' }}
+                      style={{ width: '37.36%' }}
                     >
-                      <span className="text-xs font-semibold text-white">79 (28%)</span>
+                      <span className="text-xs font-semibold text-white">34 (37%)</span>
                     </div>
                   </div>
+                  <div className="text-xs text-gray-600 w-16 text-right">0 agend.</div>
                 </div>
 
-                {/* Not Set */}
+                {/* Instagram */}
                 <div className="flex items-center gap-2">
-                  <div className="w-32 text-sm text-gray-700">No identificado</div>
+                  <div className="w-28 text-sm text-gray-700">Instagram</div>
                   <div className="flex-1 bg-gray-200 rounded-full h-6 overflow-hidden">
                     <div
-                      className="bg-gray-400 h-full flex items-center justify-end px-2"
-                      style={{ width: '13.67%' }}
+                      className="bg-gradient-to-r from-purple-500 to-pink-500 h-full flex items-center justify-end px-2"
+                      style={{ width: '32.97%' }}
                     >
-                      <span className="text-xs font-semibold text-white">38 (14%)</span>
+                      <span className="text-xs font-semibold text-white">30 (33%)</span>
                     </div>
                   </div>
+                  <div className="text-xs text-gray-600 w-16 text-right">0 agend.</div>
                 </div>
 
-                {/* Google CPC */}
+                {/* Google */}
                 <div className="flex items-center gap-2">
-                  <div className="w-32 text-sm text-gray-700">Google Ads</div>
+                  <div className="w-28 text-sm text-gray-700">Google</div>
                   <div className="flex-1 bg-gray-200 rounded-full h-6 overflow-hidden">
                     <div
                       className="bg-gradient-to-r from-blue-500 to-indigo-500 h-full flex items-center justify-end px-2"
-                      style={{ width: '12.59%' }}
+                      style={{ width: '23.08%' }}
                     >
-                      <span className="text-xs font-semibold text-white">35 (13%)</span>
+                      <span className="text-xs font-semibold text-white">21 (23%)</span>
                     </div>
                   </div>
+                  <div className="text-xs text-gray-600 w-16 text-right">0 agend.</div>
                 </div>
 
-                {/* IG Social */}
+                {/* Meta */}
                 <div className="flex items-center gap-2">
-                  <div className="w-32 text-sm text-gray-700">IG / Social</div>
+                  <div className="w-28 text-sm text-gray-700">Meta</div>
                   <div className="flex-1 bg-gray-200 rounded-full h-6 overflow-hidden">
                     <div
-                      className="bg-gradient-to-r from-pink-500 to-rose-500 h-full flex items-center justify-end px-2"
-                      style={{ width: '11.87%' }}
+                      className="bg-gradient-to-r from-indigo-500 to-purple-500 h-full flex items-center justify-end px-2"
+                      style={{ width: '6.59%' }}
                     >
-                      <span className="text-xs font-semibold text-white">33 (12%)</span>
+                      <span className="text-xs font-semibold text-white">6 (7%)</span>
                     </div>
                   </div>
+                  <div className="text-xs text-gray-600 w-16 text-right">0 agend.</div>
                 </div>
               </div>
             </div>
 
-            {/* Nota importante */}
+            {/* Nota importante - ACTUALIZADA */}
             <div className="mt-4 p-3 bg-blue-50 rounded-lg border-l-4 border-blue-500">
               <p className="text-xs text-blue-900">
-                <strong>💡 Insight clave:</strong> Instagram es tu canal #1 (31% de formularios).
-                Google Ads genera el 13% directo, pero asiste a muchos más en el journey del usuario.
-                El tracking permite optimizar inversión en cada canal.
+                <strong>💡 Análisis del período de prueba:</strong> Se recibieron 91 solicitudes
+                de contacto entre el 22 de Nov y 9 de Dic. El origen principal es
+                <strong> Orgánico (37%)</strong>, seguido por <strong>Instagram (33%)</strong> y
+                <strong> Google (23%)</strong>. Actualmente los agendamientos se confirman por otros
+                canales (WhatsApp, llamadas), por lo que aparecen como 0 en el sistema automático.
               </p>
             </div>
           </div>
