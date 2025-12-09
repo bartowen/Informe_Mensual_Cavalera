@@ -1,7 +1,7 @@
 import React from 'react';
 import { KeywordData, SearchTermData } from '../types';
 import { formatCurrency, formatNumber, formatSimplePercentage } from '../utils/formatters';
-import { Target, Search, HelpCircle } from 'lucide-react';
+import { Target, Search, HelpCircle, Key } from 'lucide-react';
 
 interface KeywordsTableProps {
   keywords: KeywordData[];
@@ -17,19 +17,6 @@ const KeywordsTable: React.FC<KeywordsTableProps> = ({ keywords, searchTerms }) 
   const topSearchTerms = [...searchTerms]
     .sort((a, b) => b.conversions - a.conversions)
     .slice(0, 10);
-
-  const getPerformanceBadge = (conversionRate: number) => {
-    if (conversionRate >= 6) {
-      return <span className="badge-success">Excelente</span>;
-    }
-    if (conversionRate >= 4) {
-      return <span className="badge-primary">Bueno</span>;
-    }
-    if (conversionRate >= 2) {
-      return <span className="badge-warning">Regular</span>;
-    }
-    return <span className="badge-danger">Bajo</span>;
-  };
 
   return (
     <div className="space-y-6">
@@ -85,29 +72,6 @@ const KeywordsTable: React.FC<KeywordsTableProps> = ({ keywords, searchTerms }) 
             </div>
           </div>
         </div>
-
-        {/* Rangos de rendimiento */}
-        <div className="mt-4 p-4 bg-gradient-to-r from-emerald-50 to-green-50 rounded-lg border border-emerald-200">
-          <div className="font-semibold text-emerald-900 mb-2 text-sm">📊 Rangos de Rendimiento:</div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
-            <div className="flex items-center gap-2">
-              <span className="badge-success px-2 py-1">Excelente</span>
-              <span className="text-emerald-800">≥6% conversión</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="badge-primary px-2 py-1">Bueno</span>
-              <span className="text-blue-800">4-6% conversión</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="badge-warning px-2 py-1">Regular</span>
-              <span className="text-amber-800">2-4% conversión</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="badge-danger px-2 py-1">Bajo</span>
-              <span className="text-red-800">&lt;2% conversión</span>
-            </div>
-          </div>
-        </div>
       </div>
 
       {/* Tablas */}
@@ -129,6 +93,9 @@ const KeywordsTable: React.FC<KeywordsTableProps> = ({ keywords, searchTerms }) 
               <tr>
                 <th className="px-3 py-2 text-left font-semibold text-textPrimary">
                   Palabra Clave
+                </th>
+                <th className="px-3 py-2 text-center font-semibold text-textPrimary">
+                  Palabra Clave Activada
                 </th>
                 <th className="px-3 py-2 text-right font-semibold text-textPrimary">
                   Impr.
@@ -162,6 +129,12 @@ const KeywordsTable: React.FC<KeywordsTableProps> = ({ keywords, searchTerms }) 
                         {keyword.matchType}
                       </span>
                     </div>
+                  </td>
+                  <td className="px-3 py-3 text-center">
+                    <span className="inline-flex items-center gap-1 bg-purple-100 text-purple-900 px-2 py-1 rounded-full text-xs font-semibold">
+                      <Key className="w-3 h-3" />
+                      {keyword.keyword}
+                    </span>
                   </td>
                   <td className="px-3 py-3 text-right text-textSecondary">
                     {formatNumber(keyword.impressions)}
@@ -215,9 +188,6 @@ const KeywordsTable: React.FC<KeywordsTableProps> = ({ keywords, searchTerms }) 
                 <th className="px-3 py-2 text-right font-semibold text-textPrimary">
                   CTR
                 </th>
-                <th className="px-3 py-2 text-right font-semibold text-textPrimary">
-                  Rendimiento
-                </th>
               </tr>
             </thead>
             <tbody>
@@ -243,15 +213,30 @@ const KeywordsTable: React.FC<KeywordsTableProps> = ({ keywords, searchTerms }) 
                   <td className="px-3 py-3 text-right text-textSecondary">
                     {formatSimplePercentage(term.ctr)}
                   </td>
-                  <td className="px-3 py-3 text-right">
-                    {getPerformanceBadge(term.conversionRate)}
-                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
       </div>
+      </div>
+
+      {/* Nota explicativa sobre Palabra Clave Activada */}
+      <div className="bg-purple-50 rounded-lg p-4 border-l-4 border-purple-500">
+        <div className="flex items-start gap-2">
+          <Key className="w-5 h-5 text-purple-600 flex-shrink-0 mt-0.5" />
+          <div>
+            <h4 className="text-sm font-bold text-purple-900 mb-2">
+              📌 Sobre "Palabra Clave Activada"
+            </h4>
+            <p className="text-xs text-purple-800 leading-relaxed">
+              La columna <strong>"Palabra Clave Activada"</strong> muestra la palabra clave específica
+              de tu campaña que activó el anuncio. En este caso, todas las conversiones provienen
+              de la misma palabra clave que configuraste en Google Ads. Esta columna te permite
+              identificar rápidamente qué palabra clave está generando cada resultado.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

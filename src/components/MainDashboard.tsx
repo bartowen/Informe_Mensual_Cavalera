@@ -14,8 +14,6 @@ import {
   Menu,
   X,
   CheckCircle2,
-  ChevronLeft,
-  ChevronRight,
 } from 'lucide-react';
 
 const MainDashboard: React.FC = () => {
@@ -51,38 +49,44 @@ const MainDashboard: React.FC = () => {
   const tabs = [
     {
       value: 'resumen-general',
-      icon: <BarChart3 className="w-5 h-5" />,
+      icon: BarChart3,
       label: 'Resumen General',
+      mobileLabel: 'Resumen',
       subtitle: 'Visión global'
     },
     {
       value: 'google-ads',
       logo: '/logo_google_ads.png',
       label: 'Google Ads',
+      mobileLabel: 'Google Ads',
       subtitle: 'Búsqueda pagada'
     },
     {
       value: 'ga4',
       logo: '/logo_ga4-removebg-preview.png',
       label: 'Google Analytics 4',
+      mobileLabel: 'Analytics',
       subtitle: 'Comportamiento web'
     },
     {
       value: 'meta-ads',
       logo: '/logo_meta_.png',
       label: 'Meta Ads',
+      mobileLabel: 'Meta Ads',
       subtitle: 'Facebook & Instagram'
     },
     {
       value: 'diccionario',
-      icon: <BookOpen className="w-5 h-5" />,
+      icon: BookOpen,
       label: 'Diccionario',
+      mobileLabel: 'Diccionario',
       subtitle: 'Aprende las métricas'
     },
     {
       value: 'otros-avances',
-      icon: <Wrench className="w-5 h-5" />,
+      icon: Wrench,
       label: 'Otros Avances',
+      mobileLabel: 'Avances',
       subtitle: 'Mejoras técnicas'
     }
   ];
@@ -220,38 +224,16 @@ const MainDashboard: React.FC = () => {
                       className="h-5 w-5 object-contain"
                     />
                   </div>
-                ) : (
+                ) : tab.icon ? (
                   <div className={activeTab === tab.value ? 'text-white' : 'text-[#3bc6dc]'}>
-                    {tab.icon}
+                    {React.createElement(tab.icon, { className: 'w-5 h-5' })}
                   </div>
-                )}
+                ) : null}
 
                 {/* Texto */}
                 <span>{tab.label}</span>
               </button>
             ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Indicador de pestaña activa MÓVIL */}
-      <div className="md:hidden bg-white border-b shadow-sm py-3 px-4 sticky top-[136px] z-30">
-        <div className="text-center">
-          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-[#3bc6dc] to-[#21a9c2] text-white px-4 py-2 rounded-lg">
-            {tabs.find(t => t.value === activeTab)?.logo ? (
-              <div className="bg-white rounded p-1">
-                <img
-                  src={tabs.find(t => t.value === activeTab)?.logo}
-                  alt={tabs.find(t => t.value === activeTab)?.label}
-                  className="h-5 w-5 object-contain"
-                />
-              </div>
-            ) : (
-              tabs.find(t => t.value === activeTab)?.icon
-            )}
-            <span className="font-semibold">
-              {tabs.find(t => t.value === activeTab)?.label}
-            </span>
           </div>
         </div>
       </div>
@@ -312,11 +294,11 @@ const MainDashboard: React.FC = () => {
                         className="h-8 w-8 object-contain"
                       />
                     </div>
-                  ) : (
+                  ) : tab.icon ? (
                     <div className={activeTab === tab.value ? 'text-white' : 'text-[#3bc6dc]'}>
-                      {tab.icon}
+                      {React.createElement(tab.icon, { className: 'w-8 h-8' })}
                     </div>
-                  )}
+                  ) : null}
                 </div>
 
                 {/* Texto */}
@@ -362,58 +344,53 @@ const MainDashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* Navegación Móvil con Flechas (solo móvil) */}
-      <div className="md:hidden sticky top-[136px] z-20 bg-white border-b border-gray-200 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-          {/* Flecha Izquierda */}
-          <button
-            onClick={() => {
-              const currentIndex = tabs.findIndex(t => t.value === activeTab);
-              if (currentIndex > 0) {
-                setActiveTab(tabs[currentIndex - 1].value);
-                window.scrollTo(0, 0);
-              }
-            }}
-            disabled={tabs.findIndex(t => t.value === activeTab) === 0}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
-              tabs.findIndex(t => t.value === activeTab) === 0
-                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                : 'bg-[#3bc6dc] text-white hover:bg-[#21a9c2] shadow-md'
-            }`}
-          >
-            <ChevronLeft className="w-5 h-5" />
-            <span className="text-sm font-medium">Anterior</span>
-          </button>
-
-          {/* Contador de Tabs */}
-          <div className="text-center">
-            <div className="text-xs text-gray-500 mb-1">Sección</div>
-            <div className="text-lg font-bold text-[#3bc6dc]">
-              {tabs.findIndex(t => t.value === activeTab) + 1} / {tabs.length}
-            </div>
+      {/* NAVEGACIÓN MÓVIL - Nueva versión compacta estilo desktop */}
+      <div className="md:hidden bg-white border-b shadow-sm sticky top-[72px] z-40">
+        <div className="overflow-x-auto hide-scrollbar px-2 py-2">
+          <div className="flex gap-1 min-w-max">
+            {tabs.map((tab) => (
+              <button
+                key={tab.value}
+                onClick={() => {
+                  setActiveTab(tab.value);
+                  window.scrollTo(0, 0);
+                }}
+                className={`
+                  flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs font-medium
+                  transition-all duration-200 whitespace-nowrap
+                  ${activeTab === tab.value
+                    ? 'bg-gradient-to-r from-[#3bc6dc] to-[#21a9c2] text-white shadow-md'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }
+                `}
+              >
+                {tab.logo ? (
+                  <div className={`w-4 h-4 rounded ${activeTab === tab.value ? 'bg-white' : 'bg-white'} p-0.5`}>
+                    <img
+                      src={tab.logo}
+                      alt={tab.mobileLabel}
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                ) : (
+                  React.createElement(tab.icon as any, { className: 'w-4 h-4' })
+                )}
+                <span>{tab.mobileLabel}</span>
+              </button>
+            ))}
           </div>
-
-          {/* Flecha Derecha */}
-          <button
-            onClick={() => {
-              const currentIndex = tabs.findIndex(t => t.value === activeTab);
-              if (currentIndex < tabs.length - 1) {
-                setActiveTab(tabs[currentIndex + 1].value);
-                window.scrollTo(0, 0);
-              }
-            }}
-            disabled={tabs.findIndex(t => t.value === activeTab) === tabs.length - 1}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
-              tabs.findIndex(t => t.value === activeTab) === tabs.length - 1
-                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                : 'bg-[#3bc6dc] text-white hover:bg-[#21a9c2] shadow-md'
-            }`}
-          >
-            <span className="text-sm font-medium">Siguiente</span>
-            <ChevronRight className="w-5 h-5" />
-          </button>
         </div>
       </div>
+
+      <style>{`
+        .hide-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        .hide-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
 
       {/* Contenido de las pestañas */}
       <div className="max-w-7xl mx-auto px-4 md:px-6 py-8">
