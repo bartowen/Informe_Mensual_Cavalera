@@ -42,6 +42,8 @@ export interface SearchTermData {
   cost: number;
   ctr: number;
   conversionRate: number;
+  isBrand?: boolean;
+  isAiMax?: boolean;
 }
 
 export interface KeywordData {

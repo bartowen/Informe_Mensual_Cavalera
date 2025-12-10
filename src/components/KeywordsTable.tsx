@@ -1,7 +1,7 @@
 import React from 'react';
 import { KeywordData, SearchTermData } from '../types';
 import { formatCurrency, formatNumber, formatSimplePercentage } from '../utils/formatters';
-import { Target, Search, HelpCircle, Key } from 'lucide-react';
+import { Target, Search, HelpCircle, Key, Sparkles } from 'lucide-react';
 
 interface KeywordsTableProps {
   keywords: KeywordData[];
@@ -178,16 +178,26 @@ const KeywordsTable: React.FC<KeywordsTableProps> = ({ keywords, searchTerms }) 
               {topSearchTerms.map((term, index) => (
                 <tr
                   key={index}
-                  className="border-b hover:bg-blue-50"
+                  className={`border-b hover:bg-blue-50 ${term.isBrand ? 'bg-blue-50/50' : ''}`}
                 >
                   <td className="px-4 py-3">
                     <div className="font-medium text-gray-900">{term.searchTerm}</div>
+                    {term.isBrand && (
+                      <div className="text-xs text-purple-600 mt-1">🔥 Búsqueda de marca</div>
+                    )}
                   </td>
                   <td className="px-4 py-3">
-                    <span className="inline-flex items-center gap-1 bg-purple-100 text-purple-800 px-2 py-1 rounded-full text-xs font-medium">
-                      <Key className="w-3 h-3" />
-                      {term.triggeredKeyword}
-                    </span>
+                    {term.isAiMax ? (
+                      <span className="inline-flex items-center gap-1 bg-amber-100 text-amber-800 px-2 py-1 rounded-full text-xs font-medium">
+                        <Sparkles className="w-3 h-3" />
+                        AI Max
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center gap-1 bg-purple-100 text-purple-800 px-2 py-1 rounded-full text-xs font-medium">
+                        <Key className="w-3 h-3" />
+                        {term.triggeredKeyword}
+                      </span>
+                    )}
                   </td>
                   <td className="px-4 py-3 text-right">
                     {formatNumber(term.impressions)}
@@ -212,8 +222,9 @@ const KeywordsTable: React.FC<KeywordsTableProps> = ({ keywords, searchTerms }) 
           <p className="text-xs text-blue-900">
             <strong>💡 ¿Qué es "Palabra Clave Activada"?</strong> Es la keyword configurada
             en tu campaña que hizo aparecer tu anuncio para esa búsqueda. Por ejemplo, un
-            usuario busca "tatuajes en santiago centro" pero tu palabra clave activada es
-            "tatuajes santiago" (más amplia, con concordancia amplia).
+            usuario busca <strong>"tatuajes"</strong> pero tu palabra clave activada es
+            <strong> "tatuajes arte"</strong>. Las búsquedas con badge 🔥 son búsquedas directas
+            de tu marca (cavalera), lo que indica excelente reconocimiento.
           </p>
         </div>
       </div>
