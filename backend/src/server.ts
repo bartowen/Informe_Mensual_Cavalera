@@ -12,6 +12,7 @@ import path from 'path';
 import fs from 'fs';
 import { GoogleAdsFetcher } from './services/google-ads-fetcher';
 import { GoogleAdsConfig, ApiResponse, GoogleAdsMonthlyData } from './types/google-ads.types';
+import { handleDailyUpdate } from './routes/webhook';
 
 // Cargar variables de entorno
 dotenv.config();
@@ -258,6 +259,13 @@ app.get('/api/months', (req: Request, res: Response) => {
 });
 
 /**
+ * POST /api/webhook/daily-update
+ * Webhook para actualización diaria automática
+ * Se puede llamar desde servicios de cron externos
+ */
+app.post('/api/webhook/daily-update', handleDailyUpdate);
+
+/**
  * Manejo de rutas no encontradas
  */
 app.use((req: Request, res: Response) => {
@@ -270,6 +278,7 @@ app.use((req: Request, res: Response) => {
       'GET /api/google-ads/range?startDate=YYYY-MM-DD&endDate=YYYY-MM-DD',
       'POST /api/google-ads/refresh/:year/:month',
       'GET /api/months',
+      'POST /api/webhook/daily-update',
     ],
   });
 });

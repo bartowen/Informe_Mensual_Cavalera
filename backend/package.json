@@ -8,7 +8,8 @@
     "build": "tsc",
     "start": "node dist/server.js",
     "fetch:monthly": "ts-node src/scripts/fetch-monthly-data.ts",
-    "fetch:range": "ts-node src/scripts/fetch-date-range.ts"
+    "fetch:range": "ts-node src/scripts/fetch-date-range.ts",
+    "update:daily": "ts-node src/scripts/daily-update.ts"
   },
   "keywords": [
     "google-ads",
