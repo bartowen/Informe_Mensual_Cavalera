@@ -1,0 +1,24 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "dist/server.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "dist/server.js"
+    }
+  ],
+  "crons": [
+    {
+      "path": "/api/webhook/daily-update",
+      "schedule": "0 2 * * *"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  }
+}
