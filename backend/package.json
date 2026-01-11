@@ -1,0 +1,39 @@
+{
+  "name": "cavalera-google-ads-api",
+  "version": "1.0.0",
+  "description": "Backend API para extraer datos de Google Ads automáticamente",
+  "main": "dist/server.js",
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "fetch:monthly": "ts-node src/scripts/fetch-monthly-data.ts",
+    "fetch:range": "ts-node src/scripts/fetch-date-range.ts"
+  },
+  "keywords": [
+    "google-ads",
+    "api",
+    "cavalera",
+    "marketing"
+  ],
+  "author": "Towen Ads",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "google-ads-api": "^17.0.0",
+    "date-fns": "^3.0.0",
+    "compression": "^1.7.4",
+    "helmet": "^7.1.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/cors": "^2.8.17",
+    "@types/node": "^20.10.6",
+    "@types/compression": "^1.7.5",
+    "typescript": "^5.3.3",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0"
+  }
+}
