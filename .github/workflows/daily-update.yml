@@ -1,0 +1,58 @@
+name: Daily Google Ads Update
+
+on:
+  schedule:
+    # Ejecutar todos los días a las 2:00 AM (hora del servidor GitHub)
+    # Ajusta según tu zona horaria: https://crontab.guru/
+    - cron: '0 2 * * *'
+
+  # Permitir ejecución manual desde GitHub Actions
+  workflow_dispatch:
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Instalar dependencias
+        run: |
+          cd backend
+          npm ci
+
+      - name: Ejecutar actualización diaria
+        env:
+          GOOGLE_ADS_DEVELOPER_TOKEN: ${{ secrets.GOOGLE_ADS_DEVELOPER_TOKEN }}
+          GOOGLE_ADS_CLIENT_ID: ${{ secrets.GOOGLE_ADS_CLIENT_ID }}
+          GOOGLE_ADS_CLIENT_SECRET: ${{ secrets.GOOGLE_ADS_CLIENT_SECRET }}
+          GOOGLE_ADS_REFRESH_TOKEN: ${{ secrets.GOOGLE_ADS_REFRESH_TOKEN }}
+          GOOGLE_ADS_CUSTOMER_ID: ${{ secrets.GOOGLE_ADS_CUSTOMER_ID }}
+        run: |
+          cd backend
+          npm run update:daily
+
+      - name: Commit y Push cambios
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add backend/data/*.json
+          git add backend/logs/*.log
+          git diff --quiet && git diff --staged --quiet || git commit -m "🔄 Actualización diaria automática de Google Ads [$(date +'%Y-%m-%d')]"
+          git push
+
+      - name: Notificación de éxito
+        if: success()
+        run: echo "✅ Actualización completada exitosamente"
+
+      - name: Notificación de error
+        if: failure()
+        run: echo "❌ Error en la actualización automática"
