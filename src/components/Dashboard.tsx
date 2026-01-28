@@ -7,11 +7,17 @@ import CampaignsTable from './CampaignsTable';
 import InsightsPanel from './InsightsPanel';
 import DemographicCharts from './DemographicCharts';
 import QuickNavigation from './QuickNavigation';
+import LoadingSpinner from './LoadingSpinner';
+import ErrorMessage from './ErrorMessage';
 
-// Data imports
+// Hooks
+import { useCavaleraMetrics } from '../hooks/useCavaleraMetrics';
+import { DATA_SOURCE_CONFIG } from '../config/dataSource';
+
+// Data imports (fallback para modo static)
 import { agendaProData } from '../data/agendaPro';
 import {
-  campaignsData,
+  campaignsData as mockCampaignsData,
   timeSeriesData,
   keywordsData,
   searchTermsData,
@@ -26,7 +32,7 @@ import {
 // Utils
 import { formatCurrency, formatPercentage, formatNumber } from '../utils/formatters';
 import { calculateROI } from '../utils/calculations';
-import { Insight } from '../types';
+import { Insight, CampaignData } from '../types';
 
 // Icons
 import {
@@ -55,8 +61,58 @@ interface DashboardProps {
 }
 
 const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
-  // Calcular métricas agregadas con datos CORRECTOS de Noviembre 2025
+  // Determinar si usar API o datos estáticos
+  const useApi = DATA_SOURCE_CONFIG.mode === 'api';
+
+  // Hook para obtener datos del API (solo se ejecuta si useApi es true)
+  const { metrics: apiMetrics, campaigns: apiCampaigns, loading, error, refetch } = useCavaleraMetrics();
+
+  // Usar datos del API o mock según configuración
+  const campaignsData: CampaignData[] = useMemo(() => {
+    if (useApi && apiCampaigns.length > 0) {
+      // Transformar datos del API al formato esperado
+      return apiCampaigns.map(c => ({
+        campaignName: c.campaignName,
+        status: 'Active' as const,
+        budget: c.cost * 1.1, // Estimación de presupuesto
+        impressions: c.impressions,
+        clicks: c.clicks,
+        conversions: c.conversions,
+        cost: c.cost,
+        ctr: c.ctr,
+        cpc: c.cpc,
+        cpa: c.cpa,
+        conversionRate: c.conversionRate,
+      }));
+    }
+    return mockCampaignsData;
+  }, [useApi, apiCampaigns]);
+
+  // Calcular métricas agregadas
   const metrics = useMemo(() => {
+    // Si hay datos del API, usarlos
+    if (useApi && apiMetrics) {
+      const totalBudget = apiMetrics.totalCost * 1.1; // Estimación de presupuesto
+      const attributableSales = agendaProData.salesFromGoogleAds?.estimatedRevenue ||
+        (apiMetrics.totalConversions * (agendaProData.summary?.averageTicket || 50000));
+      const roi = calculateROI(attributableSales, apiMetrics.totalCost);
+
+      return {
+        totalImpressions: apiMetrics.totalImpressions,
+        totalClicks: apiMetrics.totalClicks,
+        totalConversions: apiMetrics.totalConversions,
+        totalCost: apiMetrics.totalCost,
+        totalBudget,
+        averageCTR: apiMetrics.averageCTR,
+        averageCPC: apiMetrics.averageCPC,
+        averageCPA: apiMetrics.averageCPA,
+        costPerForm: apiMetrics.averageCPA,
+        attributableSales,
+        roi,
+      };
+    }
+
+    // Fallback a datos mock
     const totalImpressions = campaignsData.reduce((sum, c) => sum + c.impressions, 0);
     const totalClicks = campaignsData.reduce((sum, c) => sum + c.clicks, 0);
     const totalConversions = campaignsData.reduce((sum, c) => sum + c.conversions, 0);
@@ -87,7 +143,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
       attributableSales,
       roi,
     };
-  }, []);
+  }, [useApi, apiMetrics, campaignsData]);
 
   // Generar insights automáticos - DATOS REALES (ACTUALIZADOS DICIEMBRE 2025)
   const insights: Insight[] = useMemo(() => {
@@ -133,6 +189,16 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigate }) => {
       },
     ];
   }, [metrics, locationsData, deviceData]);
+
+  // Mostrar loading mientras carga datos del API
+  if (useApi && loading) {
+    return <LoadingSpinner message="Cargando métricas de Google Ads..." />;
+  }
+
+  // Mostrar error si falla la carga del API
+  if (useApi && error) {
+    return <ErrorMessage message={error} onRetry={refetch} />;
+  }
 
   return (
     <div>
