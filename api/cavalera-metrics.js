@@ -31,7 +31,7 @@ export default async function handler(req, res) {
     }
 
     // Aplicar corrección de conversiones si es necesario
-    const correctedData = applyConversionCorrection(data, startDate, endDate);
+    const correctedData = applyConversionCorrection(data, startDate, endDate, report);
 
     res.status(200).json(correctedData);
 
@@ -44,11 +44,39 @@ export default async function handler(req, res) {
   }
 }
 
-function applyConversionCorrection(data, startDate, endDate) {
+/**
+ * Aplica corrección de conversiones según el tipo de reporte y fechas
+ * - Para Cavalera_Por_Dia: detecta automáticamente y corrige por fila
+ * - Para otros reportes: usa startDate/endDate si están disponibles
+ */
+function applyConversionCorrection(data, startDate, endDate, report) {
   // Fecha del fix del tracking (15 enero 2026)
   const FIX_DATE = new Date('2026-01-15');
 
-  // Si no hay fechas, asumimos datos actuales (post-fix)
+  // =====================================================
+  // CASO ESPECIAL: Reporte Por_Dia - Corrección por fila
+  // =====================================================
+  if (report === 'Cavalera_Por_Dia' && data.data && data.data.length > 0 && data.data[0]?.Day) {
+    return applyDailyCorrection(data, FIX_DATE);
+  }
+
+  // =====================================================
+  // CASO ESPECIAL: Reporte Por_Hora - Filtrar campaña activa
+  // =====================================================
+  if (report === 'Cavalera_Por_Hora' && data.data) {
+    return applyHourlyFilter(data);
+  }
+
+  // =====================================================
+  // CASO ESPECIAL: Reporte Dispositivos - Filtrar campaña activa
+  // =====================================================
+  if (report === 'Cavalera_Dispositivos' && data.data) {
+    return applyDeviceFilter(data);
+  }
+
+  // =====================================================
+  // CASO GENERAL: Sin fechas específicas
+  // =====================================================
   if (!startDate || !endDate) {
     return {
       ...data,
@@ -137,6 +165,127 @@ function applyConversionCorrection(data, startDate, endDate) {
         preFix: { days: Math.round(preDays), factor: 4.0 },
         postFix: { days: Math.round(postDays), factor: 1.0 }
       }
+    }
+  };
+}
+
+/**
+ * Aplica corrección por fila para reporte diario
+ * Cada día se corrige individualmente según si es pre o post fix
+ */
+function applyDailyCorrection(data, FIX_DATE) {
+  // Filtrar solo la campaña activa
+  const filteredData = data.data.filter(row => {
+    const campaign = row.Campaign || '';
+    const status = row['Campaign status'] || 'Enabled';
+
+    // Incluir si es la campaña principal activa o si no tiene campo Campaign (agregado)
+    return (
+      (campaign.includes('Cavalera') || campaign.includes('Towen') || campaign === '') &&
+      status !== 'Paused' &&
+      status !== 'Removed'
+    );
+  });
+
+  let preDays = 0;
+  let postDays = 0;
+
+  const correctedData = filteredData.map(row => {
+    const rowDate = new Date(row.Day);
+    const clicks = row.Clicks || 0;
+    const cost = row.Cost || 0;
+
+    // Pre-fix: dividir conversiones por 4.0
+    if (rowDate < FIX_DATE) {
+      preDays++;
+      const originalConversions = row.Conversions || 0;
+      const correctedConversions = originalConversions / 4.0;
+
+      return {
+        ...row,
+        Conversions: correctedConversions,
+        'Conv. rate': clicks > 0
+          ? (correctedConversions / clicks * 100).toFixed(2) + '%'
+          : row['Conv. rate'],
+        'Cost / conv.': correctedConversions > 0
+          ? (cost / correctedConversions).toFixed(0)
+          : row['Cost / conv.']
+      };
+    }
+
+    // Post-fix: sin corrección
+    postDays++;
+    return row;
+  });
+
+  return {
+    ...data,
+    data: correctedData,
+    metadata: {
+      dataQuality: preDays > 0 ? 'mixed' : 'verified',
+      correctionApplied: preDays > 0,
+      note: preDays > 0
+        ? `Corrección aplicada: ${preDays} días pre-fix (÷4.0), ${postDays} días post-fix (sin cambio)`
+        : 'Todos los datos son post-fix, sin corrección necesaria',
+      totalRows: correctedData.length,
+      periodBreakdown: {
+        preFix: { days: preDays, factor: 4.0 },
+        postFix: { days: postDays, factor: 1.0 }
+      }
+    }
+  };
+}
+
+/**
+ * Filtra datos por hora para mostrar solo campaña activa
+ */
+function applyHourlyFilter(data) {
+  const filteredData = data.data.filter(row => {
+    const campaign = row.Campaign || '';
+    const status = row['Campaign status'] || 'Enabled';
+
+    return (
+      (campaign.includes('Cavalera') || campaign.includes('Towen') || campaign === '') &&
+      status !== 'Paused' &&
+      status !== 'Removed'
+    );
+  });
+
+  return {
+    ...data,
+    data: filteredData,
+    metadata: {
+      dataQuality: 'verified',
+      correctionApplied: false,
+      note: 'Datos filtrados por campaña activa',
+      totalRows: filteredData.length
+    }
+  };
+}
+
+/**
+ * Filtra datos por dispositivo para mostrar solo campaña activa
+ */
+function applyDeviceFilter(data) {
+  const filteredData = data.data.filter(row => {
+    const campaign = row.Campaign || '';
+    const status = row['Campaign status'] || 'Enabled';
+
+    return (
+      (campaign.includes('Cavalera') || campaign.includes('Towen') || campaign === '') &&
+      status !== 'Paused' &&
+      status !== 'Removed'
+    );
+  });
+
+  return {
+    ...data,
+    data: filteredData,
+    metadata: {
+      dataQuality: 'verified',
+      correctionApplied: false,
+      note: 'Datos filtrados por campaña activa',
+      totalRows: filteredData.length
     }
   };
 }
