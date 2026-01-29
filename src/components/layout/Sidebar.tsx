@@ -6,9 +6,11 @@ import {
   BookOpen,
   Menu,
   X,
+  Wallet,
 } from 'lucide-react';
+import { ClientConfig } from '../../config/clients';
 
-export type TabValue = 'resumen-general' | 'google-ads' | 'meta-ads' | 'diccionario';
+export type TabValue = 'resumen-general' | 'google-ads' | 'meta-ads' | 'ventas-reservas' | 'diccionario';
 
 interface NavItem {
   value: TabValue;
@@ -16,6 +18,7 @@ interface NavItem {
   logo?: string;
   label: string;
   subtitle: string;
+  channel?: 'googleAds' | 'metaAds' | 'agendaPro';
 }
 
 interface SidebarProps {
@@ -23,9 +26,10 @@ interface SidebarProps {
   onTabChange: (tab: TabValue) => void;
   mobileOpen: boolean;
   onMobileToggle: () => void;
+  client: ClientConfig;
 }
 
-const navItems: NavItem[] = [
+const allNavItems: NavItem[] = [
   {
     value: 'resumen-general',
     icon: BarChart3,
@@ -38,6 +42,7 @@ const navItems: NavItem[] = [
     logo: '/logo_google_ads.png',
     label: 'Google Ads',
     subtitle: 'Búsqueda pagada',
+    channel: 'googleAds',
   },
   {
     value: 'meta-ads',
@@ -45,6 +50,14 @@ const navItems: NavItem[] = [
     logo: '/logo_meta_.png',
     label: 'Meta Ads',
     subtitle: 'Facebook & Instagram',
+    channel: 'metaAds',
+  },
+  {
+    value: 'ventas-reservas',
+    icon: Wallet,
+    label: 'Ventas y Reservas',
+    subtitle: 'Datos AgendaPro',
+    channel: 'agendaPro',
   },
   {
     value: 'diccionario',
@@ -59,7 +72,16 @@ const Sidebar: React.FC<SidebarProps> = ({
   onTabChange,
   mobileOpen,
   onMobileToggle,
+  client,
 }) => {
+  // Filtrar items de navegación según los canales activos del cliente
+  const navItems = allNavItems.filter((item) => {
+    // Items sin canal siempre se muestran
+    if (!item.channel) return true;
+    // Items con canal solo se muestran si el cliente tiene ese canal activo
+    return client.channels[item.channel];
+  });
+
   const handleNavClick = (tab: TabValue) => {
     onTabChange(tab);
     if (mobileOpen) {
@@ -112,19 +134,29 @@ const Sidebar: React.FC<SidebarProps> = ({
           </div>
         </div>
 
-        {/* Cliente Info */}
+        {/* Cliente Info - Dinámico */}
         <div className="p-4 mx-4 mt-4 bg-gray-800/50 rounded-lg border border-gray-700">
           <div className="flex items-center gap-3">
             <div className="bg-white rounded-lg p-1.5">
-              <img
-                src="/cavalera_tatoo.png"
-                alt="Cavalera"
-                className="h-8 w-8 object-contain"
-              />
+              {client.logo ? (
+                <img
+                  src={client.logo}
+                  alt={client.name}
+                  className="h-8 w-8 object-contain"
+                  onError={(e) => {
+                    // Fallback si no carga la imagen
+                    (e.target as HTMLImageElement).style.display = 'none';
+                  }}
+                />
+              ) : (
+                <div className="h-8 w-8 bg-gradient-to-br from-cyan-400 to-cyan-600 rounded flex items-center justify-center text-white font-bold">
+                  {client.name.charAt(0)}
+                </div>
+              )}
             </div>
             <div>
-              <p className="text-white font-medium text-sm">Cavalera Tattoo</p>
-              <p className="text-gray-400 text-xs">Enero 2026</p>
+              <p className="text-white font-medium text-sm">{client.name}</p>
+              <p className="text-gray-400 text-xs">{client.month}</p>
             </div>
           </div>
         </div>
@@ -184,7 +216,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-800">
           <div className="bg-gray-800/50 rounded-lg p-3">
             <p className="text-gray-400 text-xs mb-1">Datos actualizados</p>
-            <p className="text-white text-sm font-medium">Enero 2026</p>
+            <p className="text-white text-sm font-medium">{client.month}</p>
           </div>
           <p className="text-gray-600 text-xs text-center mt-3">
             Powered by Towen Ads
@@ -206,7 +238,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             alt="Towen"
             className="h-6 w-auto"
           />
-          <span className="text-white font-semibold">Cavalera Dashboard</span>
+          <span className="text-white font-semibold">{client.name}</span>
         </div>
         <div className="w-10" /> {/* Spacer for balance */}
       </div>

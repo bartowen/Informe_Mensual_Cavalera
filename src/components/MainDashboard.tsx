@@ -3,9 +3,12 @@ import Sidebar, { TabValue } from './layout/Sidebar';
 import ResumenGeneral from '../pages/ResumenGeneral';
 import GoogleAdsPage from '../pages/GoogleAdsPage';
 import MetaAdsPage from '../pages/MetaAdsPage';
+import VentasReservasPage from '../pages/VentasReservasPage';
 import DiccionarioPage from '../pages/DiccionarioPage';
+import { useClient } from '../App';
 
 const MainDashboard: React.FC = () => {
+  const { client } = useClient();
   const [activeTab, setActiveTab] = useState<TabValue>('resumen-general');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -15,7 +18,7 @@ const MainDashboard: React.FC = () => {
   };
 
   const handleNavigate = (tab: string) => {
-    if (tab === 'resumen-general' || tab === 'google-ads' || tab === 'meta-ads' || tab === 'diccionario') {
+    if (tab === 'resumen-general' || tab === 'google-ads' || tab === 'meta-ads' || tab === 'ventas-reservas' || tab === 'diccionario') {
       setActiveTab(tab as TabValue);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -29,6 +32,8 @@ const MainDashboard: React.FC = () => {
         return <GoogleAdsPage />;
       case 'meta-ads':
         return <MetaAdsPage />;
+      case 'ventas-reservas':
+        return <VentasReservasPage />;
       case 'diccionario':
         return <DiccionarioPage />;
       default:
@@ -44,6 +49,7 @@ const MainDashboard: React.FC = () => {
         onTabChange={handleTabChange}
         mobileOpen={mobileMenuOpen}
         onMobileToggle={() => setMobileMenuOpen(!mobileMenuOpen)}
+        client={client}
       />
 
       {/* Main Content */}

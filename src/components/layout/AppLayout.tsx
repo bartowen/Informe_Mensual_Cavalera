@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import Sidebar, { TabValue } from './Sidebar';
+import { useClient } from '../../App';
 
 interface AppLayoutProps {
   children: (activeTab: TabValue) => React.ReactNode;
 }
 
 const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
+  const { client } = useClient();
   const [activeTab, setActiveTab] = useState<TabValue>('resumen-general');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -22,6 +24,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
         onTabChange={handleTabChange}
         mobileOpen={mobileMenuOpen}
         onMobileToggle={() => setMobileMenuOpen(!mobileMenuOpen)}
+        client={client}
       />
 
       {/* Main Content */}
