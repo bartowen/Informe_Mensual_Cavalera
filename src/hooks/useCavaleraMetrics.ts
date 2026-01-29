@@ -1,13 +1,10 @@
 /**
  * Hook personalizado para consumir datos de Cavalera desde el API
- * Aplica corrección silenciosa de conversiones para datos pre-15 enero 2026
+ * El API ya aplica todas las correcciones necesarias - el frontend solo muestra los datos
  * Filosofía: "Ads en fácil" - datos limpios sin explicaciones técnicas
  */
 
 import { useState, useEffect, useCallback } from 'react';
-
-// Fecha del fix del tracking
-const FIX_DATE = new Date('2026-01-15');
 
 // ============================================
 // TIPOS
@@ -215,95 +212,13 @@ const DEMO_DATA_MAP: Record<string, ApiMetricRow[]> = {
 };
 
 // ============================================
-// FUNCIONES DE CORRECCIÓN
-// ============================================
-
-/**
- * Aplica corrección silenciosa completa a todas las métricas de conversión
- * Para datos pre-15 enero 2026:
- * - Conversions: dividir por 4.0
- * - All conv.: dividir por 4.0
- * - Conv. rate: recalcular
- * - Cost / conv.: recalcular
- *
- * NO corregir: Clicks, Impressions, CTR, Cost, CPC
- */
-function applySilentCorrection(
-  data: ApiMetricRow[],
-  startDate?: string,
-  endDate?: string
-): ApiMetricRow[] {
-  // Si no hay fechas, asumimos datos actuales (post-fix)
-  if (!startDate || !endDate) {
-    return data;
-  }
-
-  const start = new Date(startDate);
-  const end = new Date(endDate);
-
-  // Si TODO el período es POST-fix, no corregir
-  if (start >= FIX_DATE) {
-    return data;
-  }
-
-  // Calcular factor de corrección
-  let correctionFactor: number;
-
-  if (end < FIX_DATE) {
-    // Todo el período es PRE-fix: corrección completa 4.0x
-    correctionFactor = 4.0;
-  } else {
-    // Período mixto: calcular proporción ponderada
-    const totalDays = (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24);
-    const preDays = (FIX_DATE.getTime() - start.getTime()) / (1000 * 60 * 60 * 24);
-    const postDays = (end.getTime() - FIX_DATE.getTime()) / (1000 * 60 * 60 * 24);
-
-    // Factor ponderado: pre-fix con corrección, post-fix sin corrección
-    const preRatio = preDays / totalDays;
-    const postRatio = postDays / totalDays;
-
-    // El factor efectivo es un promedio ponderado
-    correctionFactor = 1 / (preRatio / 4.0 + postRatio);
-  }
-
-  return data.map(row => {
-    const clicks = row.Clicks || row['Impr.'] ? (row.Clicks || 0) : 0;
-    const cost = row.Cost || 0;
-
-    // Corregir conversiones
-    const originalConversions = row.Conversions || 0;
-    const correctedConversions = originalConversions / correctionFactor;
-
-    // Corregir All conv. si existe
-    const originalAllConv = row['All conv.'] || 0;
-    const correctedAllConv = originalAllConv / correctionFactor;
-
-    // Recalcular Conv. rate con conversiones corregidas
-    const correctedConvRate = clicks > 0
-      ? (correctedConversions / clicks) * 100
-      : 0;
-
-    // Recalcular Cost / conv. con conversiones corregidas
-    const correctedCostPerConv = correctedConversions > 0
-      ? cost / correctedConversions
-      : 0;
-
-    return {
-      ...row,
-      Conversions: correctedConversions,
-      'All conv.': correctedAllConv > 0 ? correctedAllConv : undefined,
-      'Conv. rate': `${correctedConvRate.toFixed(2)}%`,
-      'Cost / conv.': correctedCostPerConv > 0 ? `$${correctedCostPerConv.toFixed(0)}` : undefined,
-    };
-  });
-}
-
-// ============================================
 // FUNCIONES DE PROCESAMIENTO
+// (Sin corrección - el API ya lo hace)
 // ============================================
 
 /**
  * Procesa los datos del API y calcula métricas agregadas
+ * NO aplica corrección - el API ya la aplica
  */
 function processMetrics(data: ApiMetricRow[]): ProcessedMetrics {
   const totalImpressions = data.reduce((sum, row) => sum + (row['Impr.'] || row.Impressions || 0), 0);
@@ -444,6 +359,9 @@ function transformToDeviceData(data: ApiMetricRow[]): DeviceMetric[] {
 /**
  * Hook principal para consumir métricas de Cavalera
  * Soporta múltiples reportes: Generales, Por_Dia, Por_Hora, Dispositivos
+ *
+ * IMPORTANTE: El API ya aplica todas las correcciones necesarias.
+ * Este hook solo muestra los datos tal cual vienen del API.
  */
 export function useCavaleraMetrics(
   report: string = 'Cavalera_Metricas_Generales',
@@ -497,37 +415,35 @@ export function useCavaleraMetrics(
         rawData = result.data;
       }
 
-      // Aplicar corrección silenciosa si es necesario
-      const correctedData = applySilentCorrection(rawData, startDate, endDate);
-
-      // Procesar según el tipo de reporte
-      setData(correctedData);
+      // NO aplicar corrección - el API ya lo hace
+      // Usar rawData directamente
+      setData(rawData);
 
       // Procesar métricas generales
-      const processedMetrics = processMetrics(correctedData);
+      const processedMetrics = processMetrics(rawData);
       setMetrics(processedMetrics);
 
       // Procesar campañas (solo para reporte general)
       if (report === 'Cavalera_Metricas_Generales') {
-        const campaignData = transformToCampaigns(correctedData);
+        const campaignData = transformToCampaigns(rawData);
         setCampaigns(campaignData);
       }
 
       // Procesar datos diarios
       if (report === 'Cavalera_Por_Dia') {
-        const daily = transformToDailyData(correctedData);
+        const daily = transformToDailyData(rawData);
         setDailyData(daily);
       }
 
       // Procesar datos por hora
       if (report === 'Cavalera_Por_Hora') {
-        const hourly = transformToHourlyData(correctedData);
+        const hourly = transformToHourlyData(rawData);
         setHourlyData(hourly);
       }
 
       // Procesar datos por dispositivo
       if (report === 'Cavalera_Dispositivos') {
-        const devices = transformToDeviceData(correctedData);
+        const devices = transformToDeviceData(rawData);
         setDeviceData(devices);
       }
 
