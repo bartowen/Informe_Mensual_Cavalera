@@ -46,29 +46,29 @@ export default async function handler(req, res) {
 
 /**
  * Aplica corrección de conversiones según el tipo de reporte y fechas
- * - Para Cavalera_Por_Dia: detecta automáticamente y corrige por fila
- * - Para otros reportes: usa startDate/endDate si están disponibles
  */
 function applyConversionCorrection(data, startDate, endDate, report) {
-  // Fecha del fix del tracking (15 enero 2026)
-  const FIX_DATE = new Date('2026-01-15');
+  // Fecha del fix del tracking (15 enero 2026 a medianoche UTC)
+  const FIX_DATE = new Date('2026-01-15T00:00:00Z');
 
   // =====================================================
-  // CASO ESPECIAL: Reporte Por_Dia - Corrección por fila
+  // DETECCIÓN AUTOMÁTICA: Si hay campo "Day" en los datos
   // =====================================================
-  if (report === 'Cavalera_Por_Dia' && data.data && data.data.length > 0 && data.data[0]?.Day) {
+  const hasDay = data.data && data.data.length > 0 && 'Day' in data.data[0];
+
+  if (hasDay) {
     return applyDailyCorrection(data, FIX_DATE);
   }
 
   // =====================================================
-  // CASO ESPECIAL: Reporte Por_Hora - Filtrar campaña activa
+  // CASO: Reporte Por_Hora - Filtrar campaña activa
   // =====================================================
   if (report === 'Cavalera_Por_Hora' && data.data) {
     return applyHourlyFilter(data);
   }
 
   // =====================================================
-  // CASO ESPECIAL: Reporte Dispositivos - Filtrar campaña activa
+  // CASO: Reporte Dispositivos - Filtrar campaña activa
   // =====================================================
   if (report === 'Cavalera_Dispositivos' && data.data) {
     return applyDeviceFilter(data);
@@ -107,7 +107,7 @@ function applyConversionCorrection(data, startDate, endDate, report) {
   if (end < FIX_DATE) {
     const correctedRows = data.data.map(row => ({
       ...row,
-      Conversions: row.Conversions ? row.Conversions / 4.0 : 0,
+      Conversions: row.Conversions ? Math.round((row.Conversions / 4.0) * 100) / 100 : 0,
       'Conv. rate': row.Conversions && row.Clicks
         ? ((row.Conversions / 4.0) / row.Clicks * 100).toFixed(2) + '%'
         : row['Conv. rate'],
@@ -140,7 +140,7 @@ function applyConversionCorrection(data, startDate, endDate, report) {
 
     const preConversions = (totalConversions * preRatio) / 4.0;
     const postConversions = totalConversions * postRatio;
-    const correctedConversions = preConversions + postConversions;
+    const correctedConversions = Math.round((preConversions + postConversions) * 100) / 100;
 
     return {
       ...row,
@@ -171,35 +171,40 @@ function applyConversionCorrection(data, startDate, endDate, report) {
 
 /**
  * Aplica corrección por fila para reporte diario
- * Cada día se corrige individualmente según si es pre o post fix
+ * Filtra solo campaña "Cavalera Search - Towen Ads" activa
+ * Corrige cada día individualmente según si es pre o post fix
  */
 function applyDailyCorrection(data, FIX_DATE) {
-  // Filtrar solo la campaña activa
+  // Filtrar solo la campaña activa: "Cavalera Search - Towen Ads"
   const filteredData = data.data.filter(row => {
-    const campaign = row.Campaign || '';
+    // Si no hay campo Campaign, incluir (es agregado)
+    if (!row.Campaign) return true;
+
+    const campaign = row.Campaign;
     const status = row['Campaign status'] || 'Enabled';
 
-    // Incluir si es la campaña principal activa o si no tiene campo Campaign (agregado)
-    return (
-      (campaign.includes('Cavalera') || campaign.includes('Towen') || campaign === '') &&
-      status !== 'Paused' &&
-      status !== 'Removed'
-    );
+    // Filtro específico para campaña Cavalera
+    const isCavaleraActive =
+      campaign === 'Cavalera Search - Towen Ads' &&
+      status === 'Enabled';
+
+    return isCavaleraActive;
   });
 
   let preDays = 0;
   let postDays = 0;
 
   const correctedData = filteredData.map(row => {
-    const rowDate = new Date(row.Day);
+    // Parsear fecha del día
+    const rowDate = new Date(row.Day + 'T00:00:00Z');
     const clicks = row.Clicks || 0;
     const cost = row.Cost || 0;
+    const originalConversions = row.Conversions || 0;
 
-    // Pre-fix: dividir conversiones por 4.0
+    // Pre-fix (antes del 15 enero): dividir conversiones por 4.0
     if (rowDate < FIX_DATE) {
       preDays++;
-      const originalConversions = row.Conversions || 0;
-      const correctedConversions = originalConversions / 4.0;
+      const correctedConversions = Math.round((originalConversions / 4.0) * 100) / 100;
 
       return {
         ...row,
@@ -208,12 +213,12 @@ function applyDailyCorrection(data, FIX_DATE) {
           ? (correctedConversions / clicks * 100).toFixed(2) + '%'
           : row['Conv. rate'],
         'Cost / conv.': correctedConversions > 0
-          ? (cost / correctedConversions).toFixed(0)
+          ? Math.round(cost / correctedConversions)
           : row['Cost / conv.']
       };
     }
 
-    // Post-fix: sin corrección
+    // Post-fix (15 enero en adelante): sin corrección
     postDays++;
     return row;
   });
@@ -241,14 +246,12 @@ function applyDailyCorrection(data, FIX_DATE) {
  */
 function applyHourlyFilter(data) {
   const filteredData = data.data.filter(row => {
-    const campaign = row.Campaign || '';
+    if (!row.Campaign) return true;
+
+    const campaign = row.Campaign;
     const status = row['Campaign status'] || 'Enabled';
 
-    return (
-      (campaign.includes('Cavalera') || campaign.includes('Towen') || campaign === '') &&
-      status !== 'Paused' &&
-      status !== 'Removed'
-    );
+    return campaign === 'Cavalera Search - Towen Ads' && status === 'Enabled';
   });
 
   return {
@@ -268,14 +271,12 @@ function applyHourlyFilter(data) {
  */
 function applyDeviceFilter(data) {
   const filteredData = data.data.filter(row => {
-    const campaign = row.Campaign || '';
+    if (!row.Campaign) return true;
+
+    const campaign = row.Campaign;
     const status = row['Campaign status'] || 'Enabled';
 
-    return (
-      (campaign.includes('Cavalera') || campaign.includes('Towen') || campaign === '') &&
-      status !== 'Paused' &&
-      status !== 'Removed'
-    );
+    return campaign === 'Cavalera Search - Towen Ads' && status === 'Enabled';
   });
 
   return {
