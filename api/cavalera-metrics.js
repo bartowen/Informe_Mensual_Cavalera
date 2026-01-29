@@ -49,7 +49,7 @@ export default async function handler(req, res) {
  */
 function applyConversionCorrection(data, startDate, endDate, report) {
   // Fecha del fix del tracking (15 enero 2026 a medianoche UTC)
-  const FIX_DATE = new Date('2026-01-15T00:00:00Z');
+  const FIX_DATE = new Date('2026-01-12T00:00:00Z');
 
   // =====================================================
   // DETECCIÓN AUTOMÁTICA: Si hay campo "Day" en los datos
