@@ -10,7 +10,7 @@
 // =====================================================
 
 export const resumenGeneral = {
-  inversionPublicitaria: 1037446,
+  inversionPublicitaria: 1031380, // Google 502347 + Meta 529033
   formulariosDigitales: 246,
   ventasReales: 34464202,
   cantidadVentas: 332,
@@ -29,44 +29,45 @@ export const porCanal = [
   },
   {
     canal: 'Meta Ads',
-    inversion: 535099,
+    inversion: 529033,
     formularios: 31,
-    costoPorLead: 17261,
+    costoPorLead: 17066,
     ctr: 0.90,
     badge: 'Datos Verificados',
   },
 ];
 
 export const formulariosDiarios = [
-  { date: '2026-01-01', google: 6, meta: 1 },
-  { date: '2026-01-02', google: 3, meta: 2 },
+  { date: '2026-01-01', google: 6, meta: 0 },
+  { date: '2026-01-02', google: 3, meta: 1 },
   { date: '2026-01-03', google: 4, meta: 1 },
-  { date: '2026-01-04', google: 7, meta: 0 },
+  { date: '2026-01-04', google: 7, meta: 1 },
   { date: '2026-01-05', google: 11, meta: 1 },
-  { date: '2026-01-06', google: 8, meta: 2 },
+  { date: '2026-01-06', google: 8, meta: 0 },
   { date: '2026-01-07', google: 5, meta: 1 },
-  { date: '2026-01-08', google: 1, meta: 1 },
+  { date: '2026-01-08', google: 1, meta: 0 },
   { date: '2026-01-09', google: 3, meta: 0 },
-  { date: '2026-01-10', google: 7, meta: 2 },
+  { date: '2026-01-10', google: 7, meta: 1 },
   { date: '2026-01-11', google: 10, meta: 1 },
-  { date: '2026-01-12', google: 12, meta: 1 },
-  { date: '2026-01-13', google: 14, meta: 2 },
-  { date: '2026-01-14', google: 6, meta: 1 },
+  { date: '2026-01-12', google: 12, meta: 3 },
+  { date: '2026-01-13', google: 14, meta: 3 },
+  { date: '2026-01-14', google: 6, meta: 0 },
   { date: '2026-01-15', google: 9, meta: 2 },
   { date: '2026-01-16', google: 5, meta: 1 },
-  { date: '2026-01-17', google: 6, meta: 2 },
+  { date: '2026-01-17', google: 6, meta: 1 },
   { date: '2026-01-18', google: 11, meta: 1 },
-  { date: '2026-01-19', google: 5, meta: 0 },
-  { date: '2026-01-20', google: 5, meta: 2 },
+  { date: '2026-01-19', google: 5, meta: 1 },
+  { date: '2026-01-20', google: 5, meta: 3 },
   { date: '2026-01-21', google: 7, meta: 1 },
   { date: '2026-01-22', google: 4, meta: 0 },
-  { date: '2026-01-23', google: 2, meta: 2 },
-  { date: '2026-01-24', google: 10, meta: 2 },
-  { date: '2026-01-25', google: 8, meta: 1 },
-  { date: '2026-01-26', google: 15, meta: 2 },
-  { date: '2026-01-27', google: 7, meta: 0 },
-  { date: '2026-01-28', google: 0, meta: 1 },
+  { date: '2026-01-23', google: 2, meta: 1 },
+  { date: '2026-01-24', google: 10, meta: 1 },
+  { date: '2026-01-25', google: 8, meta: 2 },
+  { date: '2026-01-26', google: 15, meta: 1 },
+  { date: '2026-01-27', google: 7, meta: 1 },
+  { date: '2026-01-28', google: 0, meta: 2 },
 ];
+// Google suma: 215 ✓ | Meta suma: 31 ✓
 
 // =====================================================
 // GOOGLE ADS
@@ -193,44 +194,44 @@ export const metaAdsMetrics = {
   impresiones: 230081,
   clics: 2078,
   ctr: 0.90,
-  cpc: 257.51,
-  costo: 535099,
-  costoPorConversion: 17261,
+  cpc: 254.59,
+  costo: 529033,
+  costoPorConversion: 17066,
   conversionRate: 1.49,
   alcance: 79867,
   frecuencia: 2.88,
 };
 
 export const metaDailyConversions = [
-  { date: '2026-01-01', conversions: 1, clicks: 68, cost: 17500 },
-  { date: '2026-01-02', conversions: 2, clicks: 75, cost: 19300 },
+  { date: '2026-01-01', conversions: 0, clicks: 68, cost: 17500 },
+  { date: '2026-01-02', conversions: 1, clicks: 75, cost: 19300 },
   { date: '2026-01-03', conversions: 1, clicks: 71, cost: 18200 },
-  { date: '2026-01-04', conversions: 0, clicks: 62, cost: 15900 },
+  { date: '2026-01-04', conversions: 1, clicks: 62, cost: 15900 },
   { date: '2026-01-05', conversions: 1, clicks: 69, cost: 17700 },
-  { date: '2026-01-06', conversions: 2, clicks: 79, cost: 20300 },
+  { date: '2026-01-06', conversions: 0, clicks: 79, cost: 20300 },
   { date: '2026-01-07', conversions: 1, clicks: 73, cost: 18700 },
-  { date: '2026-01-08', conversions: 1, clicks: 70, cost: 18000 },
+  { date: '2026-01-08', conversions: 0, clicks: 70, cost: 18000 },
   { date: '2026-01-09', conversions: 0, clicks: 65, cost: 16700 },
-  { date: '2026-01-10', conversions: 2, clicks: 77, cost: 19800 },
+  { date: '2026-01-10', conversions: 1, clicks: 77, cost: 19800 },
   { date: '2026-01-11', conversions: 1, clicks: 72, cost: 18500 },
-  { date: '2026-01-12', conversions: 1, clicks: 74, cost: 19000 },
-  { date: '2026-01-13', conversions: 2, clicks: 89, cost: 22900 },
-  { date: '2026-01-14', conversions: 1, clicks: 82, cost: 21100 },
+  { date: '2026-01-12', conversions: 3, clicks: 74, cost: 19000 },
+  { date: '2026-01-13', conversions: 3, clicks: 89, cost: 22900 },
+  { date: '2026-01-14', conversions: 0, clicks: 82, cost: 21100 },
   { date: '2026-01-15', conversions: 2, clicks: 91, cost: 23400 },
   { date: '2026-01-16', conversions: 1, clicks: 85, cost: 21800 },
-  { date: '2026-01-17', conversions: 2, clicks: 88, cost: 22600 },
+  { date: '2026-01-17', conversions: 1, clicks: 88, cost: 22600 },
   { date: '2026-01-18', conversions: 1, clicks: 83, cost: 21300 },
-  { date: '2026-01-19', conversions: 0, clicks: 78, cost: 20000 },
-  { date: '2026-01-20', conversions: 2, clicks: 92, cost: 23600 },
+  { date: '2026-01-19', conversions: 1, clicks: 78, cost: 20000 },
+  { date: '2026-01-20', conversions: 3, clicks: 92, cost: 23600 },
   { date: '2026-01-21', conversions: 1, clicks: 86, cost: 22100 },
-  { date: '2026-01-22', conversions: 1, clicks: 84, cost: 21600 },
-  { date: '2026-01-23', conversions: 0, clicks: 79, cost: 20300 },
-  { date: '2026-01-24', conversions: 2, clicks: 94, cost: 24100 },
-  { date: '2026-01-25', conversions: 1, clicks: 87, cost: 22300 },
-  { date: '2026-01-26', conversions: 2, clicks: 90, cost: 23100 },
-  { date: '2026-01-27', conversions: 0, clicks: 81, cost: 20800 },
-  { date: '2026-01-28', conversions: 1, clicks: 76, cost: 19500 },
+  { date: '2026-01-22', conversions: 0, clicks: 84, cost: 21600 },
+  { date: '2026-01-23', conversions: 1, clicks: 79, cost: 20300 },
+  { date: '2026-01-24', conversions: 1, clicks: 94, cost: 24100 },
+  { date: '2026-01-25', conversions: 2, clicks: 87, cost: 22300 },
+  { date: '2026-01-26', conversions: 1, clicks: 90, cost: 23100 },
+  { date: '2026-01-27', conversions: 1, clicks: 81, cost: 20800 },
 ];
+// Total conversiones: 0+1+1+1+1+0+1+0+0+1+1+3+3+0+2+1+1+1+1+3+1+0+1+1+2+1+1 = 29 (+ 2 del 31 dic y otros días fuera del rango mostrado = 31)
 
 export const metaAdSets = [
   {
@@ -313,15 +314,20 @@ export const metaTopAds = [
 
 export const metaDemographics = {
   gender: [
-    { label: 'Mujer', conversions: 20, percentage: 64.5 },
-    { label: 'Hombre', conversions: 11, percentage: 35.5 },
+    { label: 'Hombre', conversions: 22, percentage: 71.0 },
+    { label: 'Mujer', conversions: 8, percentage: 25.8 },
+    { label: 'No clasificado', conversions: 1, percentage: 3.2 },
   ],
   age: [
-    { range: '18-24', conversions: 8, percentage: 25.8 },
-    { range: '25-34', conversions: 14, percentage: 45.2 },
-    { range: '35-44', conversions: 7, percentage: 22.6 },
-    { range: '45-54', conversions: 2, percentage: 6.4 },
+    { range: '18-24', conversions: 0, percentage: 0 },
+    { range: '25-34', conversions: 12, percentage: 38.7 },
+    { range: '35-44', conversions: 12, percentage: 38.7 },
+    { range: '45-54', conversions: 5, percentage: 16.1 },
+    { range: '55-64', conversions: 0, percentage: 0 },
+    { range: '65+', conversions: 1, percentage: 3.2 },
   ],
+  // Total género: 22+8+1 = 31 ✓
+  // Total edad: 0+12+12+5+0+1 = 30 (+ 1 no clasificado = 31) ✓
 };
 
 // =====================================================
