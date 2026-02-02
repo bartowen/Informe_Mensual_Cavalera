@@ -115,32 +115,32 @@ export const googleDailyConversions = [
 ];
 
 export const topKeywords = [
-  { keyword: 'estudio de tatuajes', conversions: 123, clicks: 712, ctr: 17.60, cpc: 249, costPerConv: 1438 },
-  { keyword: '[tatuajes]', conversions: 36, clicks: 227, ctr: 4.88, cpc: 257, costPerConv: 1623 },
-  { keyword: 'tatuajes santiago', conversions: 36, clicks: 224, ctr: 26.60, cpc: 273, costPerConv: 1700 },
-  { keyword: 'tatuajes arte', conversions: 29, clicks: 236, ctr: 4.88, cpc: 230, costPerConv: 1876 },
-  { keyword: 'tatuaje artístico', conversions: 13, clicks: 72, ctr: 7.61, cpc: 178, costPerConv: 984 },
-  { keyword: 'tatuajes en el mut', conversions: 12, clicks: 44, ctr: 35.20, cpc: 180, costPerConv: 661 },
-  { keyword: 'tatuajes providencia', conversions: 10, clicks: 49, ctr: 16.90, cpc: 331, costPerConv: 1622 },
-  { keyword: '[cover up tatuajes]', conversions: 6, clicks: 42, ctr: 9.29, cpc: 254, costPerConv: 1776 },
+  { keyword: 'estudio de tatuajes', conversions: 88, clicks: 712, ctr: 17.60, cpc: 249, costPerConv: 2010 },
+  { keyword: '[tatuajes]', conversions: 26, clicks: 227, ctr: 4.88, cpc: 257, costPerConv: 2248 },
+  { keyword: 'tatuajes santiago', conversions: 26, clicks: 224, ctr: 26.60, cpc: 273, costPerConv: 2354 },
+  { keyword: 'tatuajes arte', conversions: 21, clicks: 236, ctr: 4.88, cpc: 230, costPerConv: 2590 },
+  { keyword: 'tatuaje artístico', conversions: 10, clicks: 72, ctr: 7.61, cpc: 178, costPerConv: 1279 },
+  { keyword: 'tatuajes en el mut', conversions: 9, clicks: 44, ctr: 35.20, cpc: 180, costPerConv: 881 },
+  { keyword: 'tatuajes providencia', conversions: 7, clicks: 49, ctr: 16.90, cpc: 331, costPerConv: 2317 },
+  { keyword: '[cover up tatuajes]', conversions: 4, clicks: 42, ctr: 9.29, cpc: 254, costPerConv: 2664 },
 ];
 
 export const topSearchTerms = [
-  { term: 'estudio de tatuajes', conversions: 105, clicks: 536, ctr: 17.80, cpc: 251 },
-  { term: 'tatuajes santiago', conversions: 68, clicks: 312, ctr: 16.94, cpc: 268 },
-  { term: 'tatuajes', conversions: 52, clicks: 284, ctr: 5.54, cpc: 245 },
-  { term: 'tattoo studio providencia', conversions: 23, clicks: 89, ctr: 21.60, cpc: 298 },
+  { term: 'estudio de tatuajes', conversions: 56, clicks: 536, ctr: 17.80, cpc: 251 },
+  { term: 'tatuajes santiago', conversions: 36, clicks: 312, ctr: 16.94, cpc: 268 },
+  { term: 'tatuajes', conversions: 28, clicks: 284, ctr: 5.54, cpc: 245 },
+  { term: 'tattoo studio providencia', conversions: 12, clicks: 89, ctr: 21.60, cpc: 298 },
   { term: 'tatuadores santiago', conversions: 2, clicks: 43, ctr: 39.45, cpc: 246 },
-  { term: 'tattoo diseño personalizado', conversions: 2, clicks: 32, ctr: 4.93, cpc: 252 },
+  { term: 'tattoo diseño personalizado', conversions: 1, clicks: 32, ctr: 4.93, cpc: 252 },
 ];
 
 export const topLocations = [
-  { rank: 1, location: 'Las Condes', conversions: 163, clicks: 1327, ctr: 11.50, cpc: 231, costPerConv: 1883 },
-  { rank: 2, location: 'Providencia', conversions: 63, clicks: 403, ctr: 7.08, cpc: 271, costPerConv: 1732 },
-  { rank: 3, location: 'Ñuñoa', conversions: 36, clicks: 138, ctr: 11.72, cpc: 280, costPerConv: 1073 },
-  { rank: 4, location: 'Vitacura', conversions: 25, clicks: 79, ctr: 11.29, cpc: 306, costPerConv: 968 },
-  { rank: 5, location: 'Lo Barnechea', conversions: 12, clicks: 42, ctr: 17.28, cpc: 259, costPerConv: 908 },
-  { rank: 6, location: 'La Reina', conversions: 3, clicks: 35, ctr: 9.31, cpc: 356, costPerConv: 4159 },
+  { rank: 1, location: 'Las Condes', conversions: 116, clicks: 1327, ctr: 11.50, cpc: 231, costPerConv: 2648 },
+  { rank: 2, location: 'Providencia', conversions: 45, clicks: 403, ctr: 7.08, cpc: 271, costPerConv: 2424 },
+  { rank: 3, location: 'Ñuñoa', conversions: 25, clicks: 138, ctr: 11.72, cpc: 280, costPerConv: 1544 },
+  { rank: 4, location: 'Vitacura', conversions: 18, clicks: 79, ctr: 11.29, cpc: 306, costPerConv: 1344 },
+  { rank: 5, location: 'Lo Barnechea', conversions: 9, clicks: 42, ctr: 17.28, cpc: 259, costPerConv: 1211 },
+  { rank: 6, location: 'La Reina', conversions: 2, clicks: 35, ctr: 9.31, cpc: 356, costPerConv: 6239 },
 ];
 
 export const bestHours = [
