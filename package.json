@@ -6,6 +6,7 @@
   "dependencies": {
     "@supabase/supabase-js": "^2.95.3",
     "date-fns": "^4.1.0",
+    "dotenv": "^17.2.4",
     "lucide-react": "^0.294.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -27,6 +28,6 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "sync": "tsx api/sync-google-ads.ts"
+    "sync": "tsx scripts/run-sync.ts"
   }
 }

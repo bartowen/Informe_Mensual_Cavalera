@@ -19,21 +19,32 @@ interface DailyMetric {
   cpa: number;
 }
 
-export default async function handler(req: Request) {
-  if (req.method !== 'POST') {
-    return new Response(
-      JSON.stringify({ error: 'Method not allowed' }),
-      { status: 405, headers: { 'Content-Type': 'application/json' } }
-    );
-  }
-
+async function syncGoogleAds() {
   try {
-    console.log('[Sync] Iniciando sincronización...');
+    console.log('[Sync] Iniciando sincronización Google Ads...');
+    console.log('[Sync] Supabase URL:', process.env.VITE_SUPABASE_URL);
+    console.log('[Sync] Google Script URL:', GOOGLE_SCRIPT_URL ? 'OK' : 'MISSING');
 
-    const response = await fetch(`${GOOGLE_SCRIPT_URL}?sheet=Cavalera_Por_Dia`);
-    if (!response.ok) throw new Error(`Google Sheets error: ${response.status}`);
+    const response = await fetch(`${GOOGLE_SCRIPT_URL}&sheet=Cavalera_Por_Dia`);
 
-    const rawData: any[] = await response.json();
+    if (!response.ok) {
+      throw new Error(`Google Sheets error: ${response.status}`);
+    }
+
+    const responseData = await response.json();
+    console.log('[Sync] Estructura de respuesta:', JSON.stringify(responseData).substring(0, 200));
+
+    let rawData: any[];
+
+    if (Array.isArray(responseData)) {
+      rawData = responseData;
+    } else if (responseData.data && Array.isArray(responseData.data)) {
+      rawData = responseData.data;
+    } else {
+      throw new Error('Estructura de respuesta inesperada: ' + JSON.stringify(responseData).substring(0, 500));
+    }
+
+    console.log(`[Sync] Recibidos ${rawData.length} registros de Google Sheets`);
 
     // FILTRO: Solo desde febrero 2026
     const CUTOFF_DATE = new Date('2026-02-01');
@@ -56,7 +67,12 @@ export default async function handler(req: Request) {
         cpa: parseFloat(row.cpa) || 0,
       }));
 
-    console.log(`[Sync] Parsed ${metrics.length} records (desde feb 2026)`);
+    console.log(`[Sync] Parseados ${metrics.length} registros (desde feb 2026)`);
+
+    if (metrics.length === 0) {
+      console.log('[Sync] No hay datos para sincronizar');
+      return;
+    }
 
     const { error } = await supabase
       .from('google_ads_daily')
@@ -78,14 +94,10 @@ export default async function handler(req: Request) {
       records_synced: metrics.length
     });
 
-    console.log(`[Sync] Completado`);
+    console.log(`[Sync] Completado: ${metrics.length} registros sincronizados`);
 
-    return new Response(
-      JSON.stringify({ success: true, records_synced: metrics.length }),
-      { status: 200, headers: { 'Content-Type': 'application/json' } }
-    );
   } catch (error: any) {
-    console.error('[Sync] Error:', error);
+    console.error('[Sync] Error:', error.message);
 
     await supabase.from('sync_log').insert({
       client_id: 'cavalera',
@@ -95,10 +107,7 @@ export default async function handler(req: Request) {
       error_message: error.message
     });
 
-    return new Response(
-      JSON.stringify({ error: error.message }),
-      { status: 500, headers: { 'Content-Type': 'application/json' } }
-    );
+    process.exit(1);
   }
 }
 
@@ -108,3 +117,5 @@ function formatDate(dateStr: string): string {
   if (isNaN(date.getTime())) throw new Error(`Invalid date: ${dateStr}`);
   return date.toISOString().split('T')[0];
 }
+
+syncGoogleAds();

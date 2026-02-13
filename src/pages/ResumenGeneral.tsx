@@ -20,6 +20,8 @@ import {
   ResponsiveContainer,
   Legend,
 } from 'recharts';
+import { format } from 'date-fns';
+import { es } from 'date-fns/locale';
 import {
   resumenGeneral,
   porCanal,
@@ -30,9 +32,15 @@ import {
 
 interface ResumenGeneralProps {
   onNavigate: (tab: string) => void;
+  startDate: Date;
+  endDate: Date;
 }
 
-const ResumenGeneral: React.FC<ResumenGeneralProps> = ({ onNavigate }) => {
+const ResumenGeneral: React.FC<ResumenGeneralProps> = ({ onNavigate, startDate, endDate }) => {
+  const dateLabel = startDate.toDateString() === endDate.toDateString()
+    ? format(startDate, "d 'de' MMMM yyyy", { locale: es })
+    : `${format(startDate, "d 'de' MMMM", { locale: es })} - ${format(endDate, "d 'de' MMMM yyyy", { locale: es })}`;
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -41,7 +49,7 @@ const ResumenGeneral: React.FC<ResumenGeneralProps> = ({ onNavigate }) => {
           <div>
             <h1 className="text-2xl font-bold text-gray-900">Resumen General</h1>
             <p className="text-gray-500 mt-1">
-              Cavalera Tattoo & Piercing - Enero 2026
+              Cavalera Tattoo & Piercing - {dateLabel}
             </p>
           </div>
           <div className="flex items-center gap-2 bg-green-100 text-green-800 px-4 py-2 rounded-lg">

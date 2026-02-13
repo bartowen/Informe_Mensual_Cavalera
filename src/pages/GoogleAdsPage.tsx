@@ -26,6 +26,8 @@ import {
   Pie,
   Cell,
 } from 'recharts';
+import { format } from 'date-fns';
+import { es } from 'date-fns/locale';
 import {
   googleAdsMetrics,
   googleDailyConversions,
@@ -40,7 +42,12 @@ import {
   formatDate,
 } from '../data/cavaleraData';
 
-const GoogleAdsPage: React.FC = () => {
+interface GoogleAdsPageProps {
+  startDate: Date;
+  endDate: Date;
+}
+
+const GoogleAdsPage: React.FC<GoogleAdsPageProps> = ({ startDate, endDate }) => {
   const getMedal = (rank: number) => {
     switch (rank) {
       case 1: return { emoji: '🥇', color: 'bg-yellow-100 border-yellow-400' };
@@ -65,7 +72,9 @@ const GoogleAdsPage: React.FC = () => {
             </div>
             <div>
               <h1 className="text-2xl font-bold text-gray-900">Google Ads</h1>
-              <p className="text-gray-500">Cavalera Tattoo & Piercing - Enero 2026</p>
+              <p className="text-gray-500">Cavalera Tattoo & Piercing - {startDate.toDateString() === endDate.toDateString()
+                ? format(startDate, "d 'de' MMMM yyyy", { locale: es })
+                : `${format(startDate, "d 'de' MMMM", { locale: es })} - ${format(endDate, "d 'de' MMMM yyyy", { locale: es })}`}</p>
             </div>
           </div>
           <div className="flex items-center gap-2 bg-green-100 text-green-800 px-4 py-2 rounded-lg">

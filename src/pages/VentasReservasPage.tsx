@@ -19,6 +19,8 @@ import {
   Pie,
   Cell,
 } from 'recharts';
+import { format } from 'date-fns';
+import { es } from 'date-fns/locale';
 import {
   ventasRealizadas,
   reservasAgendadas,
@@ -30,7 +32,12 @@ import {
   formatDate,
 } from '../data/cavaleraData';
 
-const VentasReservasPage: React.FC = () => {
+interface VentasReservasPageProps {
+  startDate: Date;
+  endDate: Date;
+}
+
+const VentasReservasPage: React.FC<VentasReservasPageProps> = ({ startDate, endDate }) => {
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -42,7 +49,9 @@ const VentasReservasPage: React.FC = () => {
             </div>
             <div>
               <h1 className="text-2xl font-bold text-gray-900">Ventas y Reservas</h1>
-              <p className="text-gray-500">Cavalera Tattoo & Piercing - Enero 2026</p>
+              <p className="text-gray-500">Cavalera Tattoo & Piercing - {startDate.toDateString() === endDate.toDateString()
+                ? format(startDate, "d 'de' MMMM yyyy", { locale: es })
+                : `${format(startDate, "d 'de' MMMM", { locale: es })} - ${format(endDate, "d 'de' MMMM yyyy", { locale: es })}`}</p>
             </div>
           </div>
           <div className="flex items-center gap-2 bg-green-100 text-green-800 px-4 py-2 rounded-lg">
