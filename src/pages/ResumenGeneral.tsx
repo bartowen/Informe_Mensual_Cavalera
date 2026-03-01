@@ -11,8 +11,9 @@ import {
   CheckCircle2,
 } from 'lucide-react';
 import {
-  AreaChart,
-  Area,
+  ComposedChart,
+  Bar,
+  Line,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -20,26 +21,20 @@ import {
   ResponsiveContainer,
   Legend,
 } from 'recharts';
-import { format } from 'date-fns';
-import { es } from 'date-fns/locale';
-import {
-  resumenGeneral,
-  porCanal,
-  formulariosDiarios,
-  formatCurrency,
-  formatDate,
-} from '../data/cavaleraData';
+import { MonthData, tendencia3Meses } from '../data/allMonthsData';
+import { formatCurrency } from '../utils/formatters';
 
 interface ResumenGeneralProps {
   onNavigate: (tab: string) => void;
-  startDate: Date;
-  endDate: Date;
+  monthData: MonthData;
 }
 
-const ResumenGeneral: React.FC<ResumenGeneralProps> = ({ onNavigate, startDate, endDate }) => {
-  const dateLabel = startDate.toDateString() === endDate.toDateString()
-    ? format(startDate, "d 'de' MMMM yyyy", { locale: es })
-    : `${format(startDate, "d 'de' MMMM", { locale: es })} - ${format(endDate, "d 'de' MMMM yyyy", { locale: es })}`;
+const ResumenGeneral: React.FC<ResumenGeneralProps> = ({ onNavigate, monthData }) => {
+  const googleCanal = monthData.porCanal.find(c => c.canal === 'Google Ads');
+  const metaCanal = monthData.porCanal.find(c => c.canal === 'Meta Ads');
+  const pctGoogle = monthData.resumen.formulariosTotal > 0
+    ? Math.round(((googleCanal?.leads || 0) / monthData.resumen.formulariosTotal) * 100)
+    : 0;
 
   return (
     <div className="space-y-6">
@@ -49,7 +44,7 @@ const ResumenGeneral: React.FC<ResumenGeneralProps> = ({ onNavigate, startDate, 
           <div>
             <h1 className="text-2xl font-bold text-gray-900">Resumen General</h1>
             <p className="text-gray-500 mt-1">
-              Cavalera Tattoo & Piercing - {dateLabel}
+              Cavalera Tattoo &amp; Piercing — {monthData.label}
             </p>
           </div>
           <div className="flex items-center gap-2 bg-green-100 text-green-800 px-4 py-2 rounded-lg">
@@ -70,21 +65,21 @@ const ResumenGeneral: React.FC<ResumenGeneralProps> = ({ onNavigate, startDate, 
           </div>
           <p className="text-gray-500 text-sm">Inversión Publicitaria</p>
           <p className="text-2xl lg:text-3xl font-bold text-gray-900 mt-1">
-            {formatCurrency(resumenGeneral.inversionPublicitaria)}
+            {formatCurrency(monthData.resumen.inversionTotal)}
           </p>
           <p className="text-xs text-gray-400 mt-2">Google Ads + Meta Ads</p>
         </div>
 
-        {/* Formularios Digitales */}
+        {/* Formularios / Leads */}
         <div className="bg-gradient-to-br from-[#3bc6dc] to-[#21a9c2] rounded-xl shadow-lg p-6 text-white">
           <div className="flex items-center justify-between mb-4">
             <div className="bg-white/20 p-3 rounded-lg">
               <FileText className="w-6 h-6 text-white" />
             </div>
           </div>
-          <p className="text-cyan-100 text-sm">Formularios Digitales</p>
-          <p className="text-3xl lg:text-4xl font-bold mt-1">{resumenGeneral.formulariosDigitales}</p>
-          <p className="text-xs text-cyan-100 mt-2">Leads generados</p>
+          <p className="text-cyan-100 text-sm">Leads Totales</p>
+          <p className="text-3xl lg:text-4xl font-bold mt-1">{monthData.resumen.formulariosTotal}</p>
+          <p className="text-xs text-cyan-100 mt-2">Admin Panel — fuente oficial</p>
         </div>
 
         {/* Ventas Reales */}
@@ -95,8 +90,8 @@ const ResumenGeneral: React.FC<ResumenGeneralProps> = ({ onNavigate, startDate, 
             </div>
           </div>
           <p className="text-purple-100 text-sm">Ventas Reales</p>
-          <p className="text-2xl lg:text-3xl font-bold mt-1">{formatCurrency(resumenGeneral.ventasReales)}</p>
-          <p className="text-xs text-purple-100 mt-2">{resumenGeneral.cantidadVentas} ventas</p>
+          <p className="text-2xl lg:text-3xl font-bold mt-1">{formatCurrency(monthData.resumen.ventasReales)}</p>
+          <p className="text-xs text-purple-100 mt-2">{monthData.resumen.cantidadVentas} ventas</p>
         </div>
 
         {/* Reservas Agendadas */}
@@ -107,7 +102,7 @@ const ResumenGeneral: React.FC<ResumenGeneralProps> = ({ onNavigate, startDate, 
             </div>
           </div>
           <p className="text-gray-500 text-sm">Reservas Agendadas</p>
-          <p className="text-2xl lg:text-3xl font-bold text-gray-900 mt-1">{resumenGeneral.reservasAgendadas}</p>
+          <p className="text-2xl lg:text-3xl font-bold text-gray-900 mt-1">{monthData.resumen.reservasAgendadas}</p>
           <p className="text-xs text-gray-400 mt-2">Citas programadas</p>
         </div>
       </div>
@@ -123,14 +118,13 @@ const ResumenGeneral: React.FC<ResumenGeneralProps> = ({ onNavigate, startDate, 
               <tr>
                 <th className="text-left px-6 py-4 text-sm font-semibold text-gray-600">Canal</th>
                 <th className="text-right px-6 py-4 text-sm font-semibold text-gray-600">Inversión</th>
-                <th className="text-right px-6 py-4 text-sm font-semibold text-gray-600">Formularios</th>
-                <th className="text-right px-6 py-4 text-sm font-semibold text-gray-600">Costo/Lead</th>
+                <th className="text-right px-6 py-4 text-sm font-semibold text-gray-600">Leads</th>
+                <th className="text-right px-6 py-4 text-sm font-semibold text-gray-600">CPL</th>
                 <th className="text-right px-6 py-4 text-sm font-semibold text-gray-600">CTR</th>
-                <th className="text-right px-6 py-4 text-sm font-semibold text-gray-600">Estado</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              {porCanal.map((canal) => (
+              {monthData.porCanal.map((canal) => (
                 <tr key={canal.canal} className="hover:bg-gray-50 transition-colors">
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
@@ -153,21 +147,14 @@ const ResumenGeneral: React.FC<ResumenGeneralProps> = ({ onNavigate, startDate, 
                     {formatCurrency(canal.inversion)}
                   </td>
                   <td className="px-6 py-4 text-right">
-                    <span className="font-bold text-[#3bc6dc] text-lg">
-                      {canal.formularios}
-                    </span>
+                    <span className="font-bold text-[#3bc6dc] text-lg">{canal.leads}</span>
                   </td>
                   <td className="px-6 py-4 text-right font-medium text-gray-900">
-                    {formatCurrency(canal.costoPorLead)}
+                    {formatCurrency(canal.cpl)}
                   </td>
                   <td className="px-6 py-4 text-right">
                     <span className={`font-medium ${canal.ctr >= 5 ? 'text-green-600' : 'text-gray-600'}`}>
                       {canal.ctr.toFixed(2)}%
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                      {canal.badge}
                     </span>
                   </td>
                 </tr>
@@ -176,15 +163,14 @@ const ResumenGeneral: React.FC<ResumenGeneralProps> = ({ onNavigate, startDate, 
               <tr className="bg-gray-50 font-semibold">
                 <td className="px-6 py-4 text-gray-900">Total</td>
                 <td className="px-6 py-4 text-right text-gray-900">
-                  {formatCurrency(resumenGeneral.inversionPublicitaria)}
+                  {formatCurrency(monthData.resumen.inversionTotal)}
                 </td>
                 <td className="px-6 py-4 text-right">
-                  <span className="text-[#3bc6dc] text-lg">{resumenGeneral.formulariosDigitales}</span>
+                  <span className="text-[#3bc6dc] text-lg">{monthData.resumen.formulariosTotal}</span>
                 </td>
                 <td className="px-6 py-4 text-right text-gray-900">
-                  {formatCurrency(Math.round(resumenGeneral.inversionPublicitaria / resumenGeneral.formulariosDigitales))}
+                  {formatCurrency(Math.round(monthData.resumen.inversionTotal / monthData.resumen.formulariosTotal))}
                 </td>
-                <td className="px-6 py-4"></td>
                 <td className="px-6 py-4"></td>
               </tr>
             </tbody>
@@ -192,62 +178,56 @@ const ResumenGeneral: React.FC<ResumenGeneralProps> = ({ onNavigate, startDate, 
         </div>
       </div>
 
-      {/* Gráfico Combinado - Formularios por Día */}
+      {/* Tendencia 3 Meses */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-6">Formularios por Día</h2>
-        <div className="h-80">
+        <h2 className="text-lg font-semibold text-gray-900 mb-1">Tendencia 3 Meses</h2>
+        <p className="text-sm text-gray-500 mb-4">
+          Leads totales y CAC — Dic 2025 a Feb 2026
+        </p>
+        {monthData.key === 'enero2026' && (
+          <div className="flex items-start gap-3 bg-amber-50 border border-amber-200 rounded-lg p-4 mb-4">
+            <span className="text-amber-500 text-lg">⚠️</span>
+            <div>
+              <p className="font-semibold text-amber-900 text-sm">CAC pico en Enero: $11.899 (+60.6% vs Diciembre)</p>
+              <p className="text-amber-700 text-xs mt-1">
+                La inversión creció 72% pero los leads apenas variaron (46 vs 43). Revisar estructura de campaña y presupuesto diario.
+              </p>
+            </div>
+          </div>
+        )}
+        <div className="h-72">
           <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={formulariosDiarios}>
-              <defs>
-                <linearGradient id="colorGoogle" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#3bc6dc" stopOpacity={0.3}/>
-                  <stop offset="95%" stopColor="#3bc6dc" stopOpacity={0}/>
-                </linearGradient>
-                <linearGradient id="colorMeta" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#a855f7" stopOpacity={0.3}/>
-                  <stop offset="95%" stopColor="#a855f7" stopOpacity={0}/>
-                </linearGradient>
-              </defs>
+            <ComposedChart data={tendencia3Meses}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-              <XAxis
-                dataKey="date"
-                tickFormatter={(value) => formatDate(value)}
-                tick={{ fontSize: 12, fill: '#6b7280' }}
-                axisLine={{ stroke: '#e5e7eb' }}
-              />
+              <XAxis dataKey="mes" tick={{ fontSize: 12, fill: '#6b7280' }} />
+              <YAxis yAxisId="left" tick={{ fontSize: 11, fill: '#6b7280' }} />
               <YAxis
-                tick={{ fontSize: 12, fill: '#6b7280' }}
-                axisLine={{ stroke: '#e5e7eb' }}
+                yAxisId="right"
+                orientation="right"
+                tickFormatter={(v: number) => `$${(v / 1000).toFixed(0)}k`}
+                tick={{ fontSize: 11, fill: '#6b7280' }}
               />
               <Tooltip
-                contentStyle={{
-                  backgroundColor: '#1f2937',
-                  border: 'none',
-                  borderRadius: '8px',
-                  color: '#fff'
+                contentStyle={{ backgroundColor: '#1f2937', border: 'none', borderRadius: '8px', color: '#fff', fontSize: '12px' }}
+                formatter={(value: number, name: string) => {
+                  if (name === 'CAC ($)') return [formatCurrency(value), name];
+                  return [value, name];
                 }}
-                labelFormatter={(value) => formatDate(value)}
               />
               <Legend />
-              <Area
+              <Bar yAxisId="left" dataKey="leadsGoogle" name="Leads Google" fill="#3bc6dc" radius={[4, 4, 0, 0]} />
+              <Bar yAxisId="left" dataKey="leadsTotal"  name="Leads Total"  fill="#a855f7" radius={[4, 4, 0, 0]} opacity={0.6} />
+              <Line
+                yAxisId="right"
                 type="monotone"
-                dataKey="google"
-                name="Google Ads"
-                stroke="#3bc6dc"
+                dataKey="cac"
+                name="CAC ($)"
+                stroke="#ef4444"
                 strokeWidth={2}
-                fillOpacity={1}
-                fill="url(#colorGoogle)"
+                strokeDasharray="5 5"
+                dot={{ r: 5, fill: '#ef4444' }}
               />
-              <Area
-                type="monotone"
-                dataKey="meta"
-                name="Meta Ads"
-                stroke="#a855f7"
-                strokeWidth={2}
-                fillOpacity={1}
-                fill="url(#colorMeta)"
-              />
-            </AreaChart>
+            </ComposedChart>
           </ResponsiveContainer>
         </div>
       </div>
@@ -258,7 +238,7 @@ const ResumenGeneral: React.FC<ResumenGeneralProps> = ({ onNavigate, startDate, 
           <div className="bg-yellow-500/20 p-2 rounded-lg">
             <Lightbulb className="w-6 h-6 text-yellow-400" />
           </div>
-          <h2 className="text-lg font-semibold">Insights Clave</h2>
+          <h2 className="text-lg font-semibold">Insights Clave — {monthData.label}</h2>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="bg-white/10 rounded-lg p-4">
@@ -267,7 +247,7 @@ const ResumenGeneral: React.FC<ResumenGeneralProps> = ({ onNavigate, startDate, 
               <span className="font-medium">Generación de Leads</span>
             </div>
             <p className="text-gray-300 text-sm">
-              Google Ads genera <span className="text-cyan-400 font-bold">87%</span> de los formularios digitales
+              Google Ads genera <span className="text-cyan-400 font-bold">{pctGoogle}%</span> de los leads del período
             </p>
           </div>
           <div className="bg-white/10 rounded-lg p-4">
@@ -276,7 +256,8 @@ const ResumenGeneral: React.FC<ResumenGeneralProps> = ({ onNavigate, startDate, 
               <span className="font-medium">Costo por Lead</span>
             </div>
             <p className="text-gray-300 text-sm">
-              Google <span className="text-green-400 font-bold">$2.337</span> vs Meta <span className="text-red-400 font-bold">$17.261</span> (7.4x más caro)
+              Google <span className="text-green-400 font-bold">{formatCurrency(googleCanal?.cpl || 0)}</span>{' '}
+              vs Meta <span className="text-red-400 font-bold">{formatCurrency(metaCanal?.cpl || 0)}</span>
             </p>
           </div>
           <div className="bg-white/10 rounded-lg p-4">
@@ -285,7 +266,8 @@ const ResumenGeneral: React.FC<ResumenGeneralProps> = ({ onNavigate, startDate, 
               <span className="font-medium">CTR</span>
             </div>
             <p className="text-gray-300 text-sm">
-              Google <span className="text-green-400 font-bold">10.26%</span> vs Meta <span className="text-gray-400 font-bold">0.90%</span> (11.4x mejor)
+              Google <span className="text-green-400 font-bold">{googleCanal?.ctr.toFixed(2)}%</span>{' '}
+              vs Meta <span className="text-gray-400 font-bold">{metaCanal?.ctr.toFixed(2)}%</span>
             </p>
           </div>
           <div className="bg-white/10 rounded-lg p-4">
@@ -309,11 +291,7 @@ const ResumenGeneral: React.FC<ResumenGeneralProps> = ({ onNavigate, startDate, 
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <div className="bg-gradient-to-r from-[#3bc6dc] to-[#21a9c2] p-3 rounded-lg">
-                <img
-                  src="/logo_google_ads.png"
-                  alt="Google Ads"
-                  className="h-6 w-6 object-contain"
-                />
+                <img src="/logo_google_ads.png" alt="Google Ads" className="h-6 w-6 object-contain" />
               </div>
               <div>
                 <h3 className="font-semibold text-gray-900">Google Ads</h3>
@@ -331,15 +309,11 @@ const ResumenGeneral: React.FC<ResumenGeneralProps> = ({ onNavigate, startDate, 
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <div className="bg-gradient-to-r from-purple-500 to-pink-500 p-3 rounded-lg">
-                <img
-                  src="/logo_meta_.png"
-                  alt="Meta Ads"
-                  className="h-6 w-6 object-contain"
-                />
+                <img src="/logo_meta_.png" alt="Meta Ads" className="h-6 w-6 object-contain" />
               </div>
               <div>
                 <h3 className="font-semibold text-gray-900">Meta Ads</h3>
-                <p className="text-sm text-gray-500">Facebook & Instagram</p>
+                <p className="text-sm text-gray-500">Facebook &amp; Instagram</p>
               </div>
             </div>
             <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-purple-500 transition-colors" />

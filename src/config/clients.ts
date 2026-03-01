@@ -27,7 +27,7 @@ export const clients: Record<string, ClientConfig> = {
     id: 'cavalera',
     name: 'Cavalera Tattoo & Piercing',
     logo: '/logo-cavalera.png',
-    month: 'Enero 2026',
+    month: 'Dic 2025 – Feb 2026',
     password: import.meta.env.VITE_CAVALERA_PASSWORD || 'cavalera2026',
     channels: {
       googleAds: true,

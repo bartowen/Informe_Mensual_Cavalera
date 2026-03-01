@@ -10,6 +10,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   const { client } = useClient();
   const [activeTab, setActiveTab] = useState<TabValue>('resumen-general');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [selectedMonth, setSelectedMonth] = useState<string>('enero2026');
 
   const handleTabChange = (tab: TabValue) => {
     setActiveTab(tab);
@@ -25,6 +26,8 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
         mobileOpen={mobileMenuOpen}
         onMobileToggle={() => setMobileMenuOpen(!mobileMenuOpen)}
         client={client}
+        selectedMonth={selectedMonth}
+        onMonthChange={setSelectedMonth}
       />
 
       {/* Main Content */}
